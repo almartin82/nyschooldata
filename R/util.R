@@ -8,7 +8,10 @@ zip_to_temp <- function(url) {
   #download and unzip
   tdir <- tempdir()
   tname <- tempfile(pattern = "nyschooldata", tmpdir = tdir, fileext = ".zip")
-  download.file(url, destfile = tname, mode = "wb")
+  prev_timeout <- getOption('timeout')
+  options(timeout = 900)
+  download.file(url, destfile = tname, mode = "wb", method="curl", quiet = TRUE)
+  options(timeout = prev_timeout)
   utils::unzip(tname, exdir = tdir)
 
   #return a list with the directory and files
