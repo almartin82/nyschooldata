@@ -22,4 +22,7 @@ get_raw_rc_db <- function(end_year) {
   )
   rc_url <- rc_urls[[paste0('yr', end_year)]]
   local_files <- zip_to_temp(rc_url)
+  rc <- extract_mdb(local_files)
+
+  rc
 }

@@ -15,7 +15,6 @@ get_raw_assess_db <- function(end_year) {
   )
   assess_url <- assess_urls[[paste0('yr', end_year)]]
   local_files <- zip_to_temp(assess_url)
-
   assess <- extract_mdb(local_files)
 
   #2014 data file included both the 2013 data and the 2014 data. process.

@@ -15,7 +15,6 @@ Depends:
     Hmisc,
     R(>= 2.10.0)
 Suggests:
-    downloader,
     knitr,
     testthat
 RoxygenNote: 5.0.0

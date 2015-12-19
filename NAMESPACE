@@ -2,4 +2,3 @@
 
 export(get_raw_assess_db)
 export(get_raw_rc_db)
-export(zip_to_temp)
