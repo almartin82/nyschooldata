@@ -4,7 +4,7 @@
 #'
 #' @param end_year
 #'
-#' @return
+#' @return data frame with assessment results, by school
 #' @export
 
 get_raw_assess_db <- function(end_year) {

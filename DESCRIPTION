@@ -9,12 +9,13 @@ License: GPL-3 | file LICENSE
 LazyData: true
 VignetteBuilder: knitr
 Depends:
-  ensurer,
-  magrittr,
-  dplyr,
-  Hmisc,
-  R(>= 2.10.0)
+    ensurer,
+    magrittr,
+    dplyr,
+    Hmisc,
+    R(>= 2.10.0)
 Suggests:
-  downloader,
-  knitr,
-  testthat
+    downloader,
+    knitr,
+    testthat
+RoxygenNote: 5.0.0

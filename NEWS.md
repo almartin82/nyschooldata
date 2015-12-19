@@ -1,6 +1,7 @@
 # nyschooldata 0.0.2
 
 * added wercker CI files
+* documentation and build status
 
 # nyschooldata 0.0.1
 
