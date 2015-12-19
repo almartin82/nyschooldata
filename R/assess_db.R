@@ -4,15 +4,15 @@
 #'
 #' @param end_year
 #'
-#' @return
+#' @return data frame with assessment results, by school
 #' @export
 
 get_raw_assess_db <- function(end_year) {
   #build url
   assess_urls <- list(
-    'yr2015' = 'https://data.nysed.gov/files/assessment/3-8-2014-15.zip',
-    'yr2014' = 'https://data.nysed.gov/files/assessment/3-8-2013-14.zip',
-    'yr2013' = 'https://data.nysed.gov/files/assessment/3-8-2013-14.zip'
+    'yr2015' = 'http://data.nysed.gov/files/assessment/3-8-2014-15.zip',
+    'yr2014' = 'http://data.nysed.gov/files/assessment/3-8-2013-14.zip',
+    'yr2013' = 'http://data.nysed.gov/files/assessment/3-8-2013-14.zip'
   )
   assess_url <- assess_urls[[paste0('yr', end_year)]]
 
@@ -34,7 +34,7 @@ get_raw_assess_db <- function(end_year) {
     out <- assess$`3-8_ELA_AND_MATH_REPORT_FOR_RELEASE_2013`
   } else if (end_year == 2014) {
     out <- assess$`3-8_ELA_AND_MATH_REPORT_FOR_RELEASE_2014`
-  } else if (end_year == 2015 {
+  } else if (end_year == 2015) {
     out <- assess
   }
 

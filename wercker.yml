@@ -1,0 +1,11 @@
+box: rocker/hadleyverse
+
+no-response-timeout: 120
+
+build:
+    steps:
+      - install-packages:
+          packages: mdbtools
+      - jimhester/r-dependencies
+      - jimhester/r-check
+      - jimhester/r-coverage
