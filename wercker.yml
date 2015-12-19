@@ -4,6 +4,8 @@ no-response-timeout: 60
 
 build:
     steps:
-        - jimhester/r-dependencies
-        - jimhester/r-check
-        - jimhester/r-coverage
+      - install-packages:
+          packages: mdbtools
+      - jimhester/r-dependencies
+      - jimhester/r-check
+      - jimhester/r-coverage
