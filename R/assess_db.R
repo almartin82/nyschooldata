@@ -1,6 +1,7 @@
 #' Read in the raw assessment database from the NYSED website
 #'
-#' @param end_year
+#' @param end_year 4 digit integer representing the end of the desired school
+#' year.  eg, 2014-15 is 2015.
 #'
 #' @return data frame with assessment results, by school
 #' @export
