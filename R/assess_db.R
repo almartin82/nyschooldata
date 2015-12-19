@@ -16,16 +16,7 @@ get_raw_assess_db <- function(end_year) {
   assess_url <- assess_urls[[paste0('yr', end_year)]]
   local_files <- zip_to_temp(assess_url)
 
-  #identify access file
-  mask <- grepl('.mdb', local_files$files$Name, fixed = TRUE)
-  mdb_file <- local_files$files[mask, ]$Name
-  mdb_file <- file.path(local_files$dir, mdb_file)
-
-  #file names have reserved characters that mdbtools can't handle.  rename.
-  file.rename(mdb_file, file.path(local_files$dir, 'assess_data.mdb'))
-
-  #process access database
-  assess <- Hmisc::mdb.get(file = file.path(local_files$dir, 'assess_data.mdb'))
+  assess <- extract_mdb(local_files)
 
   #2014 data file included both the 2013 data and the 2014 data. process.
   if (end_year == 2013) {
