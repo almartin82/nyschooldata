@@ -26,3 +26,21 @@ get_raw_rc_db <- function(end_year) {
 
   rc
 }
+
+
+#' Reads in all the raw report card databases
+#'
+#' @return list of report card db lists
+#' @export
+
+get_all_raw_rc <- function() {
+
+  years <- c(2006:2015)
+  raw_rc <- list()
+  for(i in seq_along(years)) {
+    print(years[i])
+    raw_rc[[i]] <- get_raw_rc_db(years[i])
+  }
+
+  raw_rc
+}

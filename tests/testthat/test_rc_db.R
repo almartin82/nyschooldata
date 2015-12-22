@@ -33,3 +33,10 @@ test_that("get_raw_rc_db correctly reads 2010 file", {
       "Demographic Factors", "High School Completers")
   )
 })
+
+test_that("get_raw_rc_db can download multiple years", {
+
+  rc01 <- get_raw_rc_db(2015)
+  rc02 <- get_raw_rc_db(2014)
+
+})
