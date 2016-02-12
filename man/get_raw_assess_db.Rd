@@ -7,7 +7,8 @@
 get_raw_assess_db(end_year)
 }
 \arguments{
-\item{end_year}{}
+\item{end_year}{4 digit integer representing the end of the desired school
+year.  eg, 2014-15 is 2015.}
 }
 \value{
 data frame with assessment results, by school
