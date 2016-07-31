@@ -9,6 +9,7 @@
 get_raw_assess_db <- function(end_year) {
   #build url
   assess_urls <- list(
+    'yr2016' = 'http://data.nysed.gov/files/assessment/15-16/3-8-2015-16.zip',
     'yr2015' = 'http://data.nysed.gov/files/assessment/14-15/3-8-2014-15.zip',
     'yr2014' = 'http://data.nysed.gov/files/assessment/13-14/3-8-2013-14.zip',
     'yr2013' = 'http://data.nysed.gov/files/assessment/13-14/3-8-2013-14.zip'

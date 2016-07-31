@@ -18,3 +18,9 @@ test_that("get_raw_assess_db correctly reads 2013 file", {
 
   expect_equal(nrow(ex), 435244)
 })
+
+test_that("get_raw_assess_db correctly reads 2016 file", {
+  ex <- get_raw_assess_db(2016)
+
+  expect_equal(nrow(ex), 434149)
+})

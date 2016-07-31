@@ -1,3 +1,6 @@
+# nyschooldata 0.0.4
+* added 2016 assessment database
+
 # nyschooldata 0.0.3
 * refactored unzip/download code into separate functions in `util.R`, with tests
 * removed `downloader` dependency
