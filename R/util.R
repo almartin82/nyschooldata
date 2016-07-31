@@ -41,13 +41,13 @@ extract_mdb <- function(file_list) {
 
   cat(tname)
   #process access database and return
-  connect_string <<- paste0(
-    "Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=",
-    gsub('\\', '/', tname, fixed = TRUE)
-  )
-  cat(connect_string)
-  out <- RODBC::odbcDriverConnect(connect_string)
+#   connect_string <<- paste0(
+#     "Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=",
+#     gsub('\\', '/', tname, fixed = TRUE)
+#   )
+#   cat(connect_string)
+#   out <- RODBC::odbcDriverConnect(connect_string)
 
-  #out <- Hmisc::mdb.get(tname)
+  out <- Hmisc::mdb.get(tname)
   out
 }

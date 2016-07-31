@@ -23,7 +23,7 @@ get_raw_assess_db <- function(end_year) {
     out <- assess$`3-8_ELA_AND_MATH_REPORT_FOR_RELEASE_2013`
   } else if (end_year == 2014) {
     out <- assess$`3-8_ELA_AND_MATH_REPORT_FOR_RELEASE_2014`
-  } else if (end_year == 2015) {
+  } else if (end_year >= 2015) {
     out <- assess
   }
 
