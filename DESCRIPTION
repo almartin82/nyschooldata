@@ -1,7 +1,7 @@
 Package: nyschooldata
 Type: Package
 Title: A Simple, Consistent Interface For Accessing NYSED School Data In R
-Version: 0.0.4
+Version: 0.0.5
 Date: 2015-12-17
 Authors@R: person("Andrew", "Martin", role = c("aut","cre"), email = "almartin@gmail.com")
 Description: R functions to import NY school data
@@ -15,9 +15,14 @@ Depends:
     dplyr,
     Hmisc,
     httr,
+    janitor,
+    lubridate,
+    purrr,
     R(>= 2.10.0),
-    RODBC
+    RODBC,
+    tidyr
 Suggests:
     knitr,
     testthat
-RoxygenNote: 5.0.0
+Remotes: sfirke/janitor
+RoxygenNote: 5.0.1

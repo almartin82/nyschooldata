@@ -48,6 +48,8 @@ extract_mdb <- function(file_list) {
 #   cat(connect_string)
 #   out <- RODBC::odbcDriverConnect(connect_string)
 
-  out <- Hmisc::mdb.get(tname)
+  out <- Hmisc::mdb.get(
+    tname, stringsAsFactors = FALSE
+  )
   out
 }

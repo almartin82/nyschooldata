@@ -1,3 +1,6 @@
+# nyschooldata 0.0.5
+* `clean_assess_db` and `fetch_assess_db`
+
 # nyschooldata 0.0.4
 * added 2016 assessment database
 

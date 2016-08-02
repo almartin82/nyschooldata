@@ -29,3 +29,96 @@ get_raw_assess_db <- function(end_year) {
 
   return(out)
 }
+
+
+#' Clean an assessment database file
+#'
+#' @param df data.frame (output of `get_raw_assess_db`)
+#' @param end_year testing year
+#' @param suppressed_as_NA should records supressed for small n
+#' (recorded as '-' in the raw file) be converted to NA?  default is TRUE
+#'
+#' @return tbl_df
+#' @export
+
+clean_assess_db <- function(df, end_year, suppressed_as_NA = TRUE) {
+
+  df <- janitor::clean_names(df)
+
+  #bad names on 2016 file
+  if (end_year == 2016) {
+    df <- df %>%
+      dplyr::rename(
+        school_year = sy_end_date
+      )
+  }
+
+  #http://stackoverflow.com/a/24070958/561698
+  clear_labels <- function(x) {
+    if (is.list(x)) {
+      for(i in 1 : length(x)) class(x[[i]]) <- setdiff(class(x[[i]]), 'labelled')
+      for(i in 1 : length(x)) attr(x[[i]],"label") <- NULL
+    }
+    else {
+      class(x) <- setdiff(class(x), "labelled")
+      attr(x, "label") <- NULL
+    }
+    return(x)
+  }
+
+  df <- clear_labels(df)
+
+  #suppressed to NA?
+  if (suppressed_as_NA) {
+    contains_suppression_mark <- function(vector) '-' %in% vector
+    dash_to_na <- function(x) ifelse(x == '-', NA, x)
+
+    df <- df %>%
+      purrr::dmap_if(contains_suppression_mark, dash_to_na)
+
+    #make previously suppressed cols numeric
+    cols_to_fix <- c(
+      "total_tested", "l1_count", "l1_pct", "l2_count", "l2_pct",
+      "l3_count", "l3_pct", "l4_count", "l4_pct", "l2_l4_pct",
+      "l3_l4_pct", "mean_scale_score", "sum_of_scale_score"
+    )
+    df <- df %>% dplyr::mutate_at(cols_to_fix, as.numeric)
+
+  } else {
+    stop('no other method for handling NAs currently implemented')
+  }
+
+  #break out columns from combined data
+  df <- df %>%
+    dplyr::mutate(
+      school_year = lubridate::mdy(school_year),
+      end_year = lubridate::year(school_year),
+      start_year = end_year - 1
+    ) %>%
+    tidyr::separate(
+      col = item_desc,
+      into = c('discard', 'test_grade', 'test_subject'),
+      sep = ' ',
+      remove = FALSE,
+      convert = TRUE
+    ) %>%
+    dplyr::select(-discard)
+
+  df
+}
+
+
+#' fetch NY State assessment db
+#'
+#' @description wrapper around get_raw_assess_db and clean_assess_db
+#' @param end_year
+#'
+#' @return clean data frame with assessment data
+#' @export
+
+fetch_assess_db <- function(end_year) {
+  raw <- get_raw_assess_db(end_year)
+  clean <- clean_assess_db(raw, end_year)
+
+  clean
+}
