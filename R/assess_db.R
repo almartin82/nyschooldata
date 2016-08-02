@@ -80,7 +80,7 @@ clean_assess_db <- function(df, end_year, suppressed_as_NA = TRUE) {
     cols_to_fix <- c(
       "total_tested", "l1_count", "l1_pct", "l2_count", "l2_pct",
       "l3_count", "l3_pct", "l4_count", "l4_pct", "l2_l4_pct",
-      "l3_l4_pct", "mean_scale_score", "sum_of_scale_score"
+      "l3_l4_pct", "mean_scale_score"
     )
     df <- df %>% dplyr::mutate_at(cols_to_fix, as.numeric)
 
@@ -103,6 +103,10 @@ clean_assess_db <- function(df, end_year, suppressed_as_NA = TRUE) {
       convert = TRUE
     ) %>%
     dplyr::select(-discard)
+
+  if (end_year == 2015) {
+    df <- df %>% dplyr::select(-sum_of_scale_score)
+  }
 
   df
 }
