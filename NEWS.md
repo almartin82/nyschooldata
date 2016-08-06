@@ -1,3 +1,6 @@
+# nyschooldata 0.0.6
+* `assess_growth`
+
 # nyschooldata 0.0.5
 * `clean_assess_db` and `fetch_assess_db`
 
