@@ -1,0 +1,88 @@
+---
+title: "Data Quality Problems (and Solutions)"
+author: "Andrew Martin"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, error = FALSE}
+knitr::opts_chunk$set(collapse = T)
+library(nyschooldata)
+```
+
+Overall, [data.nysed.gov](http://data.nysed.gov/) does a lot of things right, and I appreciate the general spirit of data accessibility that is happening there.
+
+There are some issues that come up when using the released assessment tables.  This vignette documents what I've bumped into, how I've problem solved, and what might be done.
+
+## Assessment 
+
+Here's the top of the Assessment database:
+
+```{r}
+ex <- get_raw_assess_db(2016)
+```
+
+```{r}
+
+head(ex) %>% print.AsIs()
+
+```
+
+And here are ten random rows:
+```{r}
+
+dirty_random <- ex %>% dplyr::slice(
+  runif(10, min = 1, max = ex %>% nrow()) %>% round(0)
+) 
+
+dirty_random %>% print.AsIs()
+
+summary(dirty_random)
+```
+
+A couple of things I notice:
+
+- none of the statewide aggregates have any sort of numeric identifier.  That means that matching year over year would depend on that `name` string - which is always unreliable
+
+- districts are mixed with schools, with no apparent field that tags the level (School, District, County or Statewide Aggregation)
+
+- `L1.PCT`, `L2.PCT` etc all have percent symbols, which means that they won't read cleanly into R.
+
+- `TOTAL.TESTED`, `L1.COUNT`, `L2.COUNT`, are character, not numeric (because of supression codes.)
+
+- test grade level isn't a field unto itself - it needs to be text-processed out of the `ITEM.DESC` field.
+
+- there isn't a unique key/identifier per school / subject / subgroup 
+
+- there are all kinds of extra classes thrown onto this data.frame - an unfortunate side effect of `Hmiscs` `mdb.get` function, but more fundamentally a reflection of the fact that Access databases simply aren't a great way to distribute data.
+
+Odds and Ends:
+
+- the 2016 Assessment database has inconsistent headers.  Instead of using `school_year`, it uses `sy_end_date`.
+
+- the 2015 Assessment database has inconsistent variables.  It includes a `SUM_OF_SCALE_SCORE` field.
+
+Here's the output of `clean_assess_db` from this package (`fetch_assess_db` is a wrapper around that function):
+```{r}
+
+ex2 <- fetch_assess_db(2016)
+  
+```
+
+
+And here are ten random rows:
+```{r}
+
+clean_random <- ex2 %>% dplyr::slice(
+  runif(10, min = 1, max = ex2 %>% nrow()) %>% round(0)
+) 
+
+clean_random %>% print.AsIs()
+
+```
+
+The cleaned data frame

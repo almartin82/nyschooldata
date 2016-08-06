@@ -23,6 +23,7 @@ Depends:
     tidyr
 Suggests:
     knitr,
-    testthat
+    testthat,
+    rmarkdown
 Remotes: sfirke/janitor
 RoxygenNote: 5.0.1
