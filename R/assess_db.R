@@ -82,7 +82,12 @@ clean_assess_db <- function(df, end_year, suppressed_as_NA = TRUE) {
       "l3_count", "l3_pct", "l4_count", "l4_pct", "l2_l4_pct",
       "l3_l4_pct", "mean_scale_score"
     )
-    df <- df %>% dplyr::mutate_at(cols_to_fix, as.numeric)
+
+    percent_and_numeric <- function(vector) {
+      vector <- gsub('%', '', vector, fixed = TRUE)
+      as.numeric(vector)
+    }
+    df <- df %>% dplyr::mutate_at(cols_to_fix, percent_and_numeric)
 
   } else {
     stop('no other method for handling NAs currently implemented')
