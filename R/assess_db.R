@@ -128,7 +128,7 @@ clean_assess_db <- function(df, test_year, suppressed_as_NA = TRUE) {
 #' fetch NY State assessment db
 #'
 #' @description wrapper around get_raw_assess_db and clean_assess_db
-#' @param test_year
+#' @inheritParams get_raw_assess_db
 #'
 #' @return clean data frame with assessment data
 #' @export
