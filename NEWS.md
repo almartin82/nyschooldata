@@ -1,5 +1,8 @@
-# nyschooldata 0.0.7
+# nyschooldata 0.1.1
 * bedscode processing
+
+# nyschooldata 0.1.0
+* `cohort_growth`
 
 # nyschooldata 0.0.6
 * `assess_growth`

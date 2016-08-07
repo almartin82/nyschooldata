@@ -8,8 +8,17 @@ a simple interface for accessing [NYSED data](https://data.nysed.gov/index.php) 
 nyschooldata is not on CRAN.  Install the development version from GitHub:
 
 ```{r, eval = FALSE}
-# install.packages("devtools")
-install_github("almartin82/nyschooldata")
+install.packages("devtools")
+library(devtools)
+devtools::install_github("almartin82/nyschooldata")
+```
+
+nyschooldata depends on some packages that are also only on GitHub.  If RStudio doesn't install these packages
+
+```{r, eval = FALSE}
+library(devtools)
+devtools::install_github("sfirke/janitor")
+devtools::install_github("almartin82/NYSEDtool")
 ```
 
 ## Contributing

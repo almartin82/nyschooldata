@@ -2,6 +2,7 @@
 
 export(assess_growth)
 export(clean_assess_db)
+export(cohort_growth)
 export(fetch_assess_db)
 export(get_all_raw_rc)
 export(get_raw_assess_db)
