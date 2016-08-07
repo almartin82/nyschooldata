@@ -119,7 +119,7 @@ cohort_growth <- function(clean_assess_start, clean_assess_end) {
   end_recorded = is.na(scaffold$end_total_tested)
 
   scaffold$complete_obsv <- (start_complete + end_complete) == 2
-  scaffold$complete_recorded_obsv <- (start_recorded + end_recorded) == 2
+  scaffold$reported_obsv <- (start_recorded + end_recorded) == 2
 
   #calculate growth
   scaffold <- scaffold %>%
