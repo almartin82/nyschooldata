@@ -37,11 +37,14 @@ get_raw_assess_db <- function(test_year) {
 #' @param test_year testing year
 #' @param suppressed_as_NA should records supressed for small n
 #' (recorded as '-' in the raw file) be converted to NA?  default is TRUE
+#' @param cohort_kind should we name cohorts by their college entry
+#' or college graduation year?  default is college_entry.
 #'
 #' @return tbl_df
 #' @export
 
-clean_assess_db <- function(df, test_year, suppressed_as_NA = TRUE) {
+clean_assess_db <- function(
+  df, test_year, suppressed_as_NA = TRUE, cohort_kind = 'college_entry') {
 
   df <- janitor::clean_names(df)
 
@@ -93,6 +96,13 @@ clean_assess_db <- function(df, test_year, suppressed_as_NA = TRUE) {
     stop('no other method for handling NAs currently implemented')
   }
 
+  #make additional perf level counts
+  df <- df %>%
+    dplyr::mutate(
+      l2_l4_count = l2_count + l3_count + l4_count,
+      l3_l4_count = l3_count + l4_count
+    )
+
   #break out columns from combined data
   df <- df %>%
     dplyr::mutate(
@@ -109,6 +119,14 @@ clean_assess_db <- function(df, test_year, suppressed_as_NA = TRUE) {
     ) %>%
     dplyr::select(-discard)
 
+  #calculate cohort
+  df <- df %>%
+    dplyr::mutate(
+      cohort_numeric = NYSEDtools::calculate_cohort(
+        test_grade, start_year, cohort_kind
+      )
+    )
+
   #make unique_id
   df <- df %>%
     dplyr::mutate(
@@ -117,12 +135,6 @@ clean_assess_db <- function(df, test_year, suppressed_as_NA = TRUE) {
       )
     )
 
-  #make additional perf level counts
-  df <- df %>%
-    dplyr::mutate(
-      l2_l4_count = l2_count + l3_count + l4_count,
-      l3_l4_count = l3_count + l4_count
-    )
 
   if (test_year == 2015) {
     df <- df %>% dplyr::select(-sum_of_scale_score)

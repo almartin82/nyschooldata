@@ -20,10 +20,13 @@ Imports:
     httr,
     janitor,
     lubridate,
+    NYSEDtools,
     tidyr
 Suggests:
     knitr,
     testthat,
     rmarkdown
-Remotes: sfirke/janitor
+Remotes:
+    almartin82/NYSEDtools,
+    sfirke/janitor
 RoxygenNote: 5.0.1
