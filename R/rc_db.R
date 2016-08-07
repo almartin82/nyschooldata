@@ -9,9 +9,9 @@
 get_raw_rc_db <- function(end_year) {
   #build url
   rc_urls <- list(
-    'yr2015' = 'http://data.nysed.gov/files/reportcards/SRC2015.zip',
-    'yr2014' = 'http://data.nysed.gov/files/reportcards/SRC2014.zip',
-    'yr2013' = 'http://data.nysed.gov/files/reportcards/SRC2013.zip',
+    'yr2015' = 'http://data.nysed.gov/files/reportcards/14-15/SRC2015.zip',
+    'yr2014' = 'http://data.nysed.gov/files/reportcards/13-14/SRC2014.zip',
+    'yr2013' = 'http://data.nysed.gov/files/reportcards/12-13/SRC2013.zip',
     'yr2012' = 'http://data.nysed.gov/files/reportcards/archive/2011-12/SRC2012.zip',
     'yr2011' = 'http://data.nysed.gov/files/reportcards/archive/2010-11/SRC2011.zip',
     'yr2010' = 'http://data.nysed.gov/files/reportcards/archive/2009-10/SRC2010.zip',
