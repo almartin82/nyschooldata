@@ -143,6 +143,7 @@ clean_assess_db <- function(df, test_year, suppressed_as_NA = TRUE) {
 fetch_assess_db <- function(test_year) {
   raw <- get_raw_assess_db(test_year)
   clean <- clean_assess_db(raw, test_year)
+  beds <- clean %>% interpret_bedscode()
 
-  clean
+  beds
 }

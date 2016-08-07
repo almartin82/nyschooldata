@@ -1,3 +1,6 @@
+# nyschooldata 0.0.7
+* bedscode processing
+
 # nyschooldata 0.0.6
 * `assess_growth`
 
