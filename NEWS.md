@@ -1,3 +1,6 @@
+# nyschooldata 0.1.0
+* `cohort_growth`
+
 # nyschooldata 0.0.6
 * `assess_growth`
 
