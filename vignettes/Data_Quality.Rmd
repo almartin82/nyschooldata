@@ -14,7 +14,7 @@ knitr::opts_chunk$set(collapse = T)
 library(nyschooldata)
 ```
 
-Overall, [data.nysed.gov](http://data.nysed.gov/) does a lot of things right, and I appreciate the general spirit of data accessibility that is happening there.
+Overall, [data.nysed.gov](http://data.nysed.gov/) does a lot of things right, and I very much appreciate the general spirit of data accessibility that is happening there.
 
 There are some issues that come up when using the released assessment tables.  This vignette documents what I've bumped into, how I've problem solved, and what might be done.
 
@@ -35,9 +35,10 @@ head(ex) %>% print.AsIs()
 And here are ten random rows:
 ```{r}
 
-dirty_random <- ex %>% dplyr::slice(
-  runif(10, min = 1, max = ex %>% nrow()) %>% round(0)
-) 
+rand_slices <- runif(10, min = 1, max = ex %>% nrow()) %>% round(0)
+
+dirty_random <- ex %>% 
+  dplyr::slice(rand_slices) 
 
 dirty_random %>% print.AsIs()
 
@@ -45,8 +46,6 @@ summary(dirty_random)
 ```
 
 A couple of things I notice:
-
-- none of the statewide aggregates have any sort of numeric identifier.  That means that matching year over year would depend on that `name` string - which is always unreliable
 
 - districts are mixed with schools, with no apparent field that tags the level (School, District, County or Statewide Aggregation)
 
@@ -66,23 +65,20 @@ Odds and Ends:
 
 - the 2015 Assessment database has inconsistent variables.  It includes a `SUM_OF_SCALE_SCORE` field.
 
-Here's the output of `clean_assess_db` from this package (`fetch_assess_db` is a wrapper around that function):
+`clean_assess_db` solves these problems.  Here's the output of that function:
+ (`fetch_assess_db` is a wrapper around that function):
 ```{r}
 
 ex2 <- fetch_assess_db(2016)
   
 ```
 
-
 And here are ten random rows:
 ```{r}
 
-clean_random <- ex2 %>% dplyr::slice(
-  runif(10, min = 1, max = ex2 %>% nrow()) %>% round(0)
-) 
+clean_random <- ex2 %>% 
+  dplyr::slice(rand_slices) 
 
 clean_random %>% print.AsIs()
 
 ```
-
-The cleaned data frame
