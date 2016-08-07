@@ -4,7 +4,7 @@ Title: A Simple, Consistent Interface For Accessing NYSED School Data In R
 Version: 0.0.6
 Date: 2015-12-17
 Authors@R: person("Andrew", "Martin", role = c("aut","cre"), email = "almartin@gmail.com")
-Description: R functions to import NY school data
+Description: R functions to import, clean and analyze NY school data.
 License: GPL-3 | file LICENSE
 SystemRequirements: mdb-tools
 LazyData: true
@@ -12,14 +12,14 @@ VignetteBuilder: knitr
 Depends:
     ensurer,
     magrittr,
+    purrr,
+    R(>= 2.10.0)
+Imports:
     dplyr,
     Hmisc,
     httr,
     janitor,
     lubridate,
-    purrr,
-    R(>= 2.10.0),
-    RODBC,
     tidyr
 Suggests:
     knitr,
