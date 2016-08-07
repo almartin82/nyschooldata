@@ -117,6 +117,13 @@ clean_assess_db <- function(df, test_year, suppressed_as_NA = TRUE) {
       )
     )
 
+  #make additional perf level counts
+  df <- df %>%
+    dplyr::mutate(
+      l2_l4_count = l2_count + l3_count + l4_count,
+      l3_l4_count = l3_count + l4_count
+    )
+
   if (test_year == 2015) {
     df <- df %>% dplyr::select(-sum_of_scale_score)
   }
