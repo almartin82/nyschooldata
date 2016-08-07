@@ -10,10 +10,14 @@ utils::globalVariables(
   "name",
   "one_of",
   "school_year",
+  "start_grade",
   "start_test_year",
+  "start_year",
   "subgroup_code",
   "sum_of_scale_score",
   "sy_end_date",
+  "test_grade",
+  "test_subject",
   "unique_id"
   )
 )

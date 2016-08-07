@@ -4,7 +4,8 @@
 \alias{clean_assess_db}
 \title{Clean an assessment database file}
 \usage{
-clean_assess_db(df, test_year, suppressed_as_NA = TRUE)
+clean_assess_db(df, test_year, suppressed_as_NA = TRUE,
+  cohort_kind = "college_entry")
 }
 \arguments{
 \item{df}{data.frame (output of `get_raw_assess_db`)}
@@ -13,6 +14,9 @@ clean_assess_db(df, test_year, suppressed_as_NA = TRUE)
 
 \item{suppressed_as_NA}{should records supressed for small n
 (recorded as '-' in the raw file) be converted to NA?  default is TRUE}
+
+\item{cohort_kind}{should we name cohorts by their college entry
+or college graduation year?  default is college_entry.}
 }
 \value{
 tbl_df
