@@ -46,7 +46,7 @@ assess_growth <- function(clean_assess_start, clean_assess_end) {
     )
 
   #if there are any unidentified rows, repeat the process with assess_start
-  if (sum(is.na(scaffold$name)) < 0) {
+  if (sum(is.na(scaffold$name)) > 0) {
     identified <- scaffold %>% dplyr::filter(!is.na(name))
     unidentified <- scaffold %>% dplyr::filter(is.na(name)) %>%
       dplyr::select(unique_id, start_test_year, end_test_year)
@@ -89,6 +89,8 @@ assess_growth <- function(clean_assess_start, clean_assess_end) {
 
   mask <- names(scaffold) %in% acad_cols
   names(scaffold)[mask] <- paste0('end_', names(scaffold)[mask])
+
+
 
   #calculate growth
   scaffold <- scaffold %>%
