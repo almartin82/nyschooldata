@@ -12,6 +12,10 @@
 
 assess_growth <- function(clean_assess_start, clean_assess_end) {
 
+  #tag the start and end dataframe with a simple record exists logical
+  clean_assess_start$valid_record <- TRUE
+  clean_assess_end$valid_record <- FALSE
+
   #get unique school/districts
   start_distinct <- clean_assess_start %>%
     dplyr::select(unique_id) %>%
@@ -62,7 +66,7 @@ assess_growth <- function(clean_assess_start, clean_assess_end) {
 
   #now get start academic data
   id_cols <- c("unique_id", "test_year")
-  acad_cols <- c("total_tested",
+  acad_cols <- c("valid_record", "total_tested",
       "l1_count", "l1_pct", "l2_count", "l2_pct",
       "l3_count", "l3_pct", "l4_count", "l4_pct",
       "l2_l4_count", "l2_l4_pct",
@@ -90,7 +94,15 @@ assess_growth <- function(clean_assess_start, clean_assess_end) {
   mask <- names(scaffold) %in% acad_cols
   names(scaffold)[mask] <- paste0('end_', names(scaffold)[mask])
 
+  #complete obsv?
+  start_complete = is.na(scaffold$start_valid_record)
+  end_complete = is.na(scaffold$end_valid_record)
 
+  start_recorded = is.na(scaffold$start_total_tested)
+  end_recorded = is.na(scaffold$end_total_tested)
+
+  scaffold$complete_obsv <- (start_complete + end_complete) == 2
+  scaffold$complete_recorded_obsv <- (start_recorded + end_recorded) == 2
 
   #calculate growth
   scaffold <- scaffold %>%
