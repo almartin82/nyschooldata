@@ -4,10 +4,10 @@
 \alias{fetch_assess_db}
 \title{fetch NY State assessment db}
 \usage{
-fetch_assess_db(end_year)
+fetch_assess_db(test_year)
 }
 \arguments{
-\item{end_year}{}
+\item{test_year}{}
 }
 \value{
 clean data frame with assessment data

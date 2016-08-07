@@ -4,10 +4,10 @@
 \alias{get_raw_assess_db}
 \title{Read in the raw assessment database from the NYSED website}
 \usage{
-get_raw_assess_db(end_year)
+get_raw_assess_db(test_year)
 }
 \arguments{
-\item{end_year}{4 digit integer representing the end of the desired school
+\item{test_year}{4 digit integer representing the end of the desired school
 year.  eg, 2014-15 is 2015.}
 }
 \value{

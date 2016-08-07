@@ -1,12 +1,12 @@
 #' Read in the raw assessment database from the NYSED website
 #'
-#' @param end_year 4 digit integer representing the end of the desired school
+#' @param test_year 4 digit integer representing the end of the desired school
 #' year.  eg, 2014-15 is 2015.
 #'
 #' @return data frame with assessment results, by school
 #' @export
 
-get_raw_assess_db <- function(end_year) {
+get_raw_assess_db <- function(test_year) {
   #build url
   assess_urls <- list(
     'yr2016' = 'http://data.nysed.gov/files/assessment/15-16/3-8-2015-16.zip',
@@ -14,16 +14,16 @@ get_raw_assess_db <- function(end_year) {
     'yr2014' = 'http://data.nysed.gov/files/assessment/13-14/3-8-2013-14.zip',
     'yr2013' = 'http://data.nysed.gov/files/assessment/13-14/3-8-2013-14.zip'
   )
-  assess_url <- assess_urls[[paste0('yr', end_year)]]
+  assess_url <- assess_urls[[paste0('yr', test_year)]]
   local_files <- zip_to_temp(assess_url)
   assess <- extract_mdb(local_files)
 
   #2014 data file included both the 2013 data and the 2014 data. process.
-  if (end_year == 2013) {
+  if (test_year == 2013) {
     out <- assess$`3-8_ELA_AND_MATH_REPORT_FOR_RELEASE_2013`
-  } else if (end_year == 2014) {
+  } else if (test_year == 2014) {
     out <- assess$`3-8_ELA_AND_MATH_REPORT_FOR_RELEASE_2014`
-  } else if (end_year >= 2015) {
+  } else if (test_year >= 2015) {
     out <- assess
   }
 
@@ -34,19 +34,19 @@ get_raw_assess_db <- function(end_year) {
 #' Clean an assessment database file
 #'
 #' @param df data.frame (output of `get_raw_assess_db`)
-#' @param end_year testing year
+#' @param test_year testing year
 #' @param suppressed_as_NA should records supressed for small n
 #' (recorded as '-' in the raw file) be converted to NA?  default is TRUE
 #'
 #' @return tbl_df
 #' @export
 
-clean_assess_db <- function(df, end_year, suppressed_as_NA = TRUE) {
+clean_assess_db <- function(df, test_year, suppressed_as_NA = TRUE) {
 
   df <- janitor::clean_names(df)
 
   #bad names on 2016 file
-  if (end_year == 2016) {
+  if (test_year == 2016) {
     df <- df %>%
       dplyr::rename(
         school_year = sy_end_date
@@ -97,8 +97,8 @@ clean_assess_db <- function(df, end_year, suppressed_as_NA = TRUE) {
   df <- df %>%
     dplyr::mutate(
       school_year = lubridate::mdy(school_year),
-      end_year = lubridate::year(school_year),
-      start_year = end_year - 1
+      test_year = lubridate::year(school_year),
+      start_year = test_year - 1
     ) %>%
     tidyr::separate(
       col = item_desc,
@@ -109,7 +109,15 @@ clean_assess_db <- function(df, end_year, suppressed_as_NA = TRUE) {
     ) %>%
     dplyr::select(-discard)
 
-  if (end_year == 2015) {
+  #make unique_id
+  df <- df %>%
+    dplyr::mutate(
+      unique_id = paste(
+        as.character(bedscode), item_desc, subgroup_code, sep = '_'
+      )
+    )
+
+  if (test_year == 2015) {
     df <- df %>% dplyr::select(-sum_of_scale_score)
   }
 
@@ -120,14 +128,14 @@ clean_assess_db <- function(df, end_year, suppressed_as_NA = TRUE) {
 #' fetch NY State assessment db
 #'
 #' @description wrapper around get_raw_assess_db and clean_assess_db
-#' @param end_year
+#' @param test_year
 #'
 #' @return clean data frame with assessment data
 #' @export
 
-fetch_assess_db <- function(end_year) {
-  raw <- get_raw_assess_db(end_year)
-  clean <- clean_assess_db(raw, end_year)
+fetch_assess_db <- function(test_year) {
+  raw <- get_raw_assess_db(test_year)
+  clean <- clean_assess_db(raw, test_year)
 
   clean
 }
