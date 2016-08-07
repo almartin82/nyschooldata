@@ -10,7 +10,7 @@ zip_to_temp <- function(url) {
   tname <- tempfile(pattern = "nyschooldata", tmpdir = tdir, fileext = ".zip")
   prev_timeout <- getOption('timeout')
   options(timeout = 900)
-  httr::GET(url = url, write_disk(tname))
+  httr::GET(url = url, httr::write_disk(tname))
   #download.file(url, destfile = tname, mode = "wb", quiet = TRUE)
   options(timeout = prev_timeout)
   utils::unzip(tname, exdir = tdir)

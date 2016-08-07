@@ -4,10 +4,11 @@
 \alias{fetch_assess_db}
 \title{fetch NY State assessment db}
 \usage{
-fetch_assess_db(end_year)
+fetch_assess_db(test_year)
 }
 \arguments{
-\item{end_year}{}
+\item{test_year}{4 digit integer representing the end of the desired school
+year.  eg, 2014-15 is 2015.}
 }
 \value{
 clean data frame with assessment data

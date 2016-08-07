@@ -9,16 +9,16 @@
 get_raw_rc_db <- function(end_year) {
   #build url
   rc_urls <- list(
-    'yr2015' = 'http://data.nysed.gov/files/reportcards/SRC2015.zip',
-    'yr2014' = 'http://data.nysed.gov/files/reportcards/SRC2014.zip',
-    'yr2013' = 'http://data.nysed.gov/files/reportcards/SRC2013.zip',
-    'yr2012' = 'http://reportcards.nysed.gov/zip/SRC2012.zip',
-    'yr2011' = 'http://reportcards.nysed.gov/zip/SRC2011.zip',
-    'yr2010' = 'http://reportcards.nysed.gov/zip/SRC2010.zip',
-    'yr2009' = 'http://reportcards.nysed.gov/zip/SRC2009.zip',
-    'yr2008' = 'http://reportcards.nysed.gov/zip/SRC2008.zip',
-    'yr2007' = 'http://reportcards.nysed.gov/zip/SRC2007.zip',
-    'yr2006' = 'http://reportcards.nysed.gov/zip/SRC2006.zip'
+    'yr2015' = 'http://data.nysed.gov/files/reportcards/14-15/SRC2015.zip',
+    'yr2014' = 'http://data.nysed.gov/files/reportcards/13-14/SRC2014.zip',
+    'yr2013' = 'http://data.nysed.gov/files/reportcards/12-13/SRC2013.zip',
+    'yr2012' = 'http://data.nysed.gov/files/reportcards/archive/2011-12/SRC2012.zip',
+    'yr2011' = 'http://data.nysed.gov/files/reportcards/archive/2010-11/SRC2011.zip',
+    'yr2010' = 'http://data.nysed.gov/files/reportcards/archive/2009-10/SRC2010.zip',
+    'yr2009' = 'http://data.nysed.gov/files/reportcards/archive/2008-09/SRC2009.zip',
+    'yr2008' = 'http://data.nysed.gov/files/reportcards/archive/2007-08/SRC2008.zip',
+    'yr2007' = 'http://data.nysed.gov/files/reportcards/archive/2006-07/SRC2007.zip',
+    'yr2006' = 'http://data.nysed.gov/files/reportcards/archive/2005-06/SRC2006.zip'
   )
   rc_url <- rc_urls[[paste0('yr', end_year)]]
   local_files <- zip_to_temp(rc_url)

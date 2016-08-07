@@ -1,0 +1,16 @@
+utils::globalVariables(
+  c("%>%",
+  "bedscode",
+  "discard",
+  "end_test_year",
+  "item_desc",
+  "name",
+  "one_of",
+  "school_year",
+  "start_test_year",
+  "subgroup_code",
+  "sum_of_scale_score",
+  "sy_end_date",
+  "unique_id"
+  )
+)
