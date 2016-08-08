@@ -1,3 +1,6 @@
+# nyschooldata 0.2.0
+* aggregation functions
+
 # nyschooldata 0.1.1
 * bedscode processing
 
