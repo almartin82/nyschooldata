@@ -1,6 +1,6 @@
 context('assess_growth')
 
-ex <- assess_growth(clean_assess_start, clean_assess_end)
+ex <- assess_growth(final_2015, final_2016)
 
 test_that('assess_growth returns data frame', {
   expect_is(ex, 'data.frame')
