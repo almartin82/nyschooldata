@@ -1,3 +1,6 @@
+# nyschooldata 0.2.1
+* fix for `assess_growth` with aggregated data
+
 # nyschooldata 0.2.0
 * aggregation functions
 

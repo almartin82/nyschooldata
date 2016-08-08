@@ -34,6 +34,9 @@ aggregate_grades <- function(df) {
       test_grade = NA,
       cohort_numeric = NA,
       unique_id = NA,
+      unique_id = paste(
+        bedscode, 'Gr 3-8 Aggregate', subgroup_code, sep = '_'
+      ),
       is_multigrade_aggregate = TRUE
     )
 
