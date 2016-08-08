@@ -202,7 +202,21 @@ fetch_and_aggregate_assess_db <- function(test_year, verbose = TRUE) {
   if (verbose) cat('Calculating school-level aggregates\n')
   grade_agg <- aggregate_grades(clean)
 
-  with_agg <- dplyr::bind_rows(clean, grade_agg)
+  out <- dplyr::bind_rows(clean, grade_agg)
+
+  out
+}
+
+
+#' Fetch, aggregate, calculate percentiles
+#'
+#' @inheritParams fetch_and_aggregate_assess_db
+#'
+#' @return data.frame
+#' @export
+
+fetch_aggregate_percentile_assess_db <- function(test_yar, verbose = TRUE) {
+  with_agg <- fetch_and_aggregate_assess_db(test_year, verbose)
 
   if (verbose) cat('Calculating proficiency and scale attainment %iles\n')
   out <- with_agg %>%
