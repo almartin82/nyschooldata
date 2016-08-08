@@ -5,7 +5,7 @@
 \title{Clean an assessment database file}
 \usage{
 clean_assess_db(df, test_year, suppressed_as_NA = TRUE,
-  cohort_kind = "college_entry")
+  cohort_kind = "college_entry", verbose = TRUE)
 }
 \arguments{
 \item{df}{data.frame (output of `get_raw_assess_db`)}
@@ -17,6 +17,8 @@ clean_assess_db(df, test_year, suppressed_as_NA = TRUE,
 
 \item{cohort_kind}{should we name cohorts by their college entry
 or college graduation year?  default is college_entry.}
+
+\item{verbose}{logical, print status updates to the console?}
 }
 \value{
 tbl_df

@@ -2,13 +2,15 @@
 % Please edit documentation in R/assess_db.R
 \name{fetch_assess_db}
 \alias{fetch_assess_db}
-\title{fetch NY State assessment db}
+\title{Fetch NY State assessment db}
 \usage{
-fetch_assess_db(test_year)
+fetch_assess_db(test_year, verbose = TRUE)
 }
 \arguments{
 \item{test_year}{4 digit integer representing the end of the desired school
 year.  eg, 2014-15 is 2015.}
+
+\item{verbose}{logical, print status updates to the console?}
 }
 \value{
 clean data frame with assessment data

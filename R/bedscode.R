@@ -1,4 +1,5 @@
 split_bedscode <- . %>%
+  dplyr::mutate(bedscode = as.character(bedscode)) %>%
   tidyr::separate(
     col = bedscode,
     into = c('location_county_code', 'location_city_code',
@@ -11,7 +12,8 @@ split_bedscode <- . %>%
 
 interpret_school_kind <- . %>%
   dplyr::mutate(
-    sch_kind_desc = ifelse(sch_kind_code == '01', 'City', NA),
+    sch_kind_desc = ifelse(sch_kind_code == '00', 'Aggregation (State, NRC, County)', NA),
+    sch_kind_desc = ifelse(sch_kind_code == '01', 'City', sch_kind_desc),
     sch_kind_desc = ifelse(sch_kind_code == '02', 'Union Free', sch_kind_desc),
     sch_kind_desc = ifelse(sch_kind_code == '03', 'Independent Union Free', sch_kind_desc),
     sch_kind_desc = ifelse(sch_kind_code == '04', 'Central', sch_kind_desc),
@@ -58,3 +60,6 @@ interpret_bedscode <- function(df) {
 
   df
 }
+
+
+

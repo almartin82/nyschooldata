@@ -59,6 +59,8 @@ A couple of things I notice:
 
 - there are all kinds of extra classes thrown onto this data.frame - an unfortunate side effect of `Hmiscs` `mdb.get` function, but more fundamentally a reflection of the fact that Access databases simply aren't a great way to distribute data.
 
+- for the county and NRC aggregates (eg bedscode == `130000000000`), `total_tested` is reported, but `mean_scale_score` is not.
+
 Odds and Ends:
 
 - the 2016 Assessment database has inconsistent headers.  Instead of using `school_year`, it uses `sy_end_date`.
