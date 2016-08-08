@@ -38,7 +38,10 @@ aggregate_grades <- function(df) {
         bedscode, 'Gr 3-8 Aggregate', subgroup_code, sep = '_'
       ),
       is_multigrade_aggregate = TRUE
-    )
+    ) %>%
+  dplyr::select(
+    -total_tested_meanscale, sum_of_mean_scale_score
+  )
 
   by_sch
 }
@@ -56,7 +59,7 @@ org_summary <- . %>%
     l4_count = sum(l4_count, na.rm = TRUE),
     l2_l4_count = sum(l2_l4_count, na.rm = TRUE),
     l3_l4_count = sum(l3_l4_count, na.rm = TRUE),
-    sum_of_mean_scale_score = sum(mean_scale_score)
+    sum_of_mean_scale_score = sum(mean_scale_score * total_tested)
   )
 
 
