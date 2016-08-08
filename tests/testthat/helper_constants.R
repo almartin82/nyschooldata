@@ -8,4 +8,4 @@ agg_2015 <- aggregate_grades(clean_2015)
 final_2015 <- dplyr::bind_rows(clean_2015, agg_2015)
 
 #2016 using the wrapper
-final_2016 <- fetch_and_aggregate_assess_db(2016, verbose = FALSE)
+final_2016 <- fetch_and_aggregate_assess_db(2016, verbose = TRUE)

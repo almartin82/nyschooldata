@@ -210,7 +210,7 @@ fetch_and_aggregate_assess_db <- function(test_year, verbose = TRUE) {
     dplyr::mutate(
       prof_attain_pctle = prof_attainment_percentile(
         percent_prof = l3_l4_pct,
-        comparison_df = with_agg,
+        comparison_df = .,
         school_logical = is_school,
         district_logical = is_district,
         multigrade_logical = is_multigrade_aggregate,
@@ -220,7 +220,7 @@ fetch_and_aggregate_assess_db <- function(test_year, verbose = TRUE) {
       ),
       scale_attain_pctle = scale_attainment_percentile(
         scale_score = mean_scale_score,
-        comparison_df = with_agg,
+        comparison_df = .,
         school_logical = is_school,
         district_logical = is_district,
         multigrade_logical = is_multigrade_aggregate,
