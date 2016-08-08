@@ -16,10 +16,12 @@ cohort_growth <- function(clean_assess_start, clean_assess_end) {
   basic_id_cols <- c("bedscode", "test_subject", "subgroup_code", "test_grade")
   #get unique school/districts
   start_distinct <- clean_assess_start %>%
+    dplyr::ungroup() %>%
     dplyr::select(dplyr::one_of(basic_id_cols)) %>%
     unique()
 
   end_distinct <- clean_assess_end %>%
+    dplyr::ungroup() %>%
     dplyr::select(dplyr::one_of(basic_id_cols)) %>%
     unique()
 
@@ -36,12 +38,15 @@ cohort_growth <- function(clean_assess_start, clean_assess_end) {
     "bedscode", "test_subject", "subgroup_code", "test_grade",
     "nrc_code", "nrc_desc",
     "county_code", "county_desc", "name",
-    "subgroup_name", "item_subject_area", "item_desc"
+    "subgroup_name", "item_subject_area", "item_desc",
+    "is_school", "is_district", "is_multigrade_aggregate"
   )
 
   scaffold <- scaffold %>%
     dplyr::left_join(
-      y = clean_assess_end %>% dplyr::select(dplyr::one_of(id_cols)),
+      y = clean_assess_end %>%
+        dplyr::ungroup() %>%
+        dplyr::select(dplyr::one_of(id_cols)),
       by = c(
         'bedscode' = 'bedscode',
         'test_subject' = 'test_subject',
@@ -53,12 +58,16 @@ cohort_growth <- function(clean_assess_start, clean_assess_end) {
   #if there are any unidentified rows, repeat the process with assess_start
   if (sum(is.na(scaffold$name)) > 0) {
     identified <- scaffold %>% dplyr::filter(!is.na(name))
-    unidentified <- scaffold %>% dplyr::filter(is.na(name)) %>%
+    unidentified <- scaffold %>%
+      dplyr::filter(is.na(name)) %>%
+      dplyr::ungroup() %>%
       dplyr::select(bedscode, test_subject, subgroup_code, start_grade)
 
     unidentified <- unidentified %>%
       dplyr::left_join(
-        y = clean_assess_start %>% dplyr::select(dplyr::one_of(id_cols)),
+        y = clean_assess_start %>%
+          dplyr::ungroup() %>%
+          dplyr::select(dplyr::one_of(id_cols)),
         by = c(
           'bedscode' = 'bedscode',
           'test_subject' = 'test_subject',
@@ -78,13 +87,15 @@ cohort_growth <- function(clean_assess_start, clean_assess_end) {
                  "l3_count", "l3_pct", "l4_count", "l4_pct",
                  "l2_l4_count", "l2_l4_pct",
                  "l3_l4_count", "l3_l4_pct",
-                 "mean_scale_score")
+                 "mean_scale_score", "prof_percentile", "scale_percentile")
   acad_join <- c(basic_id_cols, acad_cols)
 
   #join and rename start
   scaffold <- scaffold %>%
     dplyr::left_join(
-      y = clean_assess_start %>% dplyr::select(dplyr::one_of(acad_join)),
+      y = clean_assess_start %>%
+        dplyr::ungroup() %>%
+        dplyr::select(dplyr::one_of(acad_join)),
       by = c(
         'bedscode' = 'bedscode',
         'test_subject' = 'test_subject',
@@ -99,7 +110,9 @@ cohort_growth <- function(clean_assess_start, clean_assess_end) {
   #join and rename end
   scaffold <- scaffold %>%
     dplyr::left_join(
-      y = clean_assess_start %>% dplyr::select(dplyr::one_of(acad_join)),
+      y = clean_assess_start %>%
+        dplyr::ungroup() %>%
+        dplyr::select(dplyr::one_of(acad_join)),
       by = c(
         'bedscode' = 'bedscode',
         'test_subject' = 'test_subject',
