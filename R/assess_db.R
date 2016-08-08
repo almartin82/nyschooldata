@@ -2,11 +2,12 @@
 #'
 #' @param test_year 4 digit integer representing the end of the desired school
 #' year.  eg, 2014-15 is 2015.
+#' @param verbose logical, print status updates to the console?
 #'
 #' @return data frame with assessment results, by school
 #' @export
 
-get_raw_assess_db <- function(test_year) {
+get_raw_assess_db <- function(test_year, verbose = TRUE) {
   #build url
   assess_urls <- list(
     'yr2016' = 'http://data.nysed.gov/files/assessment/15-16/3-8-2015-16.zip',
@@ -15,7 +16,9 @@ get_raw_assess_db <- function(test_year) {
     'yr2013' = 'http://data.nysed.gov/files/assessment/13-14/3-8-2013-14.zip'
   )
   assess_url <- assess_urls[[paste0('yr', test_year)]]
+  if (verbose) cat('Downloading assessment file from data.nysed.gov\n')
   local_files <- zip_to_temp(assess_url)
+  if (verbose) cat('Reading assessment database and converting to data.frame\n')
   assess <- extract_mdb(local_files)
 
   #2014 data file included both the 2013 data and the 2014 data. process.
@@ -39,13 +42,20 @@ get_raw_assess_db <- function(test_year) {
 #' (recorded as '-' in the raw file) be converted to NA?  default is TRUE
 #' @param cohort_kind should we name cohorts by their college entry
 #' or college graduation year?  default is college_entry.
+#' @param verbose logical, print status updates to the console?
 #'
 #' @return tbl_df
 #' @export
 
 clean_assess_db <- function(
-  df, test_year, suppressed_as_NA = TRUE, cohort_kind = 'college_entry') {
+  df,
+  test_year,
+  suppressed_as_NA = TRUE,
+  cohort_kind = 'college_entry',
+  verbose = TRUE
+) {
 
+  if (verbose) cat('Cleaning names of assessment data.frame\n')
   df <- janitor::clean_names(df)
 
   #bad names on 2016 file
@@ -73,6 +83,7 @@ clean_assess_db <- function(
 
   #suppressed to NA?
   if (suppressed_as_NA) {
+    if (verbose) cat('Converting suppression flags to NA\n')
     contains_suppression_mark <- function(vector) '-' %in% vector
     dash_to_na <- function(x) ifelse(x == '-', NA, x)
 
@@ -90,6 +101,7 @@ clean_assess_db <- function(
       vector <- gsub('%', '', vector, fixed = TRUE)
       as.numeric(vector)
     }
+    if (verbose) cat('Correcting data type for numeric columns\n')
     df <- df %>% dplyr::mutate_at(cols_to_fix, percent_and_numeric)
 
   } else {
@@ -97,6 +109,8 @@ clean_assess_db <- function(
   }
 
   #make additional perf level counts
+  if (verbose) cat('Creating additional detailed perf bin counts\n')
+
   df <- df %>%
     dplyr::mutate(
       l2_l4_count = l2_count + l3_count + l4_count,
@@ -104,6 +118,7 @@ clean_assess_db <- function(
     )
 
   #break out columns from combined data
+  if (verbose) cat('Fixing test_year and separating item_desc\n')
   df <- df %>%
     dplyr::mutate(
       school_year = lubridate::mdy(school_year),
@@ -120,6 +135,7 @@ clean_assess_db <- function(
     dplyr::select(-discard)
 
   #calculate cohort
+  if (verbose) cat('Calculating implicit cohort\n')
   df <- df %>%
     dplyr::mutate(
       cohort_numeric = NYSEDtools::calculate_cohort(
@@ -127,11 +143,26 @@ clean_assess_db <- function(
       )
     )
 
-  #make unique_id
+  #bedscode
+  if (verbose) cat('Decomposing BEDS code into component parts\n')
+  df <- df %>%
+    interpret_bedscode()
+
+  #make unique_id and tag rows
   df <- df %>%
     dplyr::mutate(
       unique_id = paste(
         as.character(bedscode), item_desc, subgroup_code, sep = '_'
+      ),
+      is_multigrade_aggregate = FALSE,
+      is_district = ifelse(
+        !bedscode == '000000000000' & !sch_kind_desc == 'Aggregation' &
+          internal_district_code == '0000',
+        TRUE, FALSE
+      ),
+      is_school = ifelse(
+        !sch_kind_desc == 'Aggregation' & !internal_district_code == '0000',
+        TRUE, FALSE
       )
     )
 
@@ -144,7 +175,7 @@ clean_assess_db <- function(
 }
 
 
-#' fetch NY State assessment db
+#' Fetch NY State assessment db
 #'
 #' @description wrapper around get_raw_assess_db and clean_assess_db
 #' @inheritParams get_raw_assess_db
@@ -152,10 +183,26 @@ clean_assess_db <- function(
 #' @return clean data frame with assessment data
 #' @export
 
-fetch_assess_db <- function(test_year) {
-  raw <- get_raw_assess_db(test_year)
-  clean <- clean_assess_db(raw, test_year)
-  beds <- clean %>% interpret_bedscode()
+fetch_assess_db <- function(test_year, verbose = TRUE) {
+  raw <- get_raw_assess_db(test_year, verbose)
+  clean <- clean_assess_db(raw, test_year, verbose = verbose)
 
-  beds
+  clean
+}
+
+
+#' Fetch NY State assessment db, and calculate multi-grade aggregates
+#'
+#' @inheritParams fetch_assess_db
+#' @return data.frame
+#' @export
+
+fetch_and_aggregate_assess_db <- function(test_year, verbose = TRUE) {
+  clean <- fetch_assess_db(test_year, verbose)
+  if (verbose) cat('Calculating school-level aggregates\n')
+  grade_agg <- aggregate_grades(clean)
+
+  out <- dplyr::bind_rows(clean, grade_agg)
+
+  out
 }
