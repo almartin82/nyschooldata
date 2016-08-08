@@ -18,16 +18,19 @@ aggregate_grades <- function(df) {
 
     "subgroup_code", "subgroup_name",
     "item_subject_area", "test_subject",
-    "test_year", "start_year"
+
+    "test_year", "start_year",
+
+    "is_school", "is_district"
   ) %>%
   lapply(., as.symbol)
 
-  by_sch <- df %>%
+  all_gr <- df %>%
     dplyr::regroup(grouping_cols) %>%
     org_summary() %>%
     org_percentages()
 
-  by_sch <- by_sch %>%
+  all_gr <- all_gr %>%
     dplyr::ungroup() %>%
     dplyr::mutate(
       item_desc = NA,
@@ -40,10 +43,10 @@ aggregate_grades <- function(df) {
       is_multigrade_aggregate = TRUE
     ) %>%
   dplyr::select(
-    -total_tested_meanscale, sum_of_mean_scale_score
+    -total_tested_meanscale, -sum_of_mean_scale_score
   )
 
-  by_sch
+  all_gr
 }
 
 

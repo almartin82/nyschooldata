@@ -1,3 +1,6 @@
+# nyschooldata 0.2.2
+* `prof_attainment_percentile` and `scale_attainment_percentile`
+
 # nyschooldata 0.2.1
 * fix for `assess_growth` with aggregated data
 

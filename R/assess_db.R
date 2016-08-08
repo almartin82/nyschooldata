@@ -202,7 +202,33 @@ fetch_and_aggregate_assess_db <- function(test_year, verbose = TRUE) {
   if (verbose) cat('Calculating school-level aggregates\n')
   grade_agg <- aggregate_grades(clean)
 
-  out <- dplyr::bind_rows(clean, grade_agg)
+  with_agg <- dplyr::bind_rows(clean, grade_agg)
+
+  if (verbose) cat('Calculating proficiency and scale attainment %iles\n')
+  out <- with_agg %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(
+      prof_attain_pctle = prof_attainment_percentile(
+        percent_prof = l3_l4_pct,
+        comparison_df = with_agg,
+        school_logical = is_school,
+        district_logical = is_district,
+        multigrade_logical = is_multigrade_aggregate,
+        subject = test_subject,
+        grade = test_grade,
+        subgroup = subgroup_code
+      ),
+      scale_attain_pctle = scale_attainment_percentile(
+        scale_score = mean_scale_score,
+        comparison_df = with_agg,
+        school_logical = is_school,
+        district_logical = is_district,
+        multigrade_logical = is_multigrade_aggregate,
+        subject = test_subject,
+        grade = test_grade,
+        subgroup = subgroup_code
+      )
+    )
 
   out
 }
