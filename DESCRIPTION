@@ -1,7 +1,7 @@
 Package: nyschooldata
 Type: Package
 Title: A Consistent Interface and Helpful Analytic Functions for Accessing NYSED School Data
-Version: 0.2.2
+Version: 0.2.3
 Date: 2015-12-17
 Authors@R: person("Andrew", "Martin", role = c("aut","cre"), email = "almartin@gmail.com")
 Description: R functions to import, clean and analyze NY school data.

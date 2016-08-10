@@ -1,3 +1,6 @@
+# nyschooldata 0.2.3
+* new percentile functions and cache of some data in `\data`
+
 # nyschooldata 0.2.2
 * `prof_attainment_percentile` and `scale_attainment_percentile`
 
