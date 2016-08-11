@@ -1,3 +1,9 @@
+# nyschooldata 0.2.4
+* bugfix on `aggregate_grades` that was causing duplicate rows in `assess_growth` and `cohort_growth`.
+
+# nyschooldata 0.2.3
+* new percentile functions and cache of some data in `\data`
+
 # nyschooldata 0.2.2
 * `prof_attainment_percentile` and `scale_attainment_percentile`
 

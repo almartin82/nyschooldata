@@ -1,0 +1,61 @@
+---
+title: "Vignette Title"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+assess
+```{r}
+
+assess_13 <- fetch_aggregate_percentile_assess_db(test_year = 2013)
+assess_14 <- fetch_aggregate_percentile_assess_db(test_year = 2014)
+assess_15 <- fetch_aggregate_percentile_assess_db(test_year = 2015)
+assess_16 <- fetch_aggregate_percentile_assess_db(test_year = 2016)
+
+```
+
+growth
+
+```{r}
+
+assess_growth_13_14 <- assess_growth(assess_13, assess_14)
+assess_growth_14_15 <- assess_growth(assess_14, assess_15)
+assess_growth_15_16 <- assess_growth(assess_15, assess_16)
+
+```
+
+cohort
+
+```{r}
+
+cohort_growth_13_14 <- cohort_growth(assess_13, assess_14)
+cohort_growth_14_15 <- cohort_growth(assess_14, assess_15)
+cohort_growth_15_16 <- cohort_growth(assess_15, assess_16)
+
+```
+
+
+write it
+
+```{r}
+
+save(assess_13, file = file.path('data', 'assess_13.rda'))
+save(assess_14, file = file.path('data', 'assess_14.rda'))
+save(assess_15, file = file.path('data', 'assess_15.rda'))
+save(assess_16, file = file.path('data', 'assess_16.rda'))
+
+save(assess_growth_13_14, file = file.path('data', 'assess_growth_13_14.rda'))
+save(assess_growth_14_15, file = file.path('data', 'assess_growth_14_15.rda'))
+save(assess_growth_15_16, file = file.path('data', 'assess_growth_15_16.rda'))
+
+save(cohort_growth_13_14, file = file.path('data', 'cohort_growth_13_14.rda'))
+save(cohort_growth_14_15, file = file.path('data', 'cohort_growth_14_15.rda'))
+save(cohort_growth_15_16, file = file.path('data', 'cohort_growth_15_16.rda'))
+
+```
+
