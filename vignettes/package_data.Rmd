@@ -39,16 +39,6 @@ cohort_growth_15_16 <- cohort_growth(assess_15, assess_16)
 
 ```
 
-bind together
-
-```{r}
-
-ex_assess_all <- dplyr::bind_rows(assess_13, assess_14, assess_15, assess_16)
-ex_growth_all <- dplyr::bind_rows(assess_growth_13_14, assess_growth_14_15, assess_growth_15_16)
-ex_cohort_growth_all <- dplyr::bind_rows(cohort_growth_13_14, cohort_growth_14_15, cohort_growth_15_16)
-
-```
-
 
 write it
 
