@@ -1,26 +1,17 @@
 context("assess_db")
 
+ex <- get_raw_assess_db(2015)
+clean_ex <- fetch_aggregate_percentile_assess_db(2013)
 
-test_that("get_raw_assess_db correctly reads 2015 file", {
-  ex <- get_raw_assess_db(2015)
+test_that("get_raw_assess_db correctly reads a NY state file", {
 
   expect_equal(nrow(ex), 434149)
 })
 
-test_that("get_raw_assess_db correctly reads 2014 file", {
-  ex <- get_raw_assess_db(2014)
 
-  expect_equal(nrow(ex), 435946)
-})
+test_that("fetch_aggregate_percentile_assess_db correctly reads
+          and processes a NY state assessment file", {
 
-test_that("get_raw_assess_db correctly reads 2013 file", {
-  ex <- get_raw_assess_db(2013)
-
-  expect_equal(nrow(ex), 435244)
-})
-
-test_that("get_raw_assess_db correctly reads 2016 file", {
-  ex <- get_raw_assess_db(2016)
-
-  expect_equal(nrow(ex), 436464)
+  expect_is(clean_ex, 'data.frame')
+  expect_equal(nrow(clean_ex), 562016)
 })
