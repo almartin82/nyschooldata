@@ -41,8 +41,9 @@ assess_growth <- function(clean_assess_start, clean_assess_end) {
   id_cols <- c(
     "unique_id", "test_year", "bedscode", "nrc_code", "nrc_desc",
     "county_code", "county_desc", "name",
-    "item_subject_area", "item_desc", "test_grade",
-    "test_subject", "subgroup_code", "subgroup_name",
+    "item_subject_area", "item_desc",
+    "test_grade", "test_subject", "test_grade_string",
+    "subgroup_code", "subgroup_name",
     "is_school", "is_district", "is_multigrade_aggregate"
   )
 

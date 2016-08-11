@@ -35,10 +35,12 @@ cohort_growth <- function(clean_assess_start, clean_assess_end) {
 
   #get basic ids from assess_end
   id_cols <- c(
-    "bedscode", "test_subject", "subgroup_code", "test_grade",
+    "bedscode",
+    "test_subject", "test_grade", "test_grade_string",
     "nrc_code", "nrc_desc",
     "county_code", "county_desc", "name",
-    "subgroup_name", "item_subject_area", "item_desc",
+    "subgroup_code", "subgroup_name",
+    "item_subject_area", "item_desc",
     "is_school", "is_district", "is_multigrade_aggregate"
   )
 
