@@ -1,5 +1,3 @@
-
-
 #' p_proficiency_hist
 #'
 #' @param assess_db_all data.frame, multiple years of assessment history
@@ -81,7 +79,7 @@ prof_history_data_prep <- function(assess_db_all, bedscodes, subjects, grades, s
   #make grouping key
   df <- df %>%
     dplyr::mutate(
-      grouping_key = paste(name, test_subject, test_grade, subgroup_name)
+      grouping_key = paste(name, test_subject, test_grade_string, subgroup_name)
     )
 
   df
