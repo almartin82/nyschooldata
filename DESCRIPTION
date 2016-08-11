@@ -10,17 +10,19 @@ SystemRequirements: mdb-tools
 LazyData: true
 VignetteBuilder: knitr
 Depends:
+    ggplot2,
     ensurer,
     magrittr,
-    purrr,
     R(>= 2.10.0)
 Imports:
     dplyr,
     Hmisc,
     httr,
+    ggthemes,
     janitor,
     lubridate,
     NYSEDtools,
+    purrr,
     tidyr
 Suggests:
     knitr,
