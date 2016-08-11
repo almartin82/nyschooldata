@@ -132,7 +132,10 @@ clean_assess_db <- function(
       remove = FALSE,
       convert = TRUE
     ) %>%
-    dplyr::select(-discard)
+    dplyr::select(-discard) %>%
+    dplyr::mutate(
+      test_grade_string = paste('Grade', as.character(test_grade))
+    )
 
   #calculate cohort
   if (verbose) cat('Calculating implicit cohort\n')
@@ -221,18 +224,21 @@ fetch_aggregate_percentile_assess_db <- function(test_year, verbose = TRUE) {
   if (verbose) cat('Calculating proficiency and scale attainment %iles\n')
 
   out <- with_agg %>%
-    dplyr::mutate(
-      count_proficient_dummy = ifelse(!is.na(l3_l4_pct), 1, 0),
-      count_scale_dummy = ifelse(!is.na(mean_scale_score), 1, 0)
-    ) %>%
-    dplyr::group_by(
-      is_multigrade_aggregate, is_school, is_district,
-      test_subject, test_grade
-    ) %>%
-    dplyr::mutate(
-      proficiency_percentile = rank(l3_l4_pct) / sum(count_proficient_dummy),
-      scale_score_percentile = rank(mean_scale_score) / sum(count_scale_dummy)
-    )
+    peer_percentile_pipe()
 
   out
 }
+
+
+peer_percentile_pipe <- . %>% dplyr::mutate(
+  count_proficient_dummy = ifelse(!is.na(l3_l4_pct), 1, 0),
+  count_scale_dummy = ifelse(!is.na(mean_scale_score), 1, 0)
+) %>%
+  dplyr::group_by(
+    is_multigrade_aggregate, is_school, is_district,
+    test_subject, test_grade
+  ) %>%
+  dplyr::mutate(
+    proficiency_percentile = rank(l3_l4_pct) / sum(count_proficient_dummy),
+    scale_score_percentile = rank(mean_scale_score) / sum(count_scale_dummy)
+  )
