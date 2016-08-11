@@ -8,14 +8,5 @@ test_that('assess_growth returns data frame', {
 
 
 test_that('assess_growth correctly calculates growth data', {
-  expect_equal(nrow(ex), 462847)
+  expect_equal(nrow(ex), 594514)
 })
-
-
-assess_15 %>%
-  dplyr::filter(bedscode == '331700010002' & subgroup_code == '01') %>%
-  print.data.frame()
-
-ex %>%
-  dplyr::filter(bedscode == '331700010002' & subgroup_code == '01') %>%
-  print.data.frame()

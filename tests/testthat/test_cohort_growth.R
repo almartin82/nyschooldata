@@ -8,5 +8,5 @@ test_that('cohort_growth returns data frame', {
 
 
 test_that('cohort_growth correctly calculates growth data', {
-  expect_equal(nrow(ex), 438379)
+  expect_equal(nrow(ex), 565744)
 })
