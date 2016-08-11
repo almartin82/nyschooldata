@@ -80,7 +80,7 @@ assess_growth <- function(clean_assess_start, clean_assess_end) {
       "l3_count", "l3_pct", "l4_count", "l4_pct",
       "l2_l4_count", "l2_l4_pct",
       "l3_l4_count", "l3_l4_pct",
-      "mean_scale_score", "prof_percentile", "scale_percentile")
+      "mean_scale_score", "proficiency_percentile", "scale_score_percentile")
   acad_join <- c(id_cols, acad_cols)
 
   #join and rename start
