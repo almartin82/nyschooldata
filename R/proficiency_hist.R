@@ -209,4 +209,3 @@ p_proficiency_hist_mult_subj_sch_comparison <- function(
 
   base_p
 }
-

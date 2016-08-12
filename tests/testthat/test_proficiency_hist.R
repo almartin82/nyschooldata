@@ -25,3 +25,17 @@ test_that("basic_proficiency_hist produces a plot", {
 
   expect_is(ex, 'ggplot')
 })
+
+
+test_that("p_proficiency_hist_single_subj_sch_comparison", {
+
+  sch_vs_nyc_math <- p_proficiency_hist_single_subj_sch_comparison(
+    assess_db_all = ppn_assess_all,
+    bedscodes = c('320800860940', '000000000001'),
+    subjects =  'Math',
+    grades = 'All'
+  )
+
+  sch_vs_nyc_math
+
+})
