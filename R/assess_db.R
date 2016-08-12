@@ -241,4 +241,45 @@ peer_percentile_pipe <- . %>% dplyr::mutate(
   dplyr::mutate(
     proficiency_percentile = rank(l3_l4_pct) / sum(count_proficient_dummy),
     scale_score_percentile = rank(mean_scale_score) / sum(count_scale_dummy)
-  )
+  ) %>%
+  dplyr::select(-count_proficient_dummy, -count_scale_dummy)
+
+
+
+#' @title Create a assess_db object
+#'
+#' @param test_years numeric vector of test years
+#' @param verbose should assess_db print status updates as
+#' it generates the object?  default is TRUE.
+#'
+#' @examples
+#'\dontrun{
+#' ex_assess_db <- assess_db(
+#'   test_years = c(2014:2016)
+#'  )
+#'
+#' is.assess_db(ex_assess_db)
+#' print(ex_assess_db)
+#' }
+#' @export
+
+assess_db <- function(test_years, verbose = TRUE) UseMethod("assess_db")
+
+#' @export
+assess_db.default <- function(test_years, verbose, ...) {
+
+  clean_dbs <- list()
+
+  for (i in test_years) {
+    if (verbose) print(paste('creating assess_db object for', i))
+
+    #production
+    #clean_dbs[[as.character(i)]] <- fetch_assess_db(i)
+
+    #test, read from disk for shorter iterations
+    clean_dbs[[as.character(i)]] <- fake_fetch_assess_db(i)
+
+  }
+}
+
+
