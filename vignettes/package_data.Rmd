@@ -9,6 +9,19 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+## new
+clean
+```{r}
+
+clean_13 <- fetch_assess_db(test_year = 2013)
+clean_14 <- fetch_assess_db(test_year = 2014)
+clean_15 <- fetch_assess_db(test_year = 2015)
+clean_16 <- fetch_assess_db(test_year = 2016)
+
+```
+
+## old
+
 assess
 ```{r}
 
