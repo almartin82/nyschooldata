@@ -266,7 +266,7 @@ peer_percentile_pipe <- . %>% dplyr::mutate(
 assess_db <- function(test_years, verbose = TRUE) UseMethod("assess_db")
 
 #' @export
-assess_db.default <- function(test_years, verbose, ...) {
+assess_db.default <- function(test_years, verbose = TRUE, ...) {
 
   clean_dbs <- list()
 
@@ -280,6 +280,8 @@ assess_db.default <- function(test_years, verbose, ...) {
     clean_dbs[[as.character(i)]] <- fake_fetch_assess_db(i)
 
   }
+
+  clean_dbs
 }
 
 
