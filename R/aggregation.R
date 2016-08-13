@@ -53,6 +53,8 @@ aggregate_grades <- function(df) {
 
 org_summary <- . %>%
   dplyr::summarize(
+    min_grade = min(test_grade),
+    max_grade = max(test_grade),
     total_tested = sum(total_tested, na.rm = TRUE),
     total_tested_meanscale = sum(
       ifelse(is.na(mean_scale_score), NA, total_tested)
@@ -114,7 +116,6 @@ custom_aggregate <- function(assess_df, bedscode, grades, cust_suffix = '_custom
   #get the aggregate
   agg_df <- aggregate_grades(matching_df)
 
-
   #put it all together and return
   all_agg <- dplyr::bind_rows(agg_df, matching_df)
 
@@ -123,4 +124,106 @@ custom_aggregate <- function(assess_df, bedscode, grades, cust_suffix = '_custom
     peer_percentile_pipe()
 
   out
+}
+
+
+
+
+
+
+
+sch_aggregation_scaffold <- function(bedscode, min_gr, max_gr) {
+
+  runs <- grade_runs(min_gr, max_gr)
+  lengths <- purrr::map_int(runs, length)
+  group_index <- rep(c(1:length(lengths)), lengths)
+
+  scaffold <- data.frame(
+    'bedscode' = bedscode,
+    'group' = group_index,
+    test_grade = purrr::flatten_int(runs),
+    stringsAsFactors = FALSE
+  )
+
+  scaffold_ids <- scaffold %>%
+    dplyr::group_by(bedscode, group) %>%
+    dplyr::summarize(
+      min_grade = min(grade),
+      max_grade = max(grade)
+    )
+
+  scaffold <- scaffold %>%
+    dplyr::inner_join(scaffold_ids, by = c('bedscode', 'group'))
+
+  subjs <- data.frame(
+    test_subject = c('ELA', 'Math'),
+    stringsAsFactors = FALSE
+  )
+
+  merge(scaffold, subjs, all = TRUE)
+}
+
+
+
+full_aggregation_scaffold <- function(clean_df) {
+
+  unq_sch <- clean_df %>%
+    dplyr::group_by(test_year, test_subject, bedscode) %>%
+    dplyr::summarize(
+      min_grade = min(test_grade),
+      max_grade = max(test_grade)
+    )
+
+  full_scaffold <- list()
+
+  for (i in seq_len(nrow(unq_sch))) {
+    full_scaffold[[i]] <- sch_aggregation_scaffold(
+      bedscode = unq_sch[i, ]$bedscode,
+      min_gr = unq_sch[i, ]$min_grade,
+      max_gr = unq_sch[i, ]$max_grade
+    )
+  }
+
+  full_scaffold_df <- dplyr::bind_rows(full_scaffold)
+
+  full_scaffold_df
+}
+
+
+aggregate_everything <- function(clean_df) {
+
+  full_sch <- clean_df %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(
+        bedscode = paste0(bedscode, '_all')
+      ) %>%
+      aggregate_grades() %>%
+      dplyr::mutate(
+        is_subschool = FALSE
+      )
+
+
+  #subschools
+  df <- full_aggregation_scaffold(clean_df) %>%
+    dplyr::mutate(
+      new_bedscode = paste(bedscode, min_grade, max_grade, sep = '_')
+    ) %>%
+    dplyr::select(
+      -group, -min_grade, -max_grade
+    ) %>%
+    dplyr::left_join(
+      y = clean_df,
+      by = c('bedscode', 'test_grade')
+    ) %>%
+    dplyr::select(-bedscode) %>%
+    dplyr::rename(bedscode = new_bedscode)
+
+  sub_sch <- df %>%
+    aggregate_grades() %>%
+    dplyr::mutate(
+      is_subschool = TRUE
+    )
+
+  dplyr::bind_rows(full_sch, sub_sch)
+
 }

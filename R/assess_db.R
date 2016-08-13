@@ -190,11 +190,13 @@ fetch_assess_db <- function(test_year, verbose = TRUE) {
   raw <- get_raw_assess_db(test_year, verbose)
   clean <- clean_assess_db(raw, test_year, verbose = verbose)
 
-  clean
+  #get
+  clean %>%
+    peer_percentile_pipe()
 }
 
 
-#' Fetch NY State assessment db, and calculate multi-grade aggregates
+#' DEPRECATED Fetch NY State assessment db, and calculate multi-grade aggregates
 #'
 #' @inheritParams fetch_assess_db
 #' @return data.frame
@@ -211,7 +213,7 @@ fetch_and_aggregate_assess_db <- function(test_year, verbose = TRUE) {
 }
 
 
-#' Fetch, aggregate, calculate percentiles
+#' DEPRECATED Fetch, aggregate, calculate percentiles
 #'
 #' @inheritParams fetch_and_aggregate_assess_db
 #'
@@ -269,6 +271,7 @@ assess_db <- function(test_years, verbose = TRUE) UseMethod("assess_db")
 assess_db.default <- function(test_years, verbose = TRUE, ...) {
 
   clean_dbs <- list()
+  aggreggate_dfs <- list()
 
   for (i in test_years) {
     if (verbose) print(paste('creating assess_db object for', i))
@@ -279,9 +282,18 @@ assess_db.default <- function(test_years, verbose = TRUE, ...) {
     #test, read from disk for shorter iterations
     clean_dbs[[as.character(i)]] <- fake_fetch_assess_db(i)
 
+    #do all the aggregation for this df
+
   }
 
-  clean_dbs
+  #put all the assessment rows together
+  assess <- dplyr::bind_rows(clean_dbs)
+
+  out <- list(
+    'assess' = assess
+  )
+
+  class(out) <- c("assess_db", class(out))
+
+  out
 }
-
-

@@ -53,3 +53,34 @@ extract_mdb <- function(file_list) {
   )
   out
 }
+
+
+is_sequential <- function(x){
+  all(abs(diff(x)) == 1)
+}
+
+
+#' Finds grade runs
+#'
+#' @param min_gr smallest grade
+#' @param max_gr largest grade
+#'
+#' @return list with grade runs
+#' @export
+
+grade_runs <- function(min_gr, max_gr) {
+
+  grade_span <- 2:(max_gr - min_gr)
+
+  #returns list of lists of vectors
+  all_combs <- lapply(
+    grade_span, function(x) combn(c(min_gr:max_gr), x, simplify = FALSE))
+
+  #removes one level of heirarchy from all_combs (now just a list of vectors)
+  all_combs <- purrr::flatten(all_combs)
+
+  sequential_combs <- purrr::keep(all_combs, is_sequential)
+
+  #return a list of vectors of all possible sequential permuations
+  sequential_combs
+}
