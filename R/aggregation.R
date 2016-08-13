@@ -148,8 +148,8 @@ sch_aggregation_scaffold <- function(bedscode, min_gr, max_gr) {
   scaffold_ids <- scaffold %>%
     dplyr::group_by(bedscode, group) %>%
     dplyr::summarize(
-      min_grade = min(grade),
-      max_grade = max(grade)
+      min_grade = min(test_grade),
+      max_grade = max(test_grade)
     )
 
   scaffold <- scaffold %>%
