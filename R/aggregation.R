@@ -213,7 +213,7 @@ aggregate_everything <- function(clean_df) {
     ) %>%
     dplyr::left_join(
       y = clean_df,
-      by = c('bedscode', 'test_grade')
+      by = c('bedscode', 'test_grade', 'test_subject')
     ) %>%
     dplyr::select(-bedscode) %>%
     dplyr::rename(bedscode = new_bedscode)
