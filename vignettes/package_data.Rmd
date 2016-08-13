@@ -1,6 +1,6 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "nyschooldata data"
+author: "Andrew Martin"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -20,6 +20,14 @@ clean_16 <- fetch_assess_db(test_year = 2016)
 
 ```
 
+```{r}
+
+save(clean_13, file = file.path('data', 'clean_13.rda'))
+save(clean_14, file = file.path('data', 'clean_14.rda'))
+save(clean_15, file = file.path('data', 'clean_15.rda'))
+save(clean_16, file = file.path('data', 'clean_16.rda'))
+
+```
 ## old
 
 assess
