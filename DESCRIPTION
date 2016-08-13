@@ -23,6 +23,7 @@ Imports:
     lubridate,
     NYSEDtools,
     purrr,
+    stringr,
     tidyr
 Suggests:
     knitr,
