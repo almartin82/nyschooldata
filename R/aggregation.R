@@ -35,17 +35,15 @@ aggregate_grades <- function(df) {
     dplyr::mutate(
       item_desc = NA,
       test_grade = NA,
-      test_grade_string = 'All',
+      test_grade_string = paste0('Gr ', min_grade, '-', max_grade, ' Aggregate'),
       cohort_numeric = NA,
       unique_id = NA,
       unique_id = paste(
-        bedscode, 'Gr 3-8 Aggregate', test_subject, subgroup_code, sep = '_'
+        bedscode, test_grade_string, test_subject, subgroup_code, sep = '_'
       ),
       is_multigrade_aggregate = TRUE
     ) %>%
-  dplyr::select(
-    -total_tested_meanscale, -sum_of_mean_scale_score
-  )
+  dplyr::select(-total_tested_meanscale, -sum_of_mean_scale_score)
 
   all_gr
 }
@@ -127,11 +125,6 @@ custom_aggregate <- function(assess_df, bedscode, grades, cust_suffix = '_custom
 }
 
 
-
-
-
-
-
 sch_aggregation_scaffold <- function(bedscode, min_gr, max_gr) {
 
   runs <- grade_runs(min_gr, max_gr)
@@ -190,8 +183,9 @@ full_aggregation_scaffold <- function(clean_df) {
 }
 
 
-aggregate_everything <- function(clean_df) {
+aggregate_everything <- function(clean_df, verbose = TRUE) {
 
+  if (verbose) cat('Calculating all-grade school-level aggregates\n')
   full_sch <- clean_df %>%
       dplyr::ungroup() %>%
       dplyr::mutate(
@@ -202,8 +196,8 @@ aggregate_everything <- function(clean_df) {
         is_subschool = FALSE
       )
 
-
   #subschools
+  if (verbose) cat('Finding the relevant sub-grade pairs for each school\n')
   df <- full_aggregation_scaffold(clean_df) %>%
     dplyr::mutate(
       new_bedscode = paste(bedscode, min_grade, max_grade, sep = '_')
@@ -218,6 +212,7 @@ aggregate_everything <- function(clean_df) {
     dplyr::select(-bedscode) %>%
     dplyr::rename(bedscode = new_bedscode)
 
+  if (verbose) cat('Calculating sub-grade school aggregates\n')
   sub_sch <- df %>%
     aggregate_grades() %>%
     dplyr::mutate(
@@ -225,5 +220,4 @@ aggregate_everything <- function(clean_df) {
     )
 
   dplyr::bind_rows(full_sch, sub_sch)
-
 }
