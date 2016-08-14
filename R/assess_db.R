@@ -206,7 +206,7 @@ peer_percentile_pipe <- . %>% dplyr::mutate(
   ) %>%
   dplyr::mutate(
     proficiency_numerator = rank(l3_l4_pct),
-    proficienct_denomenator = sum(count_proficiency_dummy),
+    proficienct_denomenator = sum(count_proficient_dummy),
     proficiency_percentile = rank(l3_l4_pct) / sum(count_proficient_dummy),
     scale_score_percentile = rank(mean_scale_score) / sum(count_scale_dummy)
   ) %>%
@@ -240,17 +240,17 @@ assess_db.default <- function(test_years, verbose = TRUE, ...) {
   agg_dfs <- list()
 
   for (i in test_years) {
-    if (verbose) print(paste('creating assess_db object for', i))
+    if (verbose) cat(paste('creating assess_db object for', i))
 
-    #production
-    clean_dbs[[as.character(i)]] <- fetch_assess_db(i, verbose)
+    this_clean <- fetch_assess_db(i, verbose)
+    clean_dbs[[as.character(i)]] <- this_clean
 
     # #test, read from disk for shorter iterations
     # clean_dbs[[as.character(i)]] <- fake_fetch_assess_db(i)
 
     #do all the aggregation for this df
     if (verbose) cat('Calculating school-level aggregates\n')
-    agg_dfs[[as.character(i)]] <- aggregate_everything(clean_db, verbose)
+    agg_dfs[[as.character(i)]] <- aggregate_everything(this_clean, verbose)
   }
 
   #put all the assessment rows together
