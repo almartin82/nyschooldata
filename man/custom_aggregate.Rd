@@ -4,10 +4,10 @@
 \alias{custom_aggregate}
 \title{make a custom aggregation}
 \usage{
-custom_aggregate(assess_df, bedscode, grades, cust_suffix = "_custom")
+custom_aggregate(clean_df, bedscode, grades, cust_suffix = "_custom")
 }
 \arguments{
-\item{assess_df}{data.frame, output of fetch_aggregate_percentile_assess_db}
+\item{clean_df}{data.frame, ie output of clean_assess_db}
 
 \item{bedscode}{bedscode for the school you want to custom aggregate}
 
