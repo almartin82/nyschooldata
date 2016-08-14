@@ -55,6 +55,13 @@ extract_mdb <- function(file_list) {
 }
 
 
+#' Is a vector sequential
+#'
+#' @param x integer vector
+#'
+#' @return logical
+#' @export
+
 is_sequential <- function(x){
   all(abs(diff(x)) == 1)
 }

@@ -9,74 +9,15 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## new
-clean
+
 ```{r}
 
-clean_13 <- fetch_assess_db(test_year = 2013)
-clean_14 <- fetch_assess_db(test_year = 2014)
-clean_15 <- fetch_assess_db(test_year = 2015)
-clean_16 <- fetch_assess_db(test_year = 2016)
+assess_db <- assess_db(test_years = c(2013, 2014, 2015, 2016))
 
 ```
 
 ```{r}
 
-save(clean_13, file = file.path('data', 'clean_13.rda'))
-save(clean_14, file = file.path('data', 'clean_14.rda'))
-save(clean_15, file = file.path('data', 'clean_15.rda'))
-save(clean_16, file = file.path('data', 'clean_16.rda'))
+save(assess_db, file = file.path('data', 'assess_db.rda'))
 
 ```
-## old
-
-assess
-```{r}
-
-assess_13 <- fetch_aggregate_percentile_assess_db(test_year = 2013)
-assess_14 <- fetch_aggregate_percentile_assess_db(test_year = 2014)
-assess_15 <- fetch_aggregate_percentile_assess_db(test_year = 2015)
-assess_16 <- fetch_aggregate_percentile_assess_db(test_year = 2016)
-
-```
-
-growth
-
-```{r}
-
-assess_growth_13_14 <- assess_growth(assess_13, assess_14)
-assess_growth_14_15 <- assess_growth(assess_14, assess_15)
-assess_growth_15_16 <- assess_growth(assess_15, assess_16)
-
-```
-
-cohort
-
-```{r}
-
-cohort_growth_13_14 <- cohort_growth(assess_13, assess_14)
-cohort_growth_14_15 <- cohort_growth(assess_14, assess_15)
-cohort_growth_15_16 <- cohort_growth(assess_15, assess_16)
-
-```
-
-
-write it
-
-```{r}
-
-save(assess_13, file = file.path('data', 'assess_13.rda'))
-save(assess_14, file = file.path('data', 'assess_14.rda'))
-save(assess_15, file = file.path('data', 'assess_15.rda'))
-save(assess_16, file = file.path('data', 'assess_16.rda'))
-
-save(assess_growth_13_14, file = file.path('data', 'assess_growth_13_14.rda'))
-save(assess_growth_14_15, file = file.path('data', 'assess_growth_14_15.rda'))
-save(assess_growth_15_16, file = file.path('data', 'assess_growth_15_16.rda'))
-
-save(cohort_growth_13_14, file = file.path('data', 'cohort_growth_13_14.rda'))
-save(cohort_growth_14_15, file = file.path('data', 'cohort_growth_14_15.rda'))
-save(cohort_growth_15_16, file = file.path('data', 'cohort_growth_15_16.rda'))
-
-```
-
