@@ -196,40 +196,6 @@ fetch_assess_db <- function(test_year, verbose = TRUE) {
 }
 
 
-#' DEPRECATED Fetch NY State assessment db, and calculate multi-grade aggregates
-#'
-#' @inheritParams fetch_assess_db
-#' @return data.frame
-#' @export
-
-fetch_and_aggregate_assess_db <- function(test_year, verbose = TRUE) {
-  clean <- fetch_assess_db(test_year, verbose)
-  grade_agg <- aggregate_grades(clean)
-
-  out <- dplyr::bind_rows(clean, grade_agg)
-
-  out
-}
-
-
-#' DEPRECATED Fetch, aggregate, calculate percentiles
-#'
-#' @inheritParams fetch_and_aggregate_assess_db
-#'
-#' @return data.frame
-#' @export
-
-fetch_aggregate_percentile_assess_db <- function(test_year, verbose = TRUE) {
-  with_agg <- fetch_and_aggregate_assess_db(test_year, verbose)
-
-  if (verbose) cat('Calculating proficiency and scale attainment %iles\n')
-  out <- with_agg %>%
-    peer_percentile_pipe()
-
-  out
-}
-
-
 peer_percentile_pipe <- . %>% dplyr::mutate(
   count_proficient_dummy = ifelse(!is.na(l3_l4_pct), 1, 0),
   count_scale_dummy = ifelse(!is.na(mean_scale_score), 1, 0)

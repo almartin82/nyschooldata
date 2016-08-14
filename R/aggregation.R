@@ -1,11 +1,11 @@
 #' Aggregate results by subject across grade levels
 #'
-#' @param df data.frame, output of clean_assess_db or fetch_assess_db
+#' @param clean_df data.frame, output of clean_assess_db or fetch_assess_db
 #'
 #' @return data.frame with *only* the sch/dist aggregate scores.
 #' @export
 
-aggregate_grades <- function(df) {
+aggregate_grades <- function(clean_df) {
 
   grouping_cols <- c(
     "school_year",
@@ -25,7 +25,7 @@ aggregate_grades <- function(df) {
   ) %>%
   lapply(., as.symbol)
 
-  all_gr <- df %>%
+  all_gr <- clean_df %>%
     dplyr::regroup(grouping_cols) %>%
     org_summary() %>%
     org_percentages()
@@ -85,7 +85,7 @@ org_percentages <- . %>%
 #'
 #' @description some charters or schools have multiple 'campuses' inside of the same
 #' bedscode. make a custom aggregation by grade level.
-#' @param assess_df data.frame, output of fetch_aggregate_percentile_assess_db
+#' @param clean_df data.frame, ie output of clean_assess_db
 #' @param bedscode bedscode for the school you want to custom aggregate
 #' @param grades grades that are in this custom aggregation
 #' @param cust_suffix suffix to throw onto the bedscode
@@ -93,12 +93,12 @@ org_percentages <- . %>%
 #' @return data.frame
 #' @export
 
-custom_aggregate <- function(assess_df, bedscode, grades, cust_suffix = '_custom') {
+custom_aggregate <- function(clean_df, bedscode, grades, cust_suffix = '_custom') {
   #nse problems
   bedscode_in <- bedscode
 
-  #limit the assess_df to the matching bedscode and grades
-  matching_df <- assess_df %>%
+  #limit the clean_df to the matching bedscode and grades
+  matching_df <- clean_df %>%
     dplyr::filter(bedscode == bedscode_in &
                     test_grade %in% grades)
 
@@ -118,12 +118,20 @@ custom_aggregate <- function(assess_df, bedscode, grades, cust_suffix = '_custom
   all_agg <- dplyr::bind_rows(agg_df, matching_df)
 
   #recalculate percentiles
-  out <- dplyr::bind_rows(assess_df, all_agg) %>%
+  out <- dplyr::bind_rows(clean_df, all_agg) %>%
     peer_percentile_pipe()
 
   out
 }
 
+
+#' Creates an aggregation scaffold for one school/district
+#'
+#' @param bedscode character, BEDS identifier
+#' @param min_gr integer, smallest grade level at this school
+#' @param max_gr integer, largest grade level at this school
+#'
+#' @return data.frame, with all of the consecutive sub-grade runs
 
 sch_aggregation_scaffold <- function(bedscode, min_gr, max_gr) {
 
@@ -158,6 +166,12 @@ sch_aggregation_scaffold <- function(bedscode, min_gr, max_gr) {
 
 
 
+#' Create the full aggregation scaffold for all records in a clean assess df
+#'
+#' @param clean_df output of clean_assess_db or fetch_assess_db
+#'
+#' @return data.frame ready to join back to the clean_df
+
 full_aggregation_scaffold <- function(clean_df) {
 
   unq_sch <- clean_df %>%
@@ -183,6 +197,14 @@ full_aggregation_scaffold <- function(clean_df) {
 }
 
 
+#' Makes all-grade and sub-grade aggregates from a clean data file
+#'
+#' @inheritParams full_aggregation_scaffold
+#' @param verbose logical, print status updates to the console?
+#'
+#' @return data.frame, with all-grade and sub-grade aggregations
+#' @export
+
 aggregate_everything <- function(clean_df, verbose = TRUE) {
 
   if (verbose) cat('Calculating all-grade school-level aggregates\n')
@@ -195,6 +217,10 @@ aggregate_everything <- function(clean_df, verbose = TRUE) {
       dplyr::mutate(
         is_subschool = FALSE
       )
+
+  if (verbose) cat('Calculating attainment %iles for all-grade aggregates\n')
+  full_sch <- full_sch %>%
+    peer_percentile_pipe()
 
   #subschools
   if (verbose) cat('Finding the relevant sub-grade pairs for each school\n')
@@ -218,6 +244,10 @@ aggregate_everything <- function(clean_df, verbose = TRUE) {
     dplyr::mutate(
       is_subschool = TRUE
     )
+
+  if (verbose) cat('Calculating attainment %iles for sub-grade aggregates\n')
+  sub_sch <- sub_sch %>%
+    peer_percentile_pipe()
 
   dplyr::bind_rows(full_sch, sub_sch)
 }
