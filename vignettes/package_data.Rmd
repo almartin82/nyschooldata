@@ -12,13 +12,13 @@ vignette: >
 
 ```{r}
 
-assess_db <- assess_db(test_years = c(2015, 2016))
+ex_assess_db <- assess_db(test_years = c(2015, 2016))
 
 ```
 
 ```{r}
 
-save(assess_db, file = file.path('data', 'assess_db_2015_2016.rda'))
+save(ex_assess_db, file = file.path('data', 'assess_db_2015_2016.rda'))
 
 ```
 
