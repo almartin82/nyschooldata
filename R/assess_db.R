@@ -208,12 +208,16 @@ peer_percentile_pipe <- . %>%
     is_multigrade_aggregate
   ) %>%
   dplyr::mutate(
-    proficient_numerator = dplyr::dense_rank(l3_l4_pct),
+    proficient_numerator_asc = dplyr::dense_rank(l3_l4_pct),
+    proficient_numerator_desc = dplyr::dense_rank(desc(l3_l4_pct)),
     proficient_denominator = sum(count_proficient_dummy),
-    scale_numerator = dplyr::dense_rank(mean_scale_score),
+
+    scale_numerator_asc = dplyr::dense_rank(mean_scale_score),
+    scale_numerator_desc = dplyr::dense_rank(desc(mean_scale_score)),
     scale_denominator = sum(count_scale_dummy),
-    proficiency_percentile = proficient_numerator / proficient_denominator,
-    scale_score_percentile = scale_numerator / scale_denominator
+
+    proficiency_percentile = proficient_numerator_asc / proficient_denominator,
+    scale_score_percentile = scale_numerator_asc / scale_denominator
   ) %>%
   dplyr::select(-count_proficient_dummy, -count_scale_dummy)
 
@@ -245,7 +249,7 @@ assess_db.default <- function(test_years, verbose = TRUE, ...) {
   agg_dfs <- list()
 
   for (i in test_years) {
-    if (verbose) cat(paste('creating assess_db object for', i))
+    if (verbose) cat(paste('creating assess_db object for', i, '\n'))
 
     this_clean <- fetch_assess_db(i, verbose)
     clean_dbs[[as.character(i)]] <- this_clean
