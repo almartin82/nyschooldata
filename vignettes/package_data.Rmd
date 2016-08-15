@@ -27,8 +27,8 @@ save(assess_db, file = file.path('data', 'assess_db_2015_2016.rda'))
 clean_2015 <- fetch_assess_db(2015)
 clean_2016 <- fetch_assess_db(2016)
 
-agg_2015 <- aggregate_grades(clean_2015)
-agg_2016 <- aggregate_grades(clean_2016)
+agg_2015 <- aggregate_everything(clean_2015)
+agg_2016 <- aggregate_everything(clean_2016)
 
 ```
 
