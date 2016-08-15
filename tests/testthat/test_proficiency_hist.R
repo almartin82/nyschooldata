@@ -4,7 +4,7 @@ context("proficiency hist")
 test_that("basic_proficiency_hist produces a plot", {
 
   ex <- p_proficiency_hist(
-    assess_db_all = assess_all,
+    assess_db_all = clean_all,
     bedscodes = c('310100860866', '320800860940'),
     subjects = 'ELA',
     grades = c(5, 6)

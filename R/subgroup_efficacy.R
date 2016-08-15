@@ -22,13 +22,15 @@ subgroup_efficacy <- function(
       )
     )
 
-
   target_sch <- agg_df %>%
     dplyr::filter(
       bedscode == bedscode_in &
         test_year == year &
         test_subject == subject &
         subgroup_code %in% subgroups
+    ) %>%
+    dplyr::mutate(
+      subgroup_grade_key = paste(subgroup_code, test_grade_string, sep = '_')
     )
 
 
@@ -59,11 +61,14 @@ subgroup_efficacy <- function(
       test_year == year &
         test_subject == subject &
         subgroup_code %in% subgroups &
-        test_grade_string == target_sch$test_grade_string[1] &
         is_school == TRUE
     ) %>%
     dplyr::mutate(
-      is_target = ifelse(bedscode == bedscode_in, TRUE, FALSE)
+      is_target = ifelse(bedscode == bedscode_in, TRUE, FALSE),
+      subgroup_grade_key = paste(subgroup_code, test_grade_string, sep = '_')
+    ) %>%
+    dplyr::filter(
+      subgroup_grade_key %in% target_sch$subgroup_grade_key
     )
 
   ggplot(
