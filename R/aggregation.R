@@ -43,7 +43,7 @@ aggregate_grades <- function(clean_df) {
       ),
       is_multigrade_aggregate = TRUE
     ) %>%
-  dplyr::select(-total_tested_meanscale, -sum_of_mean_scale_score)
+    dplyr::select(-total_tested_meanscale, -sum_of_mean_scale_score)
 
   all_gr
 }
@@ -209,14 +209,14 @@ aggregate_everything <- function(clean_df, verbose = TRUE) {
 
   if (verbose) cat('Calculating all-grade school-level aggregates\n')
   full_sch <- clean_df %>%
-      dplyr::ungroup() %>%
-      dplyr::mutate(
-        bedscode = paste0(bedscode, '_all')
-      ) %>%
-      aggregate_grades() %>%
-      dplyr::mutate(
-        is_subschool = FALSE
-      )
+    dplyr::ungroup() %>%
+    dplyr::mutate(
+      bedscode = paste0(bedscode, '_all')
+    ) %>%
+    aggregate_grades() %>%
+    dplyr::mutate(
+      is_subschool = FALSE
+    )
 
   if (verbose) cat('Calculating attainment %iles for all-grade aggregates\n')
   full_sch <- full_sch %>%
