@@ -196,19 +196,24 @@ fetch_assess_db <- function(test_year, verbose = TRUE) {
 }
 
 
-peer_percentile_pipe <- . %>% dplyr::mutate(
-  count_proficient_dummy = ifelse(!is.na(l3_l4_pct), 1, 0),
-  count_scale_dummy = ifelse(!is.na(mean_scale_score), 1, 0)
-) %>%
+peer_percentile_pipe <- . %>%
+  dplyr::mutate(
+    count_proficient_dummy = ifelse(is.finite(l3_l4_pct), 1, 0),
+    count_scale_dummy = ifelse(is.finite(mean_scale_score), 1, 0)
+  ) %>%
   dplyr::group_by(
-    is_multigrade_aggregate, is_school, is_district,
-    test_subject, test_grade_string
+    test_subject, test_grade_string,
+    subgroup_code,
+    is_school, is_district,
+    is_multigrade_aggregate
   ) %>%
   dplyr::mutate(
-    proficiency_numerator = rank(l3_l4_pct),
-    proficienct_denomenator = sum(count_proficient_dummy),
-    proficiency_percentile = rank(l3_l4_pct) / sum(count_proficient_dummy),
-    scale_score_percentile = rank(mean_scale_score) / sum(count_scale_dummy)
+    proficient_numerator = dplyr::dense_rank(l3_l4_pct),
+    proficient_denominator = sum(count_proficient_dummy),
+    scale_numerator = dplyr::dense_rank(mean_scale_score),
+    scale_denominator = sum(count_scale_dummy),
+    proficiency_percentile = proficient_numerator / proficient_denominator,
+    scale_score_percentile = scale_numerator / scale_denominator
   ) %>%
   dplyr::select(-count_proficient_dummy, -count_scale_dummy)
 
