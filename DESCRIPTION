@@ -16,9 +16,11 @@ Depends:
     R(>= 2.10.0)
 Imports:
     dplyr,
+    ggthemes,
+    grid,
+    gridExtra,
     Hmisc,
     httr,
-    ggthemes,
     janitor,
     lubridate,
     NYSEDtools,
