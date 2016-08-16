@@ -209,3 +209,34 @@ p_proficiency_hist_mult_subj_sch_comparison <- function(
 
   base_p
 }
+
+
+
+#' Proficiency History, Multiple Grades, Comparing Two Entities
+#'
+#' @description exported visualization that compares the proficiency
+#' history of two NY state entities - ie a school and the state.
+#'
+#' @inheritParams prof_history_data_prep
+#' @return ggplot
+#' @export
+
+p_proficiency_hist_mult_grade_sch_comparison <- function(
+  assess_db_all, bedscodes, subjects, grades, subgroup_codes = '01'
+){
+
+  helper <- p_proficiency_hist_sch_comparison_plot_helper(
+    assess_db_all, bedscodes, subjects, grades, subgroup_codes
+  )
+
+  base_p <- helper$p +
+    facet_grid(~ grades) +
+    aes(color = name) +
+    labs(
+      title = paste(
+        helper$sch_1, 'vs.', helper$sch_2, 'NY State Test'
+      )
+    )
+
+  base_p
+}

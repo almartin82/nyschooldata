@@ -61,15 +61,16 @@ subgroup_efficacy <- function(
       label = l3_l4_pct
     )
   ) +
-  geom_text(size = 14) +
+  geom_text(size = 10) +
   theme_bw() +
   theme(
     panel.grid = element_blank(),
     axis.ticks = element_blank(),
-    axis.text = element_blank()
+    axis.text = element_blank(),
+    strip.text = element_text(lineheight = 0.5)
   ) +
-  facet_grid(subgroup_name ~ .) +
-  labs(x = '', y = '', title = '% Proficient')
+  facet_wrap(~subgroup_name, ncol = 1) +
+  labs(x = '  ', y = '', title = '% Proficient')
 
   #middle stack: dist
   if (sch_aggregates) {
@@ -80,10 +81,8 @@ subgroup_efficacy <- function(
           test_subject == subject &
           subgroup_code %in% subgroups &
           is_school == TRUE &
-          is_subschool == FALSE
-      ) %>%
-      dplyr::mutate(
-        subgroup_grade_key = paste(subgroup_code, test_grade_string, sep = '_')
+          is_subschool == FALSE &
+          subgroup_code %in% target_sch$subgroup_code
       )
 
     print(dim(dist_df))
@@ -95,7 +94,8 @@ subgroup_efficacy <- function(
         test_year == year &
           test_subject == subject &
           subgroup_code %in% subgroups &
-          is_school == TRUE
+          is_school == TRUE &
+          subgroup_code %in% target_sch$subgroup_code
       )
 
     print(dim(dist_df))
@@ -112,14 +112,14 @@ subgroup_efficacy <- function(
     aes(x = 50, y = 0, label = ranking_format),
     size = 16,
     vjust = 0,
-    alpha = 0.25,
+    alpha = 0.3,
     color = 'blue'
   ) +
   geom_histogram(
-    alpha = 0.6,
+    alpha = 0.5,
     binwidth = 1,
-    fill = 'white',
-    color = 'black'
+    fill = 'gray70',
+    color = 'white'
   ) +
   theme_bw() +
   theme(
@@ -153,15 +153,16 @@ subgroup_efficacy <- function(
       label = percentile_format
     )
   ) +
-  geom_text(size = 14) +
+  geom_text(size = 10) +
   theme_bw() +
   theme(
     panel.grid = element_blank(),
     axis.ticks = element_blank(),
-    axis.text = element_blank()
+    axis.text = element_blank(),
+    strip.text = element_text(lineheight = 0.1)
   ) +
-  facet_grid(subgroup_name ~ .) +
-  labs(x = '', y = '', title = 'Percentile Rank')
+  facet_wrap(~subgroup_name, ncol = 1) +
+  labs(x = '  ', y = '', title = 'Percentile Rank')
 
   out <- gridExtra::grid.arrange(
     p1, p2, p3,
