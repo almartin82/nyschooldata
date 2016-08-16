@@ -10,7 +10,7 @@ nysd_clean_names <- function(name_vector) {
   #data
   clean <- list(
     #STATE
-    "STATEWIDE − ALL DISTRICTS AND CHARTERS" = "NY State (all)",
+    "STATEWIDE - ALL DISTRICTS AND CHARTERS" = "NY State (all)"
   )
 
   name_vector <- sapply(X = name_vector, FUN = clean_name, clean = clean)
@@ -18,6 +18,8 @@ nysd_clean_names <- function(name_vector) {
   out <- unname(name_vector)
 
   out <- gsub('NEW YORK CITY GEOGRAPHIC DISTRICT', 'CSD', out)
+
+  out
 }
 
 
