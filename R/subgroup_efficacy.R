@@ -1,5 +1,18 @@
+#' Subgroup Efficacy
+#'
+#' @param df data.frame, with one grade level or
+#' school level aggregates
+#' @param bedscode target bedscode
+#' @param year school year
+#' @param subject subject
+#' @param subgroups vector of subgroup codes
+#' @param sch_aggregates use school level aggregates?
+#'
+#' @return ggplot
+#' @export
+#'
 subgroup_efficacy <- function(
-  agg_df, bedscode, year, subject,
+  df, bedscode, year, subject,
   subgroups = c('01', '02', '03', '05', '06', '07', '08',
                 '10', '11', '13', '15', '16'),
   sch_aggregates = TRUE
@@ -8,7 +21,7 @@ subgroup_efficacy <- function(
   bedscode_in <- bedscode
 
   #global edits
-  agg_df <- agg_df %>%
+  df <- df %>%
     dplyr::ungroup() %>%
     dplyr::mutate(
       subgroup_name = factor(
@@ -23,7 +36,7 @@ subgroup_efficacy <- function(
       )
     )
 
-  target_sch <- agg_df %>%
+  target_sch <- df %>%
     dplyr::filter(
       bedscode == bedscode_in &
         test_year == year &
@@ -61,7 +74,7 @@ subgroup_efficacy <- function(
   #middle stack: dist
   if (sch_aggregates) {
 
-    dist_df <- agg_df %>%
+    dist_df <- df %>%
       dplyr::filter(
         test_year == year &
           test_subject == subject &
@@ -77,7 +90,7 @@ subgroup_efficacy <- function(
 
   } else {
 
-    dist_df <- agg_df %>%
+    dist_df <- df %>%
       dplyr::filter(
         test_year == year &
           test_subject == subject &
