@@ -204,18 +204,18 @@ peer_percentile_pipe <- . %>%
   dplyr::group_by(
     test_year,
     test_subject,
-    test_grade_string,
+    test_grade,
     subgroup_code,
     is_school, is_district,
     is_multigrade_aggregate
   ) %>%
   dplyr::mutate(
-    proficient_numerator_asc = dplyr::dense_rank(l3_l4_pct),
-    proficient_numerator_desc = dplyr::dense_rank(dplyr::desc(l3_l4_pct)),
+    proficient_numerator_asc = dplyr::min_rank(l3_l4_pct),
+    proficient_numerator_desc = dplyr::min_rank(dplyr::desc(l3_l4_pct)),
     proficient_denominator = sum(count_proficient_dummy),
 
-    scale_numerator_asc = dplyr::dense_rank(mean_scale_score),
-    scale_numerator_desc = dplyr::dense_rank(dplyr::desc(mean_scale_score)),
+    scale_numerator_asc = dplyr::min_rank(mean_scale_score),
+    scale_numerator_desc = dplyr::min_rank(dplyr::desc(mean_scale_score)),
     scale_denominator = sum(count_scale_dummy),
 
     proficiency_percentile = proficient_numerator_asc / proficient_denominator,
