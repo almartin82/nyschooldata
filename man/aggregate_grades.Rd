@@ -4,10 +4,10 @@
 \alias{aggregate_grades}
 \title{Aggregate results by subject across grade levels}
 \usage{
-aggregate_grades(df)
+aggregate_grades(clean_df)
 }
 \arguments{
-\item{df}{data.frame, output of clean_assess_db or fetch_assess_db}
+\item{clean_df}{data.frame, output of clean_assess_db or fetch_assess_db}
 }
 \value{
 data.frame with *only* the sch/dist aggregate scores.

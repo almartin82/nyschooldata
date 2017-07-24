@@ -1,3 +1,7 @@
+#nyschooldata 0.2.5
+* `custom_aggregate` function for creating campus-level averages inside a school.
+* `p_proficiency_hist()` visualization.
+
 # nyschooldata 0.2.4
 * bugfix on `aggregate_grades` that was causing duplicate rows in `assess_growth` and `cohort_growth`.
 

@@ -132,7 +132,10 @@ clean_assess_db <- function(
       remove = FALSE,
       convert = TRUE
     ) %>%
-    dplyr::select(-discard)
+    dplyr::select(-discard) %>%
+    dplyr::mutate(
+      test_grade_string = paste('Grade', as.character(test_grade))
+    )
 
   #calculate cohort
   if (verbose) cat('Calculating implicit cohort\n')
@@ -187,52 +190,91 @@ fetch_assess_db <- function(test_year, verbose = TRUE) {
   raw <- get_raw_assess_db(test_year, verbose)
   clean <- clean_assess_db(raw, test_year, verbose = verbose)
 
-  clean
+  if (verbose) cat('Calculating attainment percentiles for grade-level data\n')
+  clean %>%
+    peer_percentile_pipe()
 }
 
 
-#' Fetch NY State assessment db, and calculate multi-grade aggregates
+peer_percentile_pipe <- . %>%
+  dplyr::mutate(
+    count_proficient_dummy = ifelse(is.finite(l3_l4_pct), 1, 0),
+    count_scale_dummy = ifelse(is.finite(mean_scale_score), 1, 0)
+  ) %>%
+  dplyr::group_by(
+    test_year,
+    test_subject,
+    test_grade,
+    subgroup_code,
+    is_school, is_district,
+    is_multigrade_aggregate
+  ) %>%
+  dplyr::mutate(
+    proficient_numerator_asc = dplyr::min_rank(l3_l4_pct),
+    proficient_numerator_desc = dplyr::min_rank(dplyr::desc(l3_l4_pct)),
+    proficient_denominator = sum(count_proficient_dummy),
+
+    scale_numerator_asc = dplyr::min_rank(mean_scale_score),
+    scale_numerator_desc = dplyr::min_rank(dplyr::desc(mean_scale_score)),
+    scale_denominator = sum(count_scale_dummy),
+
+    proficiency_percentile = proficient_numerator_asc / proficient_denominator,
+    scale_score_percentile = scale_numerator_asc / scale_denominator
+  ) %>%
+  dplyr::select(-count_proficient_dummy, -count_scale_dummy)
+
+
+
+#' @title Create a assess_db object
 #'
-#' @inheritParams fetch_assess_db
-#' @return data.frame
+#' @param test_years numeric vector of test years
+#' @param verbose should assess_db print status updates as
+#' it generates the object?  default is TRUE.
+#'
+#' @examples
+#'\dontrun{
+#' ex_assess_db <- assess_db(
+#'   test_years = c(2014:2016)
+#'  )
+#'
+#' is.assess_db(ex_assess_db)
+#' print(ex_assess_db)
+#' }
 #' @export
 
-fetch_and_aggregate_assess_db <- function(test_year, verbose = TRUE) {
-  clean <- fetch_assess_db(test_year, verbose)
-  if (verbose) cat('Calculating school-level aggregates\n')
-  grade_agg <- aggregate_grades(clean)
+assess_db <- function(test_years, verbose = TRUE) UseMethod("assess_db")
 
-  out <- dplyr::bind_rows(clean, grade_agg)
-
-  out
-}
-
-
-#' Fetch, aggregate, calculate percentiles
-#'
-#' @inheritParams fetch_and_aggregate_assess_db
-#'
-#' @return data.frame
 #' @export
+assess_db.default <- function(test_years, verbose = TRUE, ...) {
 
-fetch_aggregate_percentile_assess_db <- function(test_year, verbose = TRUE) {
-  with_agg <- fetch_and_aggregate_assess_db(test_year, verbose)
+  clean_dbs <- list()
+  agg_dfs <- list()
 
-  if (verbose) cat('Calculating proficiency and scale attainment %iles\n')
+  for (i in test_years) {
+    if (verbose) cat(paste('creating assess_db object for', i, '\n'))
 
-  out <- with_agg %>%
-    dplyr::mutate(
-      count_proficient_dummy = ifelse(!is.na(l3_l4_pct), 1, 0),
-      count_scale_dummy = ifelse(!is.na(mean_scale_score), 1, 0)
-    ) %>%
-    dplyr::group_by(
-      is_multigrade_aggregate, is_school, is_district,
-      test_subject, test_grade
-    ) %>%
-    dplyr::mutate(
-      proficiency_percentile = rank(l3_l4_pct) / sum(count_proficient_dummy),
-      scale_score_percentile = rank(mean_scale_score) / sum(count_scale_dummy)
-    )
+    this_clean <- fetch_assess_db(i, verbose)
+    clean_dbs[[as.character(i)]] <- this_clean
 
+    # #test, read from disk for shorter iterations
+    # clean_dbs[[as.character(i)]] <- fake_fetch_assess_db(i)
+
+    #do all the aggregation for this df
+    if (verbose) cat('Calculating school-level aggregates\n')
+    agg_dfs[[as.character(i)]] <- aggregate_everything(this_clean, verbose)
+  }
+
+  #put all the assessment rows together
+  if (verbose) cat('Combining multiple years of data into single data.frames\n')
+  assess <- dplyr::bind_rows(clean_dbs)
+  aggregates <- dplyr::bind_rows(agg_dfs)
+
+  out <- list(
+    'assess' = assess,
+    'aggregates' = aggregates
+  )
+
+  class(out) <- c("assess_db", class(out))
+  if (verbose) cat('Returning the assess_db object\n')
   out
 }

@@ -35,10 +35,12 @@ cohort_growth <- function(clean_assess_start, clean_assess_end) {
 
   #get basic ids from assess_end
   id_cols <- c(
-    "bedscode", "test_subject", "subgroup_code", "test_grade",
+    "bedscode",
+    "test_subject", "test_grade", "test_grade_string",
     "nrc_code", "nrc_desc",
     "county_code", "county_desc", "name",
-    "subgroup_name", "item_subject_area", "item_desc",
+    "subgroup_code", "subgroup_name",
+    "item_subject_area", "item_desc",
     "is_school", "is_district", "is_multigrade_aggregate"
   )
 
@@ -87,7 +89,8 @@ cohort_growth <- function(clean_assess_start, clean_assess_end) {
                  "l3_count", "l3_pct", "l4_count", "l4_pct",
                  "l2_l4_count", "l2_l4_pct",
                  "l3_l4_count", "l3_l4_pct",
-                 "mean_scale_score", "prof_percentile", "scale_percentile")
+                 "mean_scale_score", "proficiency_percentile",
+                 "scale_score_percentile")
   acad_join <- c(basic_id_cols, acad_cols)
 
   #join and rename start
