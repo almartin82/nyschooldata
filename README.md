@@ -11,12 +11,11 @@ library(devtools)
 devtools::install_github("almartin82/nyschooldata")
 ```
 
-nyschooldata depends on some packages that are also only on GitHub.  If RStudio doesn't install these packages
+nyschooldata depends on some packages that are also only on GitHub.  If RStudio doesn't do it automatically, install these packages:
 
 ```{r, eval = FALSE}
 library(devtools)
-devtools::install_github("sfirke/janitor")
-devtools::install_github("almartin82/NYSEDtool")
+devtools::install_github("almartin82/NYSEDtools")
 ```
 
 ## Contributing
