@@ -16,7 +16,7 @@ nyschooldata depends on some packages that are also only on GitHub.  If RStudio 
 ```{r, eval = FALSE}
 library(devtools)
 devtools::install_github("sfirke/janitor")
-devtools::install_github("almartin82/NYSEDtool")
+devtools::install_github("almartin82/NYSEDtools")
 ```
 
 ## Contributing
