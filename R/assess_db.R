@@ -88,7 +88,7 @@ clean_assess_db <- function(
     dash_to_na <- function(x) ifelse(x == '-', NA, x)
 
     df <- df %>%
-      purrr::dmap_if(contains_suppression_mark, dash_to_na)
+      purrrlyr::dmap_if(contains_suppression_mark, dash_to_na)
 
     #make previously suppressed cols numeric
     cols_to_fix <- c(

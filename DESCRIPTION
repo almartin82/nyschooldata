@@ -25,6 +25,7 @@ Imports:
     lubridate,
     NYSEDtools,
     purrr,
+    purrrlyr,
     tidyr
 Suggests:
     knitr,
