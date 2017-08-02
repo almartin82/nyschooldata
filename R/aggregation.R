@@ -22,11 +22,10 @@ aggregate_grades <- function(clean_df) {
     "test_year", "start_year",
 
     "is_school", "is_district"
-  ) %>%
-  lapply(., as.symbol)
+  )
 
   all_gr <- clean_df %>%
-    dplyr::regroup(grouping_cols) %>%
+    dplyr::group_by_at(grouping_cols) %>%
     org_summary() %>%
     org_percentages()
 
