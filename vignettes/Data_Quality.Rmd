@@ -69,6 +69,7 @@ Odds and Ends:
 
 `clean_assess_db` solves these problems.  Here's the output of that function:
  (`fetch_assess_db` is a wrapper around that function):
+ 
 ```{r}
 
 ex2 <- fetch_assess_db(2016)
