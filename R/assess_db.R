@@ -2,7 +2,7 @@
 #'
 #' @param test_year 4 digit integer representing the end of the desired school
 #' year.  eg, 2014-15 is 2015.
-#' @param verbose logical, print status updates to the console?
+#' @param verbose logical, print status updates to the console? default is TRUE
 #'
 #' @return data frame with assessment results, by school
 #' @export
@@ -228,6 +228,8 @@ peer_percentile_pipe <- . %>%
 #' @title Create a assess_db object
 #'
 #' @param test_years numeric vector of test years
+#' @param sub_grade_aggregates logical, should we calculate custom combinations of grade levels to help make
+#' peering more precise?  default is FALSE
 #' @param verbose should assess_db print status updates as
 #' it generates the object?  default is TRUE.
 #'
@@ -242,10 +244,10 @@ peer_percentile_pipe <- . %>%
 #' }
 #' @export
 
-assess_db <- function(test_years, verbose = TRUE) UseMethod("assess_db")
+assess_db <- function(test_years, sub_grade_aggregates = FALSE, verbose = TRUE) UseMethod("assess_db")
 
 #' @export
-assess_db.default <- function(test_years, verbose = TRUE, ...) {
+assess_db.default <- function(test_years, sub_grade_aggregates = FALSE, verbose = TRUE, ...) {
 
   clean_dbs <- list()
   agg_dfs <- list()
@@ -261,7 +263,7 @@ assess_db.default <- function(test_years, verbose = TRUE, ...) {
 
     #do all the aggregation for this df
     if (verbose) cat('Calculating school-level aggregates\n')
-    agg_dfs[[as.character(i)]] <- aggregate_everything(this_clean, verbose)
+    agg_dfs[[as.character(i)]] <- aggregate_everything(this_clean, sub_grade_aggregates, verbose)
   }
 
   #put all the assessment rows together

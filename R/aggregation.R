@@ -199,12 +199,14 @@ full_aggregation_scaffold <- function(clean_df) {
 #' Makes all-grade and sub-grade aggregates from a clean data file
 #'
 #' @inheritParams full_aggregation_scaffold
+#' @param sub_grade_aggregates logical, should we calculate custom combinations of grade levels to help make
+#' peering more precise?  default is FALSE
 #' @param verbose logical, print status updates to the console?
 #'
 #' @return data.frame, with all-grade and sub-grade aggregations
 #' @export
 
-aggregate_everything <- function(clean_df, verbose = TRUE) {
+aggregate_everything <- function(clean_df, sub_grade_aggregates = FALSE, verbose = TRUE) {
 
   if (verbose) cat('Calculating all-grade school-level aggregates\n')
   full_sch <- clean_df %>%
@@ -222,31 +224,35 @@ aggregate_everything <- function(clean_df, verbose = TRUE) {
     peer_percentile_pipe()
 
   #subschools
-  if (verbose) cat('Finding the relevant sub-grade pairs for each school\n')
-  df <- full_aggregation_scaffold(clean_df) %>%
-    dplyr::mutate(
-      new_bedscode = paste(bedscode, min_grade, max_grade, sep = '_')
-    ) %>%
-    dplyr::select(
-      -group, -min_grade, -max_grade
-    ) %>%
-    dplyr::left_join(
-      y = clean_df,
-      by = c('bedscode', 'test_grade', 'test_subject')
-    ) %>%
-    dplyr::select(-bedscode) %>%
-    dplyr::rename(bedscode = new_bedscode)
+  if (sub_grade_aggregates) {
+    if (verbose) cat('Finding the relevant sub-grade pairs for each school\n')
+    df <- full_aggregation_scaffold(clean_df) %>%
+      dplyr::mutate(
+        new_bedscode = paste(bedscode, min_grade, max_grade, sep = '_')
+      ) %>%
+      dplyr::select(
+        -group, -min_grade, -max_grade
+      ) %>%
+      dplyr::left_join(
+        y = clean_df,
+        by = c('bedscode', 'test_grade', 'test_subject')
+      ) %>%
+      dplyr::select(-bedscode) %>%
+      dplyr::rename(bedscode = new_bedscode)
 
-  if (verbose) cat('Calculating sub-grade school aggregates\n')
-  sub_sch <- df %>%
-    aggregate_grades() %>%
-    dplyr::mutate(
-      is_subschool = TRUE
-    )
+    if (verbose) cat('Calculating sub-grade school aggregates\n')
+    sub_sch <- df %>%
+      aggregate_grades() %>%
+      dplyr::mutate(
+        is_subschool = TRUE
+      )
 
-  if (verbose) cat('Calculating attainment %iles for sub-grade aggregates\n')
-  sub_sch <- sub_sch %>%
-    peer_percentile_pipe()
+    if (verbose) cat('Calculating attainment %iles for sub-grade aggregates\n')
+    sub_sch <- sub_sch %>%
+      peer_percentile_pipe()
 
-  dplyr::bind_rows(full_sch, sub_sch)
+    full_sch <- dplyr::bind_rows(full_sch, sub_sch)
+  }
+
+  full_sch
 }
