@@ -1,4 +1,7 @@
-#nyschooldata 0.2.5
+# nyschooldata 0.2.6
+* supports 2017 NYSED data
+
+# nyschooldata 0.2.5
 * `custom_aggregate` function for creating campus-level averages inside a school.
 * `p_proficiency_hist()` visualization.
 
