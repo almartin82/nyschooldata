@@ -59,8 +59,8 @@ clean_assess_db <- function(
   if (verbose) cat('Cleaning names of assessment data.frame\n')
   df <- janitor::clean_names(df)
 
-  #bad names on 2016 file
-  if (test_year == 2016) {
+  #bad names on 2016, 2017 file
+  if (test_year %in% c(2016, 2017)) {
     df <- df %>%
       dplyr::rename(
         school_year = sy_end_date
