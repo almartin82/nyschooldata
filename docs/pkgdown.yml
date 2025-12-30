@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   data-quality-qa: data-quality-qa.html
   quickstart: quickstart.html
-last_built: 2025-12-30T17:33Z
+last_built: 2025-12-30T18:03Z
 urls:
   reference: https://almartin82.github.io/nyschooldata/reference
   article: https://almartin82.github.io/nyschooldata/articles
