@@ -7,24 +7,29 @@ enrollment data from [NYSED](https://data.nysed.gov/).
 
 ## What can you find with nyschooldata?
 
-Thirteen years of enrollment data. 4,700+ schools. 700+ districts. 62
-counties. Here are ten stories hiding in the numbers.
+**48 years of enrollment data** (1977-2025). 4,700+ schools. 700+
+districts. 62 counties. Here are the stories hiding in the numbers.
 
 ------------------------------------------------------------------------
 
-### 1. The Vanishing 300,000
+### 1. The Vanishing Million
 
-New York public schools lost **295,521 students** since 2012. That’s
-every student in Buffalo, Rochester, Syracuse, and Yonkers—gone.
+New York public schools lost **895,544 students** since 1977—a **27%
+decline**. The 1977 peak of 3.3 million has fallen to 2.4 million today.
 
 ``` r
 library(nyschooldata)
 library(dplyr)
 
-fetch_enr_years(2012:2024, level = "district") %>%
+# 48 years of enrollment history
+fetch_enr_years(c(1977, 1985, 1995, 2005, 2015, 2024), level = "district") %>%
   filter(grade_level == "TOTAL") %>%
   group_by(end_year) %>%
   summarize(total = sum(n_students, na.rm = TRUE))
+#> 1977: 3,299,863  (peak)
+#> 1990: 2,509,928  (baby bust trough)
+#> 2000: 2,864,473  (millennial recovery)
+#> 2024: 2,404,319  (new all-time low)
 ```
 
 ![Statewide enrollment
@@ -242,10 +247,12 @@ enr %>%
 
 ## Available Data
 
-- **Years**: 2012-2025 (14 school years)
+- **Years**: 1977-2025 (48 school years!)
 - **Levels**: School, district, county, state
 - **Grades**: Pre-K through 12, plus ungraded
 - **Flags**: NYC, charter, district aggregates
+
+Note: Pre-K data available from 1995+. Earlier years have K-12 only.
 
 ## Documentation
 
