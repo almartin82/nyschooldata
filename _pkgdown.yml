@@ -3,6 +3,13 @@ url: https://almartin82.github.io/nyschooldata/
 template:
   bootstrap: 5
 
+home:
+  title: "nyschooldata: NY School Enrollment Data"
+  description: >
+    Where did 300,000 students go? Explore 13 years of New York public school
+    enrollment data to discover how the Bronx lost 24%, Pre-K grew 463%, and
+    only one county in the state actually grew.
+
 navbar:
   structure:
     left: [intro, reference, articles]
@@ -11,10 +18,23 @@ navbar:
     articles:
       text: Articles
       menu:
+      - text: "10 Surprising Findings"
+        href: articles/district-hooks.html
+      - text: "---"
       - text: Getting Started
         href: articles/quickstart.html
       - text: Data Quality QA
         href: articles/data-quality-qa.html
+
+articles:
+- title: Explore the Data
+  navbar: ~
+  contents:
+  - district-hooks
+- title: Reference
+  contents:
+  - quickstart
+  - data-quality-qa
 
 reference:
 - title: Fetch Data
