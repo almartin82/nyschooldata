@@ -149,9 +149,10 @@ id_enr_aggs <- function(df) {
       )
   }
 
-  # NYC flag
+  # NYC flag: NYC DOE geographic districts use codes starting with 30-35
   if ("district_code" %in% names(df)) {
-    df$is_nyc <- substr(df$district_code, 1, 2) == "31"
+    first_two <- substr(df$district_code, 1, 2)
+    df$is_nyc <- first_two %in% c("30", "31", "32", "33", "34", "35")
   }
 
   # Charter flag

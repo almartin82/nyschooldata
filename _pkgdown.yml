@@ -1,0 +1,50 @@
+url: https://almartin82.github.io/nyschooldata/
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left: [intro, reference, articles]
+    right: [search, github]
+  components:
+    articles:
+      text: Articles
+      menu:
+      - text: Getting Started
+        href: articles/quickstart.html
+      - text: Data Quality QA
+        href: articles/data-quality-qa.html
+
+reference:
+- title: Fetch Data
+  desc: Download enrollment data from NYSED
+  contents:
+  - fetch_enr
+  - fetch_enr_years
+  - fetch_enr_school
+  - fetch_enr_district
+  - fetch_enr_nyc
+
+- title: Process & Tidy
+  desc: Transform data into analysis-ready formats
+  contents:
+  - tidy_enr
+  - id_enr_aggs
+  - enr_grade_aggs
+  - filter_grade_span
+
+- title: Cache Management
+  desc: Manage locally cached data
+  contents:
+  - cache_status
+  - clear_enr_cache
+
+- title: Utilities
+  desc: Helper functions for working with NY school data
+  contents:
+  - school_year_label
+  - parse_school_year
+  - get_available_years
+  - validate_beds_code
+  - parse_beds_code

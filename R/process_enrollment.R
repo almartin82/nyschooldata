@@ -202,11 +202,17 @@ add_agg_flags <- function(df) {
     df$is_state <- FALSE
   }
 
-  # NYC flag: NYC DOE district code starts with "31"
-  # NYC district BEDS codes: 3100000* (Manhattan), 3200000* (Bronx), etc.
-  # Actually NYC is a single district: 310000
+  # NYC flag: NYC DOE geographic districts use codes starting with 30-35
+
+  # - 307500: NYC Special Schools (District 75)
+  # - 31xxxx: Manhattan (Districts 1-6)
+  # - 32xxxx: Bronx (Districts 7-12)
+  # - 33xxxx: Brooklyn (Districts 13-23, 32)
+  # - 34xxxx: Queens (Districts 24-30)
+  # - 35xxxx: Staten Island (District 31)
   if ("district_code" %in% names(df)) {
-    df$is_nyc <- substr(df$district_code, 1, 2) == "31"
+    first_two <- substr(df$district_code, 1, 2)
+    df$is_nyc <- first_two %in% c("30", "31", "32", "33", "34", "35")
   } else {
     df$is_nyc <- FALSE
   }

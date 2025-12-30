@@ -1,0 +1,177 @@
+---
+title: "Getting Started with nyschooldata"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with nyschooldata}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 7,
+  fig.height = 4
+)
+```
+
+## Installation
+
+Install from GitHub:
+
+```r
+# install.packages("remotes")
+remotes::install_github("almartin82/nyschooldata")
+```
+
+## Quick Example
+
+Fetch the most recent year of New York enrollment data:
+
+```{r fetch-data}
+library(nyschooldata)
+library(dplyr)
+
+# Fetch 2024 enrollment data (2023-24 school year)
+enr <- fetch_enr(2024)
+
+head(enr)
+```
+
+## Understanding the Data
+
+The data is returned in **tidy (long) format** by default:
+
+- Each row is one grade level for one school/district
+- `grade_level` shows the grade ("TOTAL", "PK", "K", "01", "02", etc.)
+- `n_students` is the enrollment count
+- `pct` is the percentage of total enrollment
+- `beds_code` is the 12-digit BEDS (Basic Educational Data System) identifier
+
+```{r data-structure}
+enr %>%
+  filter(is_district) %>%
+  select(end_year, district_name, grade_level, n_students) %>%
+  head(10)
+```
+
+## Filtering by Level
+
+Use the aggregation flags to filter data:
+
+```{r filter-levels}
+# All districts
+districts <- enr %>% filter(is_district, grade_level == "TOTAL")
+nrow(districts)
+
+# All schools
+schools <- enr %>% filter(is_school, grade_level == "TOTAL")
+nrow(schools)
+
+# NYC schools only
+nyc_schools <- enr %>% filter(is_school, is_nyc, grade_level == "TOTAL")
+nrow(nyc_schools)
+```
+
+## Simple Analysis: Top 10 Districts
+
+```{r top-districts}
+enr %>%
+  filter(is_district, grade_level == "TOTAL") %>%
+  arrange(desc(n_students)) %>%
+  select(district_name, county, n_students) %>%
+  head(10)
+```
+
+## NYC Data
+
+NYC is a special case in New York State - it's a single district (NYC DOE) with
+nearly 1,800 schools. Use the `fetch_enr_nyc()` convenience function:
+
+```{r nyc-data}
+nyc <- fetch_enr_nyc(2024)
+
+nyc %>%
+  filter(is_school, grade_level == "TOTAL") %>%
+  arrange(desc(n_students)) %>%
+  select(school_name, n_students) %>%
+  head(10)
+```
+
+## Wide Format
+
+If you prefer wide format (one column per grade), set `tidy = FALSE`:
+
+```{r wide-format}
+enr_wide <- fetch_enr(2024, tidy = FALSE)
+
+enr_wide %>%
+  filter(is_district) %>%
+  select(district_name, row_total, grade_k, grade_01, grade_09, grade_12) %>%
+  head(5)
+```
+
+## Historical Data
+
+Fetch multiple years to analyze trends:
+
+```{r multi-year, eval=FALSE}
+# Fetch 5 years of data
+enr_multi <- fetch_enr_years(2020:2024)
+
+# District enrollment trend
+enr_multi %>%
+  filter(is_district, grade_level == "TOTAL") %>%
+  group_by(end_year) %>%
+  summarize(total_enrollment = sum(n_students, na.rm = TRUE))
+```
+
+## Grade Level Aggregates
+
+Create custom grade span aggregates with `enr_grade_aggs()`:
+
+```{r grade-aggs, eval=FALSE}
+# Get K-8, HS (9-12), and K-12 aggregates
+aggs <- enr_grade_aggs(enr)
+
+aggs %>%
+  filter(is_district) %>%
+  select(district_name, grade_level, n_students) %>%
+  head(15)
+```
+
+## BEDS Codes
+
+New York uses 12-digit BEDS (Basic Educational Data System) codes to identify
+schools. Use the utility functions to work with these codes:
+
+```{r beds-codes}
+# Validate a BEDS code
+validate_beds_code("010100010018")
+
+# Parse a BEDS code into components
+parse_beds_code("010100010018")
+```
+
+## Caching
+
+Data is cached locally by default to avoid repeated downloads. Use these
+functions to manage the cache:
+```{r cache, eval=FALSE}
+# View cache status
+cache_status()
+
+# Clear all cached data
+clear_enr_cache()
+
+# Clear only 2024 data
+clear_enr_cache(2024)
+```
+
+## Next Steps
+
+- Use `?fetch_enr` for full function documentation
+- Explore `fetch_enr_school()` and `fetch_enr_district()` for targeted queries
+- See `get_available_years()` for the range of available data years

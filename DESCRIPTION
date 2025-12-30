@@ -30,5 +30,5 @@ Suggests:
     scales
 VignetteBuilder: knitr
 Config/testthat/edition: 3
-URL: https://github.com/almartin82/nyschooldata
+URL: https://almartin82.github.io/nyschooldata/, https://github.com/almartin82/nyschooldata
 BugReports: https://github.com/almartin82/nyschooldata/issues
