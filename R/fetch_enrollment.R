@@ -39,8 +39,8 @@
 fetch_enr <- function(end_year, level = "school", tidy = TRUE, use_cache = TRUE) {
 
   # Validate year
-  if (end_year < 2012 || end_year > 2025) {
-    stop("end_year must be between 2012 and 2025")
+  if (end_year < 1977 || end_year > 2025) {
+    stop("end_year must be between 1977 and 2025")
   }
 
   # Validate level

@@ -91,8 +91,8 @@ process_enr <- function(df, end_year) {
     result$subgroup_name <- df[["Subgroup Name"]]
   }
 
-  # Total enrollment
-  total_col <- intersect(c("PreK-12 Total", "PK12 TOTAL"), cols)[1]
+  # Total enrollment (K-12 Total for pre-1995, PreK-12 Total for 1995+)
+  total_col <- intersect(c("PreK-12 Total", "PK12 TOTAL", "K-12 Total", "K12 TOTAL"), cols)[1]
   if (!is.na(total_col)) {
     result$row_total <- safe_numeric(df[[total_col]])
   }

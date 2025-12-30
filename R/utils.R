@@ -83,7 +83,7 @@ parse_school_year <- function(label) {
 #' get_available_years()
 get_available_years <- function() {
   list(
-    min_year = 2012L,
+    min_year = 1977L,
     max_year = 2025L
   )
 }

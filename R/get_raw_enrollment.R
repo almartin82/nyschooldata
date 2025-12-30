@@ -12,15 +12,15 @@
 #' Downloads raw enrollment data files from the NYSED IRS archive. These files
 #' contain grade-level enrollment by school or district for all students.
 #'
-#' @param end_year School year end (2023-24 = 2024). Valid years: 2012-2025.
+#' @param end_year School year end (2023-24 = 2024). Valid years: 1977-2025.
 #' @param level Data level: "school" (default) or "district"
 #' @return Raw data frame from NYSED
 #' @keywords internal
 get_raw_enr <- function(end_year, level = "school") {
 
   # Validate inputs
-  if (end_year < 2012 || end_year > 2025) {
-    stop("end_year must be between 2012 and 2025")
+  if (end_year < 1977 || end_year > 2025) {
+    stop("end_year must be between 1977 and 2025")
   }
 
   if (!level %in% c("school", "district")) {
@@ -30,8 +30,10 @@ get_raw_enr <- function(end_year, level = "school") {
   # Download based on file format (varies by year)
   if (end_year >= 2022) {
     get_raw_enr_modern(end_year, level)
-  } else {
+  } else if (end_year >= 2012) {
     get_raw_enr_legacy(end_year, level)
+  } else {
+    get_raw_enr_archive(end_year, level)
   }
 }
 
@@ -164,6 +166,110 @@ get_raw_enr_legacy <- function(end_year, level = "school") {
   df$end_year <- end_year
   df$level <- level
 
+  df
+}
+
+
+#' Download archive format (1977-2011) NYSED data
+#'
+#' @param end_year School year end
+#' @param level Data level
+#' @return Raw data frame
+#' @keywords internal
+get_raw_enr_archive <- function(end_year, level = "district") {
+
+  base_url <- "https://www.p12.nysed.gov/irs/statistics/enroll-n-staff/"
+
+  # Archive format: Public_District_Enrollment_Total_YYYY.xlsx
+  level_prefix <- if (level == "school") "School" else "District"
+  filename <- paste0("Public_", level_prefix, "_Enrollment_Total_", end_year, ".xlsx")
+  url <- paste0(base_url, filename)
+
+  # Download to temp file
+  tname <- tempfile(pattern = "nysed_archive", tmpdir = tempdir(), fileext = ".xlsx")
+
+  tryCatch({
+    downloader::download(url, dest = tname, mode = "wb", quiet = TRUE)
+  }, error = function(e) {
+    stop(paste("Failed to download enrollment data for", end_year, ":", e$message))
+  })
+
+  # Check file size
+  file_info <- file.info(tname)
+  if (file_info$size < 10000) {
+    stop(paste("Download failed for year", end_year, "- file too small"))
+  }
+
+  # Read the Excel file
+
+  df <- readxl::read_excel(tname, sheet = 1)
+
+  # Standardize column names
+  df <- standardize_archive_columns(df)
+
+  # Add metadata
+  df$end_year <- end_year
+  df$level <- level
+
+  df
+}
+
+
+#' Standardize column names from archive format (1977-2011)
+#'
+#' Maps archive column names to the modern format for consistent processing.
+#'
+#' @param df Data frame with archive column names
+#' @return Data frame with standardized column names
+#' @keywords internal
+standardize_archive_columns <- function(df) {
+
+  # Common mappings from archive to modern names
+  col_map <- c(
+    "SCHOOL YEAR" = "School Year",
+    "county" = "County",
+    "COUNTY" = "County",
+    "STATE DISTRICT ID" = "State District Identifier",
+    "STATE LOCATION ID" = "State Location Identifier",
+    "DISTRICT NAME" = "District Name",
+    "LOCATION NAME" = "Location Name",
+    "SUBGROUP CODE" = "Subgroup Code",
+    "SUBGROUP NAME" = "Subgroup Name",
+    "K12 TOTAL" = "K-12 Total",
+    "PK12 TOTAL" = "PreK-12 Total",
+    "PK" = "PreK",
+    "KG (HALF DAY)" = "Kindergarten (Half Day)",
+    "KG (FULL DAY)" = "Kindergarten (Full Day)",
+    "GRADE 1" = "Grade 1",
+    "GRADE 2" = "Grade 2",
+    "GRADE 3" = "Grade 3",
+    "GRADE 4" = "Grade 4",
+    "GRADE 5" = "Grade 5",
+    "GRADE 6" = "Grade 6",
+    "UNGRADED (ELEMENTARY)" = "Ungraded (Elementary)",
+    "GRADE 7" = "Grade 7",
+    "GRADE 8" = "Grade 8",
+    "GRADE 9" = "Grade 9",
+    "GRADE 10" = "Grade 10",
+    "GRADE 11" = "Grade 11",
+    "GRADE 12" = "Grade 12",
+    "UNGRADED (SECONDARY)" = "Ungraded (Secondary)"
+  )
+
+  # Apply mappings
+  old_names <- names(df)
+  new_names <- old_names
+
+  for (i in seq_along(old_names)) {
+    key <- toupper(old_names[i])
+    if (key %in% names(col_map)) {
+      new_names[i] <- col_map[key]
+    } else if (old_names[i] %in% names(col_map)) {
+      new_names[i] <- col_map[old_names[i]]
+    }
+  }
+
+  names(df) <- new_names
   df
 }
 

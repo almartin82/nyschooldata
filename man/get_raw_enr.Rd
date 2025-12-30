@@ -7,7 +7,7 @@
 get_raw_enr(end_year, level = "school")
 }
 \arguments{
-\item{end_year}{School year end (2023-24 = 2024). Valid years: 2012-2025.}
+\item{end_year}{School year end (2023-24 = 2024). Valid years: 1977-2025.}
 
 \item{level}{Data level: "school" (default) or "district"}
 }
