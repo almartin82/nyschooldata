@@ -5,6 +5,8 @@
 [![pkgdown](https://github.com/almartin82/nyschooldata/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/almartin82/nyschooldata/actions/workflows/pkgdown.yaml)
 <!-- badges: end -->
 
+**Documentation: <https://almartin82.github.io/nyschooldata/>**
+
 An R package for fetching and processing New York State school enrollment data from the [NYSED IRS (Information Reporting Services)](https://data.nysed.gov/) Public School Enrollment database.
 
 ## Where Did 300,000 Students Go?

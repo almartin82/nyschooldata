@@ -1,5 +1,7 @@
 # nyschooldata
 
+**Documentation: <https://almartin82.github.io/nyschooldata/>**
+
 An R package for fetching and processing New York State school
 enrollment data from the [NYSED IRS (Information Reporting
 Services)](https://data.nysed.gov/) Public School Enrollment database.
