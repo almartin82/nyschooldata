@@ -368,10 +368,13 @@ All data comes from [NYSED Information Reporting Services](https://www.p12.nysed
 - [Getting Started Guide](https://almartin82.github.io/nyschooldata/articles/quickstart.html)
 - [API Reference](https://almartin82.github.io/nyschooldata/reference/)
 
-## Related Packages
+## Part of the 50 State Schooldata Family
 
-- [njschooldata](https://github.com/almartin82/njschooldata) - New Jersey
-- [ilschooldata](https://github.com/almartin82/ilschooldata) - Illinois
+This package is part of a family of R packages providing school enrollment data for all 50 US states. Each package fetches data directly from the state's Department of Education.
+
+**See also:** [njschooldata](https://github.com/almartin82/njschooldata) - The original state schooldata package for New Jersey.
+
+**All packages:** [github.com/almartin82](https://github.com/almartin82?tab=repositories&q=schooldata)
 
 ## Author
 

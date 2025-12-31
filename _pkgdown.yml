@@ -9,6 +9,9 @@ home:
     Where did 300,000 students go? Explore 13 years of New York public school
     enrollment data to discover how the Bronx lost 24%, Pre-K grew 463%, and
     only one county in the state actually grew.
+  links:
+    - text: "Part of the 50 State Schooldata Family"
+      href: https://github.com/almartin82/njschooldata
 
 navbar:
   structure:
