@@ -2,7 +2,8 @@ Package: nyschooldata
 Title: Fetch and Process New York School Data
 Version: 0.1.0
 Authors@R:
-    person("Al", "Martin", , "almartin@example.com", role = c("aut", "cre"))
+    person("Andy", "Martin", , "almartin@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = ""))
 Description: Downloads and processes school data from the New York State
     Education Department (NYSED). Provides functions for fetching enrollment
     data and transforming it into tidy format for analysis.

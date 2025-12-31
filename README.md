@@ -328,3 +328,7 @@ Note: Pre-K data available 1995+. Earlier years have K-12 only.
 
 - [njschooldata](https://github.com/almartin82/njschooldata) - New Jersey
 - [ilschooldata](https://github.com/almartin82/ilschooldata) - Illinois
+
+## Author
+
+[Andy Martin](https://github.com/almartin82) (almartin@gmail.com)
