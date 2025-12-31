@@ -2,7 +2,7 @@
 
 ## Authors
 
-- **Al Martin**. Author, maintainer.
+- **Andy Martin**. Author, maintainer.
 
 ## Citation
 
@@ -14,7 +14,7 @@ R package version 0.1.0, <https://almartin82.github.io/nyschooldata/>.
 
     @Manual{,
       title = {nyschooldata: Fetch and Process New York School Data},
-      author = {Al Martin},
+      author = {Andy Martin},
       year = {2025},
       note = {R package version 0.1.0},
       url = {https://almartin82.github.io/nyschooldata/},

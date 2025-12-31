@@ -55,4 +55,4 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Al Martin <almartin@example.com>
+**Maintainer**: Andy Martin <almartin@gmail.com>
