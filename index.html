@@ -328,37 +328,124 @@
 <span><span class="co">#&gt; 2,404,319 students</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="available-data">Available Data<a class="anchor" aria-label="anchor" href="#available-data"></a>
+<h2 id="data-availability--format">Data Availability &amp; Format<a class="anchor" aria-label="anchor" href="#data-availability--format"></a>
 </h2>
+<div class="section level3">
+<h3 id="coverage-by-era">Coverage by Era<a class="anchor" aria-label="anchor" href="#coverage-by-era"></a>
+</h3>
 <table class="table">
+<colgroup>
+<col width="16%">
+<col width="23%">
+<col width="60%">
+</colgroup>
 <thead><tr class="header">
-<th>Category</th>
-<th>Options</th>
+<th>Era</th>
+<th>Years</th>
+<th>What’s Available</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><strong>Years</strong></td>
-<td>1977-2025 (48 school years)</td>
+<td><strong>Archive I</strong></td>
+<td>1977-1993</td>
+<td>K-12 enrollment by grade, district &amp; school level</td>
 </tr>
 <tr class="even">
-<td><strong>Levels</strong></td>
-<td>School, District</td>
+<td><strong>Archive II</strong></td>
+<td>1994-2011</td>
+<td>+ Pre-K, + Gender breakdowns</td>
 </tr>
 <tr class="odd">
-<td><strong>Grades</strong></td>
-<td>PK (half/full), K (half/full), 1-12, Ungraded</td>
+<td><strong>Modern</strong></td>
+<td>2012-2021</td>
+<td>+ Econ Disadvantaged, ELL, Students w/ Disabilities</td>
 </tr>
 <tr class="even">
-<td><strong>Geographies</strong></td>
-<td>62 counties, 700+ districts, 4,700+ schools</td>
-</tr>
-<tr class="odd">
-<td><strong>Flags</strong></td>
-<td>NYC, Charter, District/School aggregates</td>
+<td><strong>Current</strong></td>
+<td>2022-2025</td>
+<td>Same as Modern, updated file format</td>
 </tr>
 </tbody>
 </table>
-<p>Note: Pre-K data available 1995+. Earlier years have K-12 only.</p>
+</div>
+<div class="section level3">
+<h3 id="grade-levels">Grade Levels<a class="anchor" aria-label="anchor" href="#grade-levels"></a>
+</h3>
+<p>All years include: <strong>K, 1-12, Ungraded Elementary, Ungraded Secondary</strong></p>
+<p>Pre-K breakdown (1995+): <code>PK_HALF</code>, <code>PK_FULL</code></p>
+<p>Kindergarten breakdown: <code>K_HALF</code>, <code>K_FULL</code></p>
+</div>
+<div class="section level3">
+<h3 id="geographic-hierarchy">Geographic Hierarchy<a class="anchor" aria-label="anchor" href="#geographic-hierarchy"></a>
+</h3>
+<pre><code>State (1)
+└── County (62)
+    └── District (~730)
+        └── School (~4,700)</code></pre>
+</div>
+<div class="section level3">
+<h3 id="identifiers">Identifiers<a class="anchor" aria-label="anchor" href="#identifiers"></a>
+</h3>
+<ul>
+<li>
+<strong>BEDS Code</strong>: 12-digit unique school identifier (e.g., <code>010100010023</code>)
+<ul>
+<li>Digits 1-6: District code</li>
+<li>Digits 7-10: School code</li>
+<li>Digits 11-12: Check digits</li>
+</ul>
+</li>
+<li>
+<strong>District Code</strong>: 6-digit district identifier (e.g., <code>010100</code> = Albany City SD)</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="flags">Flags<a class="anchor" aria-label="anchor" href="#flags"></a>
+</h3>
+<table class="table">
+<thead><tr class="header">
+<th>Flag</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>is_district</code></td>
+<td>District-level aggregate row</td>
+</tr>
+<tr class="even">
+<td><code>is_school</code></td>
+<td>Individual school record</td>
+</tr>
+<tr class="odd">
+<td><code>is_nyc</code></td>
+<td>NYC DOE school/district (codes 30xxxx-35xxxx)</td>
+</tr>
+<tr class="even">
+<td><code>is_charter</code></td>
+<td>Charter school</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level3">
+<h3 id="data-source">Data Source<a class="anchor" aria-label="anchor" href="#data-source"></a>
+</h3>
+<p>All data comes from <a href="https://www.p12.nysed.gov/irs/statistics/enroll-n-staff/home.html" class="external-link">NYSED Information Reporting Services</a>. Files are downloaded, cached locally, and standardized into a consistent schema.</p>
+</div>
+<div class="section level3">
+<h3 id="caveats">Caveats<a class="anchor" aria-label="anchor" href="#caveats"></a>
+</h3>
+<ul>
+<li>
+<strong>Suppression</strong>: Small cell sizes may be suppressed (shown as NA)</li>
+<li>
+<strong>Charter schools</strong>: Charter flag requires school-level data (2012+)</li>
+<li>
+<strong>Historical comparisons</strong>: Pre-K wasn’t tracked before 1995; use K-12 totals for long-term trends</li>
+<li>
+<strong>NYC structure</strong>: NYC has 32 geographic districts + District 75 (special ed) + District 79 (alternative)</li>
+</ul>
+</div>
 </div>
 <div class="section level2">
 <h2 id="key-functions">Key Functions<a class="anchor" aria-label="anchor" href="#key-functions"></a>
