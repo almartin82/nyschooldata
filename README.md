@@ -295,17 +295,61 @@ enr %>%
 #> 2,404,319 students
 ```
 
-## Available Data
+## Data Availability & Format
 
-| Category | Options |
-|----------|---------|
-| **Years** | 1977-2025 (48 school years) |
-| **Levels** | School, District |
-| **Grades** | PK (half/full), K (half/full), 1-12, Ungraded |
-| **Geographies** | 62 counties, 700+ districts, 4,700+ schools |
-| **Flags** | NYC, Charter, District/School aggregates |
+### Coverage by Era
 
-Note: Pre-K data available 1995+. Earlier years have K-12 only.
+| Era | Years | What's Available |
+|-----|-------|------------------|
+| **Archive I** | 1977-1993 | K-12 enrollment by grade, district & school level |
+| **Archive II** | 1994-2011 | + Pre-K, + Gender breakdowns |
+| **Modern** | 2012-2021 | + Econ Disadvantaged, ELL, Students w/ Disabilities |
+| **Current** | 2022-2025 | Same as Modern, updated file format |
+
+### Grade Levels
+
+All years include: **K, 1-12, Ungraded Elementary, Ungraded Secondary**
+
+Pre-K breakdown (1995+): `PK_HALF`, `PK_FULL`
+
+Kindergarten breakdown: `K_HALF`, `K_FULL`
+
+### Geographic Hierarchy
+
+```
+State (1)
+└── County (62)
+    └── District (~730)
+        └── School (~4,700)
+```
+
+### Identifiers
+
+- **BEDS Code**: 12-digit unique school identifier (e.g., `010100010023`)
+  - Digits 1-6: District code
+  - Digits 7-10: School code
+  - Digits 11-12: Check digits
+- **District Code**: 6-digit district identifier (e.g., `010100` = Albany City SD)
+
+### Flags
+
+| Flag | Description |
+|------|-------------|
+| `is_district` | District-level aggregate row |
+| `is_school` | Individual school record |
+| `is_nyc` | NYC DOE school/district (codes 30xxxx-35xxxx) |
+| `is_charter` | Charter school |
+
+### Data Source
+
+All data comes from [NYSED Information Reporting Services](https://www.p12.nysed.gov/irs/statistics/enroll-n-staff/home.html). Files are downloaded, cached locally, and standardized into a consistent schema.
+
+### Caveats
+
+- **Suppression**: Small cell sizes may be suppressed (shown as NA)
+- **Charter schools**: Charter flag requires school-level data (2012+)
+- **Historical comparisons**: Pre-K wasn't tracked before 1995; use K-12 totals for long-term trends
+- **NYC structure**: NYC has 32 geographic districts + District 75 (special ed) + District 79 (alternative)
 
 ## Key Functions
 
