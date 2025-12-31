@@ -67,173 +67,254 @@
 <h2 id="what-can-you-find-with-nyschooldata">What can you find with nyschooldata?<a class="anchor" aria-label="anchor" href="#what-can-you-find-with-nyschooldata"></a>
 </h2>
 <p><strong>48 years of enrollment data</strong> (1977-2025). 4,700+ schools. 700+ districts. 62 counties. Here are the stories hiding in the numbers.</p>
-<hr>
-<div class="section level3">
-<h3 id="id_1-the-vanishing-million">1. The Vanishing Million<a class="anchor" aria-label="anchor" href="#id_1-the-vanishing-million"></a>
-</h3>
-<p>New York public schools lost <strong>895,544 students</strong> since 1977—a <strong>27% decline</strong>. The 1977 peak of 3.3 million has fallen to 2.4 million today.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://almartin82.github.io/nyschooldata/">nyschooldata</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># 48 years of enrollment history</span></span>
-<span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1977</span>, <span class="fl">1985</span>, <span class="fl">1995</span>, <span class="fl">2005</span>, <span class="fl">2015</span>, <span class="fl">2024</span><span class="op">)</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
+<hr>
+<div class="section level3">
+<h3 id="the-long-view-a-generation-of-decline-1977-2024">The Long View: A Generation of Decline (1977-2024)<a class="anchor" aria-label="anchor" href="#the-long-view-a-generation-of-decline-1977-2024"></a>
+</h3>
+<p>New York had <strong>3.3 million students in 1977</strong>. Today: <strong>2.4 million</strong>. That’s 895,000 students—gone.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1977</span>, <span class="fl">1990</span>, <span class="fl">2000</span>, <span class="fl">2010</span>, <span class="fl">2024</span><span class="op">)</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 1977: 3,299,863  (peak)</span></span>
-<span><span class="co">#&gt; 1990: 2,509,928  (baby bust trough)</span></span>
-<span><span class="co">#&gt; 2000: 2,864,473  (millennial recovery)</span></span>
-<span><span class="co">#&gt; 2024: 2,404,319  (new all-time low)</span></span></code></pre></div>
+<span><span class="co">#&gt;   end_year   total</span></span>
+<span><span class="co">#&gt; 1     1977 3299863</span></span>
+<span><span class="co">#&gt; 2     1990 2509928</span></span>
+<span><span class="co">#&gt; 3     2000 2864473</span></span>
+<span><span class="co">#&gt; 4     2010 2702000</span></span>
+<span><span class="co">#&gt; 5     2024 2404319</span></span></code></pre></div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="the-millennial-plateau-2000-2012">The Millennial Plateau (2000-2012)<a class="anchor" aria-label="anchor" href="#the-millennial-plateau-2000-2012"></a>
+</h3>
+<p>The early 2000s saw remarkable stability. Enrollment hovered around 2.7-2.8M for a decade before the decline accelerated.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">:</span><span class="fl">2012</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="the-modern-decline-2012-2024">The Modern Decline (2012-2024)<a class="anchor" aria-label="anchor" href="#the-modern-decline-2012-2024"></a>
+</h3>
+<p><strong>-295,521 students (-11%)</strong> in just 12 years. The decline accelerated in the 2010s.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fl">2012</span><span class="op">:</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/statewide-trend-1.png" alt="Statewide enrollment decline"><div class="figcaption">Statewide enrollment decline</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_2-the-covid-cliff">2. The COVID Cliff<a class="anchor" aria-label="anchor" href="#id_2-the-covid-cliff"></a>
+<h3 id="the-covid-cliff-2019-2024">The COVID Cliff (2019-2024)<a class="anchor" aria-label="anchor" href="#the-covid-cliff-2019-2024"></a>
 </h3>
-<p>2021 saw an unprecedented <strong>4.2% single-year drop</strong>—106,560 students vanished in one year. But 2024 shows the first positive change (+0.02%) in over a decade.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">state_trend</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    change <span class="op">=</span> <span class="va">total</span> <span class="op">-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">total</span><span class="op">)</span>,</span>
-<span>    pct_change <span class="op">=</span> <span class="va">change</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">total</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; 2021: -106,560 (-4.16%)</span></span>
-<span><span class="co">#&gt; 2024: +388 (+0.02%)</span></span></code></pre></div>
+<p><strong>2021 lost 106,560 students in a single year</strong> (-4.2%)—the largest drop ever recorded. But 2024 shows signs of stabilization (+388 students).</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">:</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>change <span class="op">=</span> <span class="va">total</span> <span class="op">-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">total</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   end_year   total  change</span></span>
+<span><span class="co">#&gt; 1     2019 2577890      NA</span></span>
+<span><span class="co">#&gt; 2     2020 2561821  -16069</span></span>
+<span><span class="co">#&gt; 3     2021 2455261 -106560  &lt;- COVID cliff</span></span>
+<span><span class="co">#&gt; 4     2022 2418631  -36630</span></span>
+<span><span class="co">#&gt; 5     2023 2403931  -14700</span></span>
+<span><span class="co">#&gt; 6     2024 2404319    +388  &lt;- first positive year</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/covid-impact-1.png" alt="Year-over-year changes"><div class="figcaption">Year-over-year changes</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_3-the-pre-k-revolution">3. The Pre-K Revolution<a class="anchor" aria-label="anchor" href="#id_3-the-pre-k-revolution"></a>
+<h3 id="grade-level-analysis-where-are-we-losing-students">Grade-Level Analysis: Where Are We Losing Students?<a class="anchor" aria-label="anchor" href="#grade-level-analysis-where-are-we-losing-students"></a>
 </h3>
-<p>Full-day Pre-K exploded <strong>463%</strong>—from 28,000 to 157,000 students. NYC’s Universal Pre-K program drove a 115% jump in 2015 alone.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fl">2012</span><span class="op">:</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"PK_FULL"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2012:  27,885</span></span>
-<span><span class="co">#&gt; 2024: 157,116  (+463%)</span></span></code></pre></div>
-<div class="float">
-<img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/prek-growth-1.png" alt="Pre-K growth"><div class="figcaption">Pre-K growth</div>
-</div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="id_4-the-bronx-exodus">4. The Bronx Exodus<a class="anchor" aria-label="anchor" href="#id_4-the-bronx-exodus"></a>
-</h3>
-<p>The Bronx lost <strong>23.7%</strong> of its students—the worst decline among major counties. Nearly 50,000 students gone.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># County-level changes</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>enr <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="fu">filter</span>(grade_level <span class="sc">==</span> <span class="st">"TOTAL"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="fu">group_by</span>(end_year, county) <span class="sc">%&gt;%</span></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total =</span> <span class="fu">sum</span>(n_students, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="co"># ... calculate change</span></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; BRONX: -49,447 (-23.7%)</span></span></code></pre></div>
-<div class="float">
-<img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/county-change-1.png" alt="County changes"><div class="figcaption">County changes</div>
-</div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="id_5-rochesters-collapse">5. Rochester’s Collapse<a class="anchor" aria-label="anchor" href="#id_5-rochesters-collapse"></a>
-</h3>
-<p>Rochester City SD lost <strong>30%</strong> of its enrollment—the steepest decline among major urban districts. From 32,000 to 23,000 students.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_district.html">fetch_enr_district</a></span><span class="op">(</span><span class="st">"261600"</span>, <span class="fl">2012</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2012: 32,289</span></span>
-<span><span class="co">#&gt; 2024: 22,668  (-29.8%)</span></span></code></pre></div>
-<div class="float">
-<img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/major-districts-1.png" alt="Major district declines"><div class="figcaption">Major district declines</div>
-</div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="id_6-nycs-special-ed-surge">6. NYC’s Special Ed Surge<a class="anchor" aria-label="anchor" href="#id_6-nycs-special-ed-surge"></a>
-</h3>
-<p>While nearly every NYC district shrank, <strong>District 75 grew 40%</strong>. NYC’s citywide special education district is one of very few that gained students.</p>
+<p><strong>Grade 1 fell 17%</strong> since 2012—the pipeline is shrinking. But Pre-K exploded.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># NYC geographic districts vs District 75</span></span>
-<span><span class="fu"><a href="reference/fetch_enr_nyc.html">fetch_enr_nyc</a></span><span class="op">(</span><span class="fl">2012</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"DIST 75"</span>, <span class="va">district_name</span><span class="op">)</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2012: 19,406</span></span>
-<span><span class="co">#&gt; 2024: 27,190  (+40.1%)</span></span></code></pre></div>
-<div class="float">
-<img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/district75-1.png" alt="District 75 growth"><div class="figcaption">District 75 growth</div>
-</div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="id_7-first-grade-is-cratering">7. First Grade is Cratering<a class="anchor" aria-label="anchor" href="#id_7-first-grade-is-cratering"></a>
-</h3>
-<p>Grade 1 enrollment fell <strong>17.4%</strong>—the steepest decline by grade level. The pipeline of future students is shrinking.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">enr</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"01"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2012: 193,366</span></span>
-<span><span class="co">#&gt; 2024: 159,723  (-17.4%)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Compare grade levels</span></span>
+<span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PK_FULL"</span>, <span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"05"</span>, <span class="st">"09"</span>, <span class="st">"12"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">grade_level</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">end_year</span>, values_from <span class="op">=</span> <span class="va">total</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   grade_level  `2012`  `2024`  change</span></span>
+<span><span class="co">#&gt; 1 PK_FULL      27885  157116  +463%</span></span>
+<span><span class="co">#&gt; 2 K           188512  166897   -11%</span></span>
+<span><span class="co">#&gt; 3 01          193366  159723   -17%</span></span>
+<span><span class="co">#&gt; 4 05          196429  168488   -14%</span></span>
+<span><span class="co">#&gt; 5 09          208901  176893   -15%</span></span>
+<span><span class="co">#&gt; 6 12          176789  171553    -3%</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/grade-change-1.png" alt="Grade-level changes"><div class="figcaption">Grade-level changes</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="id_8-charter-schools-keep-growing">8. Charter Schools Keep Growing<a class="anchor" aria-label="anchor" href="#id_8-charter-schools-keep-growing"></a>
+<h3 id="the-pre-k-revolution-2012-2024">The Pre-K Revolution (2012-2024)<a class="anchor" aria-label="anchor" href="#the-pre-k-revolution-2012-2024"></a>
 </h3>
-<p>Charter schools now enroll <strong>181,000 students (7.3%)</strong> across 343 schools—growing even as traditional public school enrollment declines.</p>
+<p>Full-day Pre-K grew <strong>463%</strong>—from 28K to 157K. NYC’s Universal Pre-K launched in 2014 and drove a 115% jump in 2015.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fl">2012</span><span class="op">:</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PK_FULL"</span>, <span class="st">"PK_HALF"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">grade_level</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="float">
+<img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/prek-growth-1.png" alt="Pre-K growth"><div class="figcaption">Pre-K growth</div>
+</div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="nyc-vs-rest-of-state">NYC vs Rest of State<a class="anchor" aria-label="anchor" href="#nyc-vs-rest-of-state"></a>
+</h3>
+<p>NYC is <strong>99% full-day Pre-K</strong>. The rest of the state? Only 85%.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"school"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>, <span class="va">is_school</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">is_charter</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, n_schools <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Charter:     181,334 (343 schools)</span></span>
-<span><span class="co">#&gt; Traditional: 2,307,920 (4,406 schools)</span></span></code></pre></div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="id_9-only-one-county-grew">9. Only One County Grew<a class="anchor" aria-label="anchor" href="#id_9-only-one-county-grew"></a>
-</h3>
-<p>Out of 62 counties, <strong>only Saratoga grew</strong> (+0.3%). Every other county declined.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">county_change</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">pct_change</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="co">#&gt; SARATOGA: +85 (+0.3%)</span></span></code></pre></div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="id_10-the-pre-k-divide">10. The Pre-K Divide<a class="anchor" aria-label="anchor" href="#id_10-the-pre-k-divide"></a>
-</h3>
-<p>NYC Pre-K is now <strong>99% full-day</strong> (103K of 104K students). The rest of the state? Only 85%. A fundamental policy gap.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PK_FULL"</span>, <span class="st">"PK_HALF"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">is_nyc</span>, <span class="va">grade_level</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; NYC:         99% full-day</span></span>
-<span><span class="co">#&gt; Rest of NY:  85% full-day</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">grade_level</span>, values_from <span class="op">=</span> <span class="va">total</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_full <span class="op">=</span> <span class="va">PK_FULL</span> <span class="op">/</span> <span class="op">(</span><span class="va">PK_FULL</span> <span class="op">+</span> <span class="va">PK_HALF</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   is_nyc PK_FULL PK_HALF pct_full</span></span>
+<span><span class="co">#&gt; 1 FALSE   53749    9416     85%</span></span>
+<span><span class="co">#&gt; 2 TRUE   103367     865     99%</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/prek-fullday-1.png" alt="Pre-K full-day comparison"><div class="figcaption">Pre-K full-day comparison</div>
 </div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="nyc-special-education-district-75-2012-2024">NYC Special Education: District 75 (2012-2024)<a class="anchor" aria-label="anchor" href="#nyc-special-education-district-75-2012-2024"></a>
+</h3>
+<p>While NYC geographic districts shrank, <strong>District 75 grew 40%</strong>. NYC’s citywide special education program is one of the few growth areas.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_nyc.html">fetch_enr_nyc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>, <span class="va">is_district</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"DIST 75|GEOG DIST"</span>, <span class="va">district_name</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">district_name</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="float">
+<img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/district75-1.png" alt="District 75 growth"><div class="figcaption">District 75 growth</div>
+</div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="county-analysis-winners-and-losers-2012-2024">County Analysis: Winners and Losers (2012-2024)<a class="anchor" aria-label="anchor" href="#county-analysis-winners-and-losers-2012-2024"></a>
+</h3>
+<p><strong>Only Saratoga County grew</strong> (+0.3%). The Bronx lost 24%—the worst decline among major counties.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">county</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">end_year</span>, values_from <span class="op">=</span> <span class="va">total</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_change <span class="op">=</span> <span class="op">(</span><span class="va">`2024`</span> <span class="op">-</span> <span class="va">`2012`</span><span class="op">)</span> <span class="op">/</span> <span class="va">`2012`</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">pct_change</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Top decliners:</span></span>
+<span><span class="co">#&gt; BRONX:       -23.7%</span></span>
+<span><span class="co">#&gt; SCHENECTADY: -18.7%</span></span>
+<span><span class="co">#&gt; CHEMUNG:     -17.5%</span></span>
+<span><span class="co">#&gt; ...</span></span>
+<span><span class="co">#&gt; Only grower:</span></span>
+<span><span class="co">#&gt; SARATOGA:    +0.3%</span></span></code></pre></div>
+<div class="float">
+<img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/county-change-1.png" alt="County changes"><div class="figcaption">County changes</div>
+</div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="charter-school-growth-2023-2024">Charter School Growth (2023-2024)<a class="anchor" aria-label="anchor" href="#charter-school-growth-2023-2024"></a>
+</h3>
+<p><strong>181,000 students (7.3%)</strong> now attend charter schools across 343 schools.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"school"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>, <span class="va">is_school</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">is_charter</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
+<span>    students <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    schools <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt;   is_charter students schools</span></span>
+<span><span class="co">#&gt; 1 FALSE      2307920    4406</span></span>
+<span><span class="co">#&gt; 2 TRUE        181334     343</span></span></code></pre></div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="major-district-trends-2012-2024">Major District Trends (2012-2024)<a class="anchor" aria-label="anchor" href="#major-district-trends-2012-2024"></a>
+</h3>
+<p>Rochester lost <strong>30%</strong>—the steepest decline among major districts.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Top 5 districts by 2012 enrollment</span></span>
+<span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">district_name</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">end_year</span>, values_from <span class="op">=</span> <span class="va">total</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">`2012`</span> <span class="op">&gt;</span> <span class="fl">20000</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="op">(</span><span class="va">`2024`</span> <span class="op">-</span> <span class="va">`2012`</span><span class="op">)</span> <span class="op">/</span> <span class="va">`2012`</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">pct</span><span class="op">)</span></span></code></pre></div>
+<div class="float">
+<img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/major-districts-1.png" alt="Major district declines"><div class="figcaption">Major district declines</div>
+</div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="kindergarten-half-day-vs-full-day-2012-2024">Kindergarten: Half-Day vs Full-Day (2012-2024)<a class="anchor" aria-label="anchor" href="#kindergarten-half-day-vs-full-day-2012-2024"></a>
+</h3>
+<p>Full-day K is now dominant. Half-day K collapsed from 35K to 8K students.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">2018</span>, <span class="fl">2024</span><span class="op">)</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K_HALF"</span>, <span class="st">"K_FULL"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">grade_level</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   end_year grade_level  total</span></span>
+<span><span class="co">#&gt; 1     2012 K_FULL      153125</span></span>
+<span><span class="co">#&gt; 2     2012 K_HALF       35387</span></span>
+<span><span class="co">#&gt; 3     2024 K_FULL      158575</span></span>
+<span><span class="co">#&gt; 4     2024 K_HALF        8322</span></span></code></pre></div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="individual-school-lookup">Individual School Lookup<a class="anchor" aria-label="anchor" href="#individual-school-lookup"></a>
+</h3>
+<p>Get any school’s enrollment by BEDS code:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Albany High School</span></span>
+<span><span class="fu"><a href="reference/fetch_enr_school.html">fetch_enr_school</a></span><span class="op">(</span><span class="st">"010100010023"</span>, <span class="fl">2020</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span></span></code></pre></div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="individual-district-lookup">Individual District Lookup<a class="anchor" aria-label="anchor" href="#individual-district-lookup"></a>
+</h3>
+<p>Get all schools in a district:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Rochester City SD</span></span>
+<span><span class="fu"><a href="reference/fetch_enr_district.html">fetch_enr_district</a></span><span class="op">(</span><span class="st">"261600"</span>, <span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"school"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>, <span class="va">is_school</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <hr>
 </div>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"almartin82/nyschooldata"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://almartin82.github.io/nyschooldata/">nyschooldata</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
@@ -244,35 +325,82 @@
 <span><span class="va">enr</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2,404,319 students</span></span>
-<span></span>
-<span><span class="co"># Top 10 districts</span></span>
-<span><span class="va">enr</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district_name</span>, <span class="va">county</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; 2,404,319 students</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="available-data">Available Data<a class="anchor" aria-label="anchor" href="#available-data"></a>
 </h2>
-<ul>
-<li>
-<strong>Years</strong>: 1977-2025 (48 school years!)</li>
-<li>
-<strong>Levels</strong>: School, district, county, state</li>
-<li>
-<strong>Grades</strong>: Pre-K through 12, plus ungraded</li>
-<li>
-<strong>Flags</strong>: NYC, charter, district aggregates</li>
-</ul>
-<p>Note: Pre-K data available from 1995+. Earlier years have K-12 only.</p>
+<table class="table">
+<thead><tr class="header">
+<th>Category</th>
+<th>Options</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><strong>Years</strong></td>
+<td>1977-2025 (48 school years)</td>
+</tr>
+<tr class="even">
+<td><strong>Levels</strong></td>
+<td>School, District</td>
+</tr>
+<tr class="odd">
+<td><strong>Grades</strong></td>
+<td>PK (half/full), K (half/full), 1-12, Ungraded</td>
+</tr>
+<tr class="even">
+<td><strong>Geographies</strong></td>
+<td>62 counties, 700+ districts, 4,700+ schools</td>
+</tr>
+<tr class="odd">
+<td><strong>Flags</strong></td>
+<td>NYC, Charter, District/School aggregates</td>
+</tr>
+</tbody>
+</table>
+<p>Note: Pre-K data available 1995+. Earlier years have K-12 only.</p>
+</div>
+<div class="section level2">
+<h2 id="key-functions">Key Functions<a class="anchor" aria-label="anchor" href="#key-functions"></a>
+</h2>
+<table class="table">
+<thead><tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>fetch_enr(year)</code></td>
+<td>Get enrollment for one year</td>
+</tr>
+<tr class="even">
+<td><code>fetch_enr_years(years)</code></td>
+<td>Get multiple years</td>
+</tr>
+<tr class="odd">
+<td><code>fetch_enr_school(beds, year)</code></td>
+<td>Get specific school</td>
+</tr>
+<tr class="even">
+<td><code>fetch_enr_district(code, year)</code></td>
+<td>Get specific district</td>
+</tr>
+<tr class="odd">
+<td><code>fetch_enr_nyc(year)</code></td>
+<td>Get NYC schools only</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/get_available_years.html">get_available_years()</a></code></td>
+<td>Check year range</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="section level2">
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h2>
 <ul>
-<li><a href="https://almartin82.github.io/nyschooldata/articles/district-hooks.html">Full Analysis: 10 Surprising Findings</a></li>
+<li><a href="https://almartin82.github.io/nyschooldata/articles/district-hooks.html">Full Analysis with Charts</a></li>
 <li><a href="https://almartin82.github.io/nyschooldata/articles/quickstart.html">Getting Started Guide</a></li>
 <li><a href="https://almartin82.github.io/nyschooldata/reference/">API Reference</a></li>
 </ul>
