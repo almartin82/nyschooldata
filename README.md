@@ -2,12 +2,13 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/almartin82/nyschooldata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/almartin82/nyschooldata/actions/workflows/R-CMD-check.yaml)
+[![Python Tests](https://github.com/almartin82/nyschooldata/actions/workflows/python-test.yaml/badge.svg)](https://github.com/almartin82/nyschooldata/actions/workflows/python-test.yaml)
 [![pkgdown](https://github.com/almartin82/nyschooldata/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/almartin82/nyschooldata/actions/workflows/pkgdown.yaml)
 <!-- badges: end -->
 
 **Docs: <https://almartin82.github.io/nyschooldata/>**
 
-An R package for fetching and processing New York State school enrollment data from [NYSED](https://data.nysed.gov/).
+Fetch and analyze New York State school enrollment data from [NYSED](https://data.nysed.gov/) in R or Python.
 
 ## What can you find with nyschooldata?
 
@@ -281,6 +282,8 @@ remotes::install_github("almartin82/nyschooldata")
 
 ## Quick Start
 
+### R
+
 ```r
 library(nyschooldata)
 library(dplyr)
@@ -293,6 +296,28 @@ enr %>%
   filter(is_district, grade_level == "TOTAL") %>%
   summarize(total = sum(n_students, na.rm = TRUE))
 #> 2,404,319 students
+```
+
+### Python
+
+```python
+import pynyschooldata as ny
+
+# Fetch 2024 data (2023-24 school year)
+enr = ny.fetch_enr(2024)
+
+# Statewide total
+total = enr[enr['is_district'] & (enr['grade_level'] == 'TOTAL')]['n_students'].sum()
+print(f"{total:,} students")
+#> 2,404,319 students
+
+# Get multiple years
+enr_multi = ny.fetch_enr_multi([2020, 2021, 2022, 2023, 2024])
+
+# Check available years
+years = ny.get_available_years()
+print(f"Data available: {years['min_year']}-{years['max_year']}")
+#> Data available: 1977-2025
 ```
 
 ## Data Availability & Format
