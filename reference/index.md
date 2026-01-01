@@ -6,8 +6,10 @@ Download enrollment data from NYSED
 
 - [`fetch_enr()`](https://almartin82.github.io/nyschooldata/reference/fetch_enr.md)
   : Fetch New York enrollment data
-- [`fetch_enr_years()`](https://almartin82.github.io/nyschooldata/reference/fetch_enr_years.md)
+- [`fetch_enr_multi()`](https://almartin82.github.io/nyschooldata/reference/fetch_enr_multi.md)
   : Fetch enrollment data for multiple years
+- [`fetch_enr_years()`](https://almartin82.github.io/nyschooldata/reference/fetch_enr_years.md)
+  : Fetch enrollment data for multiple years (legacy)
 - [`fetch_enr_school()`](https://almartin82.github.io/nyschooldata/reference/fetch_enr_school.md)
   : Get enrollment for a specific school by BEDS code
 - [`fetch_enr_district()`](https://almartin82.github.io/nyschooldata/reference/fetch_enr_district.md)

@@ -2,6 +2,7 @@
 <url><loc>https://almartin82.github.io/nyschooldata/404.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/CLAUDE.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/LICENSE-text.html</loc></url>
+<url><loc>https://almartin82.github.io/nyschooldata/LICENSE.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/articles/data-quality-qa.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/articles/district-hooks.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/articles/index.html</loc></url>
@@ -16,6 +17,7 @@
 <url><loc>https://almartin82.github.io/nyschooldata/reference/enr_grade_aggs.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/fetch_enr.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/fetch_enr_district.html</loc></url>
+<url><loc>https://almartin82.github.io/nyschooldata/reference/fetch_enr_multi.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/fetch_enr_nyc.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/fetch_enr_school.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/fetch_enr_years.html</loc></url>
@@ -33,7 +35,6 @@
 <url><loc>https://almartin82.github.io/nyschooldata/reference/nyschooldata-package.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/parse_beds_code.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/parse_school_year.html</loc></url>
-<url><loc>https://almartin82.github.io/nyschooldata/reference/pipe.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/process_enr.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/read_cache.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/safe_numeric.html</loc></url>
