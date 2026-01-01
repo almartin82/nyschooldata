@@ -2,7 +2,7 @@
 % Please edit documentation in R/fetch_enrollment.R
 \name{fetch_enr_years}
 \alias{fetch_enr_years}
-\title{Fetch enrollment data for multiple years}
+\title{Fetch enrollment data for multiple years (legacy)}
 \usage{
 fetch_enr_years(years, level = "school", tidy = TRUE, use_cache = TRUE)
 }

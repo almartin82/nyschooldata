@@ -82,6 +82,44 @@ fetch_enr <- function(end_year, level = "school", tidy = TRUE, use_cache = TRUE)
 
 #' Fetch enrollment data for multiple years
 #'
+#' Downloads and combines enrollment data for multiple school years.
+#'
+#' @param end_years Vector of school year ends (e.g., c(2022, 2023, 2024))
+#' @param level Data level: "school" (default) or "district"
+#' @param tidy If TRUE (default), returns data in long (tidy) format.
+#' @param use_cache If TRUE (default), uses locally cached data when available.
+#' @return Combined data frame with enrollment data for all requested years
+#' @export
+#' @examples
+#' \dontrun{
+#' # Get 3 years of data
+#' enr_multi <- fetch_enr_multi(2022:2024)
+#' }
+fetch_enr_multi <- function(end_years, level = "school", tidy = TRUE, use_cache = TRUE) {
+
+  # Validate years
+  invalid_years <- end_years[end_years < 1977 | end_years > 2025]
+  if (length(invalid_years) > 0) {
+    stop(paste("Invalid years:", paste(invalid_years, collapse = ", "),
+               "\nend_year must be between 1977 and 2025"))
+  }
+
+  # Fetch each year
+  results <- purrr::map(
+    end_years,
+    function(yr) {
+      message(paste("Fetching", yr, "..."))
+      fetch_enr(yr, level = level, tidy = tidy, use_cache = use_cache)
+    }
+  )
+
+  # Combine
+  dplyr::bind_rows(results)
+}
+
+
+#' Fetch enrollment data for multiple years (legacy)
+#'
 #' Convenience function to download enrollment data for multiple years
 #' and combine into a single data frame.
 #'
