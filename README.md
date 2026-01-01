@@ -368,13 +368,11 @@ All data comes from [NYSED Information Reporting Services](https://www.p12.nysed
 - [Getting Started Guide](https://almartin82.github.io/nyschooldata/articles/quickstart.html)
 - [API Reference](https://almartin82.github.io/nyschooldata/reference/)
 
-## Part of the 50 State Schooldata Family
+## Part of the State Schooldata Project
 
-This package is part of a family of R packages providing school enrollment data for all 50 US states. Each package fetches data directly from the state's Department of Education.
+A simple, consistent interface for accessing state-published school data in Python and R.
 
-**See also:** [njschooldata](https://github.com/almartin82/njschooldata) - The original state schooldata package for New Jersey.
-
-**All packages:** [github.com/almartin82](https://github.com/almartin82?tab=repositories&q=schooldata)
+**All 50 state packages:** [github.com/almartin82](https://github.com/almartin82?tab=repositories&q=schooldata)
 
 ## Author
 
