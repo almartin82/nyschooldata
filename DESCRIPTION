@@ -1,12 +1,11 @@
 Package: nyschooldata
-Title: Fetch and Process New York School Data
+Title: New York School Data
 Version: 0.1.0
 Authors@R:
     person("Andy", "Martin", , "almartin@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = ""))
-Description: Downloads and processes school data from the New York State
-    Education Department (NYSED). Provides functions for fetching enrollment
-    data and transforming it into tidy format for analysis.
+Description: A simple, consistent interface for accessing New York
+    school data in R.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
