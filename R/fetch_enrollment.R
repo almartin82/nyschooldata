@@ -155,7 +155,7 @@ fetch_enr_school <- function(beds_code, end_year, tidy = TRUE, use_cache = TRUE)
     enr <- fetch_enr_years(end_year, level = "school", tidy = tidy, use_cache = use_cache)
   }
 
-  enr %>%
+  enr |>
     dplyr::filter(beds_code == !!beds_code)
 }
 
@@ -199,7 +199,7 @@ fetch_enr_district <- function(district_code, end_year, level = "school",
     enr <- fetch_enr_years(end_year, level = level, tidy = tidy, use_cache = use_cache)
   }
 
-  enr %>%
+  enr |>
     dplyr::filter(district_code == !!district_code)
 }
 
@@ -227,6 +227,6 @@ fetch_enr_nyc <- function(end_year, level = "school", tidy = TRUE, use_cache = T
     enr <- fetch_enr_years(end_year, level = level, tidy = tidy, use_cache = use_cache)
   }
 
-  enr %>%
+  enr |>
     dplyr::filter(is_nyc == TRUE)
 }

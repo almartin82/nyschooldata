@@ -72,14 +72,14 @@ tidy_enr <- function(df) {
         gl <- grade_level_map[.x]
         if (is.na(gl)) gl <- .x
 
-        df %>%
-          dplyr::select(dplyr::all_of(c(invariants, .x))) %>%
-          dplyr::rename(n_students = dplyr::all_of(.x)) %>%
+        df |>
+          dplyr::select(dplyr::all_of(c(invariants, .x))) |>
+          dplyr::rename(n_students = dplyr::all_of(.x)) |>
           dplyr::mutate(
             grade_level = gl,
             subgroup = "total_enrollment",
             pct = n_students / row_total
-          ) %>%
+          ) |>
           dplyr::select(dplyr::all_of(c(
             invariants[!invariants %in% c("row_total", "subgroup_code", "subgroup_name")],
             "grade_level", "subgroup", "n_students", "pct"
@@ -92,14 +92,14 @@ tidy_enr <- function(df) {
 
   # Add total enrollment row
   if ("row_total" %in% names(df)) {
-    tidy_total <- df %>%
-      dplyr::select(dplyr::all_of(invariants)) %>%
+    tidy_total <- df |>
+      dplyr::select(dplyr::all_of(invariants)) |>
       dplyr::mutate(
         n_students = row_total,
         subgroup = "total_enrollment",
         pct = 1.0,
         grade_level = "TOTAL"
-      ) %>%
+      ) |>
       dplyr::select(dplyr::all_of(c(
         invariants[!invariants %in% c("row_total", "subgroup_code", "subgroup_name")],
         "grade_level", "subgroup", "n_students", "pct"
@@ -109,7 +109,7 @@ tidy_enr <- function(df) {
   }
 
   # Combine all tidy data
-  result <- dplyr::bind_rows(tidy_total, tidy_grades) %>%
+  result <- dplyr::bind_rows(tidy_total, tidy_grades) |>
     dplyr::filter(!is.na(n_students))
 
   result
@@ -134,14 +134,14 @@ id_enr_aggs <- function(df) {
 
   # Add flags based on available identifiers
   if ("beds_code" %in% names(df)) {
-    df <- df %>%
+    df <- df |>
       dplyr::mutate(
         is_school = !is.na(school_code) & school_code != "0000",
         is_district = !is.na(school_code) & school_code == "0000",
         is_state = FALSE
       )
   } else if ("district_beds" %in% names(df)) {
-    df <- df %>%
+    df <- df |>
       dplyr::mutate(
         is_school = FALSE,
         is_district = TRUE,
@@ -184,49 +184,49 @@ enr_grade_aggs <- function(df) {
   group_vars <- group_vars[group_vars %in% names(df)]
 
   # K-8 aggregate
-  k8_agg <- df %>%
+  k8_agg <- df |>
     dplyr::filter(
       subgroup == "total_enrollment",
       grade_level %in% c("K", "01", "02", "03", "04", "05", "06", "07", "08")
-    ) %>%
-    dplyr::group_by(dplyr::across(dplyr::all_of(group_vars))) %>%
+    ) |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(group_vars))) |>
     dplyr::summarize(
       n_students = sum(n_students, na.rm = TRUE),
       .groups = "drop"
-    ) %>%
+    ) |>
     dplyr::mutate(
       grade_level = "K8",
       pct = NA_real_
     )
 
   # High school (9-12) aggregate
-  hs_agg <- df %>%
+  hs_agg <- df |>
     dplyr::filter(
       subgroup == "total_enrollment",
       grade_level %in% c("09", "10", "11", "12")
-    ) %>%
-    dplyr::group_by(dplyr::across(dplyr::all_of(group_vars))) %>%
+    ) |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(group_vars))) |>
     dplyr::summarize(
       n_students = sum(n_students, na.rm = TRUE),
       .groups = "drop"
-    ) %>%
+    ) |>
     dplyr::mutate(
       grade_level = "HS",
       pct = NA_real_
     )
 
   # K-12 aggregate (excludes PK)
-  k12_agg <- df %>%
+  k12_agg <- df |>
     dplyr::filter(
       subgroup == "total_enrollment",
       grade_level %in% c("K", "01", "02", "03", "04", "05", "06", "07", "08",
                          "09", "10", "11", "12")
-    ) %>%
-    dplyr::group_by(dplyr::across(dplyr::all_of(group_vars))) %>%
+    ) |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(group_vars))) |>
     dplyr::summarize(
       n_students = sum(n_students, na.rm = TRUE),
       .groups = "drop"
-    ) %>%
+    ) |>
     dplyr::mutate(
       grade_level = "K12",
       pct = NA_real_
@@ -261,6 +261,6 @@ filter_grade_span <- function(df, span = "k12") {
     stop("Invalid span. Must be one of: ", paste(names(grade_spans), collapse = ", "))
   }
 
-  df %>%
+  df |>
     dplyr::filter(grade_level %in% grade_spans[[span]])
 }
