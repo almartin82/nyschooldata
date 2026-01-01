@@ -5,7 +5,7 @@ Authors@R:
     person("Andy", "Martin", , "almartin@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = ""))
 Description: A simple, consistent interface for accessing New York
-    school data in R.
+    school data in Python and R.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
