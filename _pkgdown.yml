@@ -1,5 +1,9 @@
 url: https://almartin82.github.io/nyschooldata/
 
+authors:
+  Andy Martin:
+    href: https://github.com/almartin82
+
 template:
   bootstrap: 5
 
@@ -44,6 +48,7 @@ reference:
   desc: Download enrollment data from NYSED
   contents:
   - fetch_enr
+  - fetch_enr_multi
   - fetch_enr_years
   - fetch_enr_school
   - fetch_enr_district
