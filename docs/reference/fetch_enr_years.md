@@ -1,4 +1,4 @@
-# Fetch enrollment data for multiple years
+# Fetch enrollment data for multiple years (legacy)
 
 Convenience function to download enrollment data for multiple years and
 combine into a single data frame.

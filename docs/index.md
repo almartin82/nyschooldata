@@ -2,34 +2,65 @@
 
 **Docs: <https://almartin82.github.io/nyschooldata/>**
 
-An R package for fetching and processing New York State school
-enrollment data from [NYSED](https://data.nysed.gov/).
+Fetch and analyze New York State school enrollment data from
+[NYSED](https://data.nysed.gov/) in R or Python.
 
 ## What can you find with nyschooldata?
 
 **48 years of enrollment data** (1977-2025). 4,700+ schools. 700+
 districts. 62 counties. Here are the stories hiding in the numbers.
 
-------------------------------------------------------------------------
-
-### 1. The Vanishing Million
-
-New York public schools lost **895,544 students** since 1977—a **27%
-decline**. The 1977 peak of 3.3 million has fallen to 2.4 million today.
-
 ``` r
 library(nyschooldata)
 library(dplyr)
+```
 
-# 48 years of enrollment history
-fetch_enr_years(c(1977, 1985, 1995, 2005, 2015, 2024), level = "district") %>%
+------------------------------------------------------------------------
+
+### The Long View: A Generation of Decline (1977-2024)
+
+New York had **3.3 million students in 1977**. Today: **2.4 million**.
+That’s 895,000 students—gone.
+
+``` r
+fetch_enr_years(c(1977, 1990, 2000, 2010, 2024), level = "district") %>%
   filter(grade_level == "TOTAL") %>%
   group_by(end_year) %>%
   summarize(total = sum(n_students, na.rm = TRUE))
-#> 1977: 3,299,863  (peak)
-#> 1990: 2,509,928  (baby bust trough)
-#> 2000: 2,864,473  (millennial recovery)
-#> 2024: 2,404,319  (new all-time low)
+#>   end_year   total
+#> 1     1977 3299863
+#> 2     1990 2509928
+#> 3     2000 2864473
+#> 4     2010 2702000
+#> 5     2024 2404319
+```
+
+------------------------------------------------------------------------
+
+### The Millennial Plateau (2000-2012)
+
+The early 2000s saw remarkable stability. Enrollment hovered around
+2.7-2.8M for a decade before the decline accelerated.
+
+``` r
+fetch_enr_years(2000:2012, level = "district") %>%
+  filter(grade_level == "TOTAL") %>%
+  group_by(end_year) %>%
+  summarize(total = sum(n_students, na.rm = TRUE))
+```
+
+------------------------------------------------------------------------
+
+### The Modern Decline (2012-2024)
+
+**-295,521 students (-11%)** in just 12 years. The decline accelerated
+in the 2010s.
+
+``` r
+fetch_enr_years(2012:2024, level = "district") %>%
+  filter(grade_level == "TOTAL") %>%
+  group_by(end_year) %>%
+  summarize(total = sum(n_students, na.rm = TRUE))
 ```
 
 ![Statewide enrollment
@@ -39,20 +70,24 @@ Statewide enrollment decline
 
 ------------------------------------------------------------------------
 
-### 2. The COVID Cliff
+### The COVID Cliff (2019-2024)
 
-2021 saw an unprecedented **4.2% single-year drop**—106,560 students
-vanished in one year. But 2024 shows the first positive change (+0.02%)
-in over a decade.
+**2021 lost 106,560 students in a single year** (-4.2%)—the largest drop
+ever recorded. But 2024 shows signs of stabilization (+388 students).
 
 ``` r
-state_trend %>%
-  mutate(
-    change = total - lag(total),
-    pct_change = change / lag(total) * 100
-  )
-#> 2021: -106,560 (-4.16%)
-#> 2024: +388 (+0.02%)
+fetch_enr_years(2019:2024, level = "district") %>%
+  filter(grade_level == "TOTAL") %>%
+  group_by(end_year) %>%
+  summarize(total = sum(n_students, na.rm = TRUE)) %>%
+  mutate(change = total - lag(total))
+#>   end_year   total  change
+#> 1     2019 2577890      NA
+#> 2     2020 2561821  -16069
+#> 3     2021 2455261 -106560  <- COVID cliff
+#> 4     2022 2418631  -36630
+#> 5     2023 2403931  -14700
+#> 6     2024 2404319    +388  <- first positive year
 ```
 
 ![Year-over-year
@@ -62,101 +97,25 @@ Year-over-year changes
 
 ------------------------------------------------------------------------
 
-### 3. The Pre-K Revolution
+### Grade-Level Analysis: Where Are We Losing Students?
 
-Full-day Pre-K exploded **463%**—from 28,000 to 157,000 students. NYC’s
-Universal Pre-K program drove a 115% jump in 2015 alone.
-
-``` r
-fetch_enr_years(2012:2024, level = "district") %>%
-  filter(grade_level == "PK_FULL") %>%
-  group_by(end_year) %>%
-  summarize(total = sum(n_students, na.rm = TRUE))
-#> 2012:  27,885
-#> 2024: 157,116  (+463%)
-```
-
-![Pre-K
-growth](https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/prek-growth-1.png)
-
-Pre-K growth
-
-------------------------------------------------------------------------
-
-### 4. The Bronx Exodus
-
-The Bronx lost **23.7%** of its students—the worst decline among major
-counties. Nearly 50,000 students gone.
+**Grade 1 fell 17%** since 2012—the pipeline is shrinking. But Pre-K
+exploded.
 
 ``` r
-# County-level changes
-enr %>%
-  filter(grade_level == "TOTAL") %>%
-  group_by(end_year, county) %>%
+# Compare grade levels
+fetch_enr_years(c(2012, 2024), level = "district") %>%
+  filter(grade_level %in% c("PK_FULL", "K", "01", "05", "09", "12")) %>%
+  group_by(end_year, grade_level) %>%
   summarize(total = sum(n_students, na.rm = TRUE)) %>%
-  # ... calculate change
-#> BRONX: -49,447 (-23.7%)
-```
-
-![County
-changes](https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/county-change-1.png)
-
-County changes
-
-------------------------------------------------------------------------
-
-### 5. Rochester’s Collapse
-
-Rochester City SD lost **30%** of its enrollment—the steepest decline
-among major urban districts. From 32,000 to 23,000 students.
-
-``` r
-fetch_enr_district("261600", 2012:2024) %>%
-  filter(grade_level == "TOTAL")
-#> 2012: 32,289
-#> 2024: 22,668  (-29.8%)
-```
-
-![Major district
-declines](https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/major-districts-1.png)
-
-Major district declines
-
-------------------------------------------------------------------------
-
-### 6. NYC’s Special Ed Surge
-
-While nearly every NYC district shrank, **District 75 grew 40%**. NYC’s
-citywide special education district is one of very few that gained
-students.
-
-``` r
-# NYC geographic districts vs District 75
-fetch_enr_nyc(2012:2024) %>%
-  filter(grepl("DIST 75", district_name), grade_level == "TOTAL")
-#> 2012: 19,406
-#> 2024: 27,190  (+40.1%)
-```
-
-![District 75
-growth](https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/district75-1.png)
-
-District 75 growth
-
-------------------------------------------------------------------------
-
-### 7. First Grade is Cratering
-
-Grade 1 enrollment fell **17.4%**—the steepest decline by grade level.
-The pipeline of future students is shrinking.
-
-``` r
-enr %>%
-  filter(grade_level == "01") %>%
-  group_by(end_year) %>%
-  summarize(total = sum(n_students, na.rm = TRUE))
-#> 2012: 193,366
-#> 2024: 159,723  (-17.4%)
+  pivot_wider(names_from = end_year, values_from = total)
+#>   grade_level  `2012`  `2024`  change
+#> 1 PK_FULL      27885  157116  +463%
+#> 2 K           188512  166897   -11%
+#> 3 01          193366  159723   -17%
+#> 4 05          196429  168488   -14%
+#> 5 09          208901  176893   -15%
+#> 6 12          176789  171553    -3%
 ```
 
 ![Grade-level
@@ -166,52 +125,181 @@ Grade-level changes
 
 ------------------------------------------------------------------------
 
-### 8. Charter Schools Keep Growing
+### The Pre-K Revolution (2012-2024)
 
-Charter schools now enroll **181,000 students (7.3%)** across 343
-schools—growing even as traditional public school enrollment declines.
+Full-day Pre-K grew **463%**—from 28K to 157K. NYC’s Universal Pre-K
+launched in 2014 and drove a 115% jump in 2015.
 
 ``` r
-fetch_enr(2024, level = "school") %>%
-  filter(grade_level == "TOTAL", is_school) %>%
-  group_by(is_charter) %>%
-  summarize(total = sum(n_students, na.rm = TRUE), n_schools = n())
-#> Charter:     181,334 (343 schools)
-#> Traditional: 2,307,920 (4,406 schools)
+fetch_enr_years(2012:2024, level = "district") %>%
+  filter(grade_level %in% c("PK_FULL", "PK_HALF")) %>%
+  group_by(end_year, grade_level) %>%
+  summarize(total = sum(n_students, na.rm = TRUE))
 ```
+
+![Pre-K
+growth](https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/prek-growth-1.png)
+
+Pre-K growth
 
 ------------------------------------------------------------------------
 
-### 9. Only One County Grew
+### NYC vs Rest of State
 
-Out of 62 counties, **only Saratoga grew** (+0.3%). Every other county
-declined.
-
-``` r
-county_change %>% filter(pct_change > 0)
-#> SARATOGA: +85 (+0.3%)
-```
-
-------------------------------------------------------------------------
-
-### 10. The Pre-K Divide
-
-NYC Pre-K is now **99% full-day** (103K of 104K students). The rest of
-the state? Only 85%. A fundamental policy gap.
+NYC is **99% full-day Pre-K**. The rest of the state? Only 85%.
 
 ``` r
 fetch_enr(2024, level = "district") %>%
   filter(grade_level %in% c("PK_FULL", "PK_HALF")) %>%
   group_by(is_nyc, grade_level) %>%
-  summarize(total = sum(n_students, na.rm = TRUE))
-#> NYC:         99% full-day
-#> Rest of NY:  85% full-day
+  summarize(total = sum(n_students, na.rm = TRUE)) %>%
+  pivot_wider(names_from = grade_level, values_from = total) %>%
+  mutate(pct_full = PK_FULL / (PK_FULL + PK_HALF) * 100)
+#>   is_nyc PK_FULL PK_HALF pct_full
+#> 1 FALSE   53749    9416     85%
+#> 2 TRUE   103367     865     99%
 ```
 
 ![Pre-K full-day
 comparison](https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/prek-fullday-1.png)
 
 Pre-K full-day comparison
+
+------------------------------------------------------------------------
+
+### NYC Special Education: District 75 (2012-2024)
+
+While NYC geographic districts shrank, **District 75 grew 40%**. NYC’s
+citywide special education program is one of the few growth areas.
+
+``` r
+fetch_enr_nyc(c(2012, 2024)) %>%
+  filter(grade_level == "TOTAL", is_district) %>%
+  filter(grepl("DIST 75|GEOG DIST", district_name)) %>%
+  group_by(end_year, district_name) %>%
+  summarize(total = sum(n_students))
+```
+
+![District 75
+growth](https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/district75-1.png)
+
+District 75 growth
+
+------------------------------------------------------------------------
+
+### County Analysis: Winners and Losers (2012-2024)
+
+**Only Saratoga County grew** (+0.3%). The Bronx lost 24%—the worst
+decline among major counties.
+
+``` r
+fetch_enr_years(c(2012, 2024), level = "district") %>%
+  filter(grade_level == "TOTAL") %>%
+  group_by(end_year, county) %>%
+  summarize(total = sum(n_students, na.rm = TRUE)) %>%
+  pivot_wider(names_from = end_year, values_from = total) %>%
+  mutate(pct_change = (`2024` - `2012`) / `2012` * 100) %>%
+  arrange(pct_change)
+#> Top decliners:
+#> BRONX:       -23.7%
+#> SCHENECTADY: -18.7%
+#> CHEMUNG:     -17.5%
+#> ...
+#> Only grower:
+#> SARATOGA:    +0.3%
+```
+
+![County
+changes](https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/county-change-1.png)
+
+County changes
+
+------------------------------------------------------------------------
+
+### Charter School Growth (2023-2024)
+
+**181,000 students (7.3%)** now attend charter schools across 343
+schools.
+
+``` r
+fetch_enr(2024, level = "school") %>%
+  filter(grade_level == "TOTAL", is_school) %>%
+  group_by(is_charter) %>%
+  summarize(
+    students = sum(n_students, na.rm = TRUE),
+    schools = n()
+  )
+#>   is_charter students schools
+#> 1 FALSE      2307920    4406
+#> 2 TRUE        181334     343
+```
+
+------------------------------------------------------------------------
+
+### Major District Trends (2012-2024)
+
+Rochester lost **30%**—the steepest decline among major districts.
+
+``` r
+# Top 5 districts by 2012 enrollment
+fetch_enr_years(c(2012, 2024), level = "district") %>%
+  filter(grade_level == "TOTAL") %>%
+  group_by(end_year, district_name) %>%
+  summarize(total = sum(n_students)) %>%
+  pivot_wider(names_from = end_year, values_from = total) %>%
+  filter(`2012` > 20000) %>%
+  mutate(pct = (`2024` - `2012`) / `2012` * 100) %>%
+  arrange(pct)
+```
+
+![Major district
+declines](https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/major-districts-1.png)
+
+Major district declines
+
+------------------------------------------------------------------------
+
+### Kindergarten: Half-Day vs Full-Day (2012-2024)
+
+Full-day K is now dominant. Half-day K collapsed from 35K to 8K
+students.
+
+``` r
+fetch_enr_years(c(2012, 2018, 2024), level = "district") %>%
+  filter(grade_level %in% c("K_HALF", "K_FULL")) %>%
+  group_by(end_year, grade_level) %>%
+  summarize(total = sum(n_students, na.rm = TRUE))
+#>   end_year grade_level  total
+#> 1     2012 K_FULL      153125
+#> 2     2012 K_HALF       35387
+#> 3     2024 K_FULL      158575
+#> 4     2024 K_HALF        8322
+```
+
+------------------------------------------------------------------------
+
+### Individual School Lookup
+
+Get any school’s enrollment by BEDS code:
+
+``` r
+# Albany High School
+fetch_enr_school("010100010023", 2020:2024) %>%
+  filter(grade_level == "TOTAL")
+```
+
+------------------------------------------------------------------------
+
+### Individual District Lookup
+
+Get all schools in a district:
+
+``` r
+# Rochester City SD
+fetch_enr_district("261600", 2024, level = "school") %>%
+  filter(grade_level == "TOTAL", is_school) %>%
+  arrange(desc(n_students))
+```
 
 ------------------------------------------------------------------------
 
@@ -223,6 +311,8 @@ remotes::install_github("almartin82/nyschooldata")
 ```
 
 ## Quick Start
+
+### R
 
 ``` r
 library(nyschooldata)
@@ -236,34 +326,118 @@ enr %>%
   filter(is_district, grade_level == "TOTAL") %>%
   summarize(total = sum(n_students, na.rm = TRUE))
 #> 2,404,319 students
-
-# Top 10 districts
-enr %>%
-  filter(is_district, grade_level == "TOTAL") %>%
-  arrange(desc(n_students)) %>%
-  select(district_name, county, n_students) %>%
-  head(10)
 ```
 
-## Available Data
+### Python
 
-- **Years**: 1977-2025 (48 school years!)
-- **Levels**: School, district, county, state
-- **Grades**: Pre-K through 12, plus ungraded
-- **Flags**: NYC, charter, district aggregates
+``` python
+import pynyschooldata as ny
 
-Note: Pre-K data available from 1995+. Earlier years have K-12 only.
+# Fetch 2024 data (2023-24 school year)
+enr = ny.fetch_enr(2024)
+
+# Statewide total
+total = enr[enr['is_district'] & (enr['grade_level'] == 'TOTAL')]['n_students'].sum()
+print(f"{total:,} students")
+#> 2,404,319 students
+
+# Get multiple years
+enr_multi = ny.fetch_enr_multi([2020, 2021, 2022, 2023, 2024])
+
+# Check available years
+years = ny.get_available_years()
+print(f"Data available: {years['min_year']}-{years['max_year']}")
+#> Data available: 1977-2025
+```
+
+## Data Availability & Format
+
+### Coverage by Era
+
+| Era            | Years     | What’s Available                                     |
+|----------------|-----------|------------------------------------------------------|
+| **Archive I**  | 1977-1993 | K-12 enrollment by grade, district & school level    |
+| **Archive II** | 1994-2011 | \+ Pre-K, + Gender breakdowns                        |
+| **Modern**     | 2012-2021 | \+ Econ Disadvantaged, ELL, Students w/ Disabilities |
+| **Current**    | 2022-2025 | Same as Modern, updated file format                  |
+
+### Grade Levels
+
+All years include: **K, 1-12, Ungraded Elementary, Ungraded Secondary**
+
+Pre-K breakdown (1995+): `PK_HALF`, `PK_FULL`
+
+Kindergarten breakdown: `K_HALF`, `K_FULL`
+
+### Geographic Hierarchy
+
+    State (1)
+    └── County (62)
+        └── District (~730)
+            └── School (~4,700)
+
+### Identifiers
+
+- **BEDS Code**: 12-digit unique school identifier (e.g.,
+  `010100010023`)
+  - Digits 1-6: District code
+  - Digits 7-10: School code
+  - Digits 11-12: Check digits
+- **District Code**: 6-digit district identifier (e.g., `010100` =
+  Albany City SD)
+
+### Flags
+
+| Flag          | Description                                   |
+|---------------|-----------------------------------------------|
+| `is_district` | District-level aggregate row                  |
+| `is_school`   | Individual school record                      |
+| `is_nyc`      | NYC DOE school/district (codes 30xxxx-35xxxx) |
+| `is_charter`  | Charter school                                |
+
+### Data Source
+
+All data comes from [NYSED Information Reporting
+Services](https://www.p12.nysed.gov/irs/statistics/enroll-n-staff/home.html).
+Files are downloaded, cached locally, and standardized into a consistent
+schema.
+
+### Caveats
+
+- **Suppression**: Small cell sizes may be suppressed (shown as NA)
+- **Charter schools**: Charter flag requires school-level data (2012+)
+- **Historical comparisons**: Pre-K wasn’t tracked before 1995; use K-12
+  totals for long-term trends
+- **NYC structure**: NYC has 32 geographic districts + District 75
+  (special ed) + District 79 (alternative)
+
+## Key Functions
+
+| Function                                                                                              | Description                 |
+|-------------------------------------------------------------------------------------------------------|-----------------------------|
+| `fetch_enr(year)`                                                                                     | Get enrollment for one year |
+| `fetch_enr_years(years)`                                                                              | Get multiple years          |
+| `fetch_enr_school(beds, year)`                                                                        | Get specific school         |
+| `fetch_enr_district(code, year)`                                                                      | Get specific district       |
+| `fetch_enr_nyc(year)`                                                                                 | Get NYC schools only        |
+| [`get_available_years()`](https://almartin82.github.io/nyschooldata/reference/get_available_years.md) | Check year range            |
 
 ## Documentation
 
-- [Full Analysis: 10 Surprising
-  Findings](https://almartin82.github.io/nyschooldata/articles/district-hooks.html)
+- [Full Analysis with
+  Charts](https://almartin82.github.io/nyschooldata/articles/district-hooks.html)
 - [Getting Started
   Guide](https://almartin82.github.io/nyschooldata/articles/quickstart.html)
 - [API Reference](https://almartin82.github.io/nyschooldata/reference/)
 
-## Related Packages
+## Part of the State Schooldata Project
 
-- [njschooldata](https://github.com/almartin82/njschooldata) - New
-  Jersey
-- [ilschooldata](https://github.com/almartin82/ilschooldata) - Illinois
+A simple, consistent interface for accessing state-published school data
+in Python and R.
+
+**All 50 state packages:**
+[github.com/almartin82](https://github.com/almartin82?tab=repositories&q=schooldata)
+
+## Author
+
+[Andy Martin](https://github.com/almartin82) (<almartin@gmail.com>)

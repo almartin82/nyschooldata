@@ -36,21 +36,13 @@ enr_all <- fetch_enr_years(years, level = "district", tidy = TRUE)
 
     ## Using cached data for 2015
 
-    ## Downloading district enrollment data for 2016 ...
+    ## Using cached data for 2016
 
-    ## Cached data for 2016
+    ## Using cached data for 2017
 
-    ## Downloading district enrollment data for 2017 ...
+    ## Using cached data for 2018
 
-    ## Cached data for 2017
-
-    ## Downloading district enrollment data for 2018 ...
-
-    ## Cached data for 2018
-
-    ## Downloading district enrollment data for 2019 ...
-
-    ## Cached data for 2019
+    ## Using cached data for 2019
 
     ## Using cached data for 2020
 
@@ -635,7 +627,7 @@ sessionInfo()
     ## Running under: macOS 26.1
     ## 
     ## Matrix products: default
-    ## BLAS:   /opt/homebrew/Cellar/openblas/0.3.29/lib/libopenblasp-r0.3.29.dylib 
+    ## BLAS:   /opt/homebrew/Cellar/openblas/0.3.30/lib/libopenblasp-r0.3.30.dylib 
     ## LAPACK: /opt/homebrew/Cellar/r/4.5.0/lib/R/lib/libRlapack.dylib;  LAPACK version 3.12.1
     ## 
     ## locale:
@@ -653,14 +645,13 @@ sessionInfo()
     ## loaded via a namespace (and not attached):
     ##  [1] gtable_0.3.6       jsonlite_2.0.0     compiler_4.5.0     tidyselect_1.2.1  
     ##  [5] tidyr_1.3.2        jquerylib_0.1.4    systemfonts_1.3.1  textshaping_1.0.4 
-    ##  [9] readxl_1.4.5       yaml_2.3.12        fastmap_1.2.0      R6_2.6.1          
-    ## [13] labeling_0.4.3     generics_0.1.4     knitr_1.51         htmlwidgets_1.6.4 
-    ## [17] tibble_3.3.0       desc_1.4.3         downloader_0.4.1   bslib_0.9.0       
-    ## [21] pillar_1.11.1      RColorBrewer_1.1-3 rlang_1.1.6        utf8_1.2.6        
-    ## [25] cachem_1.1.0       xfun_0.55          fs_1.6.6           sass_0.4.10       
-    ## [29] S7_0.2.1           otel_0.2.0         cli_3.6.5          withr_3.0.2       
-    ## [33] pkgdown_2.2.0      magrittr_2.0.4     digest_0.6.39      grid_4.5.0        
-    ## [37] rappdirs_0.3.3     lifecycle_1.0.4    vctrs_0.6.5        evaluate_1.0.5    
-    ## [41] glue_1.8.0         cellranger_1.1.0   farver_2.1.2       codetools_0.2-20  
-    ## [45] ragg_1.5.0         purrr_1.2.0        rmarkdown_2.30     tools_4.5.0       
-    ## [49] pkgconfig_2.0.3    htmltools_0.5.9
+    ##  [9] yaml_2.3.12        fastmap_1.2.0      R6_2.6.1           labeling_0.4.3    
+    ## [13] generics_0.1.4     knitr_1.51         htmlwidgets_1.6.4  tibble_3.3.0      
+    ## [17] desc_1.4.3         bslib_0.9.0        pillar_1.11.1      RColorBrewer_1.1-3
+    ## [21] rlang_1.1.6        utf8_1.2.6         cachem_1.1.0       xfun_0.55         
+    ## [25] fs_1.6.6           sass_0.4.10        S7_0.2.1           otel_0.2.0        
+    ## [29] cli_3.6.5          withr_3.0.2        pkgdown_2.2.0      magrittr_2.0.4    
+    ## [33] digest_0.6.39      grid_4.5.0         rappdirs_0.3.3     lifecycle_1.0.4   
+    ## [37] vctrs_0.6.5        evaluate_1.0.5     glue_1.8.0         farver_2.1.2      
+    ## [41] codetools_0.2-20   ragg_1.5.0         purrr_1.2.0        rmarkdown_2.30    
+    ## [45] tools_4.5.0        pkgconfig_2.0.3    htmltools_0.5.9

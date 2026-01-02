@@ -1,36 +1,25 @@
-# 10 Surprising Findings in NY School Enrollment
+## ----setup, include=FALSE-----------------------------------------------------
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.width = 8,
+  fig.height = 5,
+  cache = TRUE
+)
 
-## Where Did All the Students Go?
-
-New York public schools have lost **295,521 students** since 2012 -
-that’s the equivalent of emptying Buffalo, Rochester, Syracuse, and
-Yonkers combined. But this headline number hides a complex story of
-urban decline, Pre-K revolution, COVID disruption, and surprising
-pockets of growth.
-
-This vignette explores 13 years of enrollment data to surface the trends
-shaping New York’s educational landscape.
-
-``` r
+## ----load-packages------------------------------------------------------------
 library(nyschooldata)
 library(dplyr)
 library(ggplot2)
 library(scales)
 library(tidyr)
-```
 
-``` r
+## ----fetch-data, cache=TRUE---------------------------------------------------
 # Fetch district-level data for all available years
 enr <- fetch_enr_years(2012:2024, level = "district", tidy = TRUE)
-```
 
-## 1. The Vanishing 300,000
-
-**New York lost 295,521 students (11%) from 2012 to 2024** - equivalent
-to losing every student in Buffalo, Rochester, Syracuse, and Yonkers
-combined.
-
-``` r
+## ----statewide-trend----------------------------------------------------------
 state_trend <- enr %>%
   filter(grade_level == "TOTAL") %>%
   group_by(end_year) %>%
@@ -62,17 +51,8 @@ ggplot(state_trend, aes(x = end_year, y = total)) +
     axis.text.x = element_text(angle = 45, hjust = 1),
     plot.title = element_text(face = "bold", size = 14)
   )
-```
 
-![](district-hooks_files/figure-html/statewide-trend-1.png)
-
-## 2. The COVID Cliff
-
-**2021 saw an unprecedented 4.2% single-year drop** (106,560 students) -
-by far the largest decline in recorded data. But 2024 shows the first
-positive year (+0.02%), suggesting possible stabilization.
-
-``` r
+## ----covid-impact-------------------------------------------------------------
 state_yoy <- state_trend %>%
   mutate(
     change = total - lag(total),
@@ -94,16 +74,8 @@ ggplot(state_yoy %>% filter(!is.na(pct_change)),
   ) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
 
-![](district-hooks_files/figure-html/covid-impact-1.png)
-
-## 3. The Pre-K Revolution
-
-**Full-day Pre-K exploded from 28K to 157K** - a 463% increase. NYC’s
-Universal Pre-K program drove a stunning 115% jump in 2015 alone.
-
-``` r
+## ----prek-growth--------------------------------------------------------------
 pk_trend <- enr %>%
   filter(grade_level == "PK_FULL") %>%
   group_by(end_year) %>%
@@ -131,16 +103,8 @@ ggplot(pk_trend, aes(x = end_year, y = total)) +
   ) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
 
-![](district-hooks_files/figure-html/prek-growth-1.png)
-
-## 4. The Bronx Exodus
-
-**The Bronx lost 23.7% of its students** - the worst percentage decline
-among major counties, losing nearly 50,000 students.
-
-``` r
+## ----county-change------------------------------------------------------------
 county_2012 <- enr %>% filter(end_year == 2012, grade_level == "TOTAL") %>%
   group_by(county) %>% summarize(enr_2012 = sum(n_students, na.rm = TRUE), .groups = "drop")
 county_2024 <- enr %>% filter(end_year == 2024, grade_level == "TOTAL") %>%
@@ -175,16 +139,8 @@ ggplot(county_display, aes(x = reorder(county, pct_change), y = pct_change,
     y = "Percent Change"
   ) +
   theme_minimal()
-```
 
-![](district-hooks_files/figure-html/county-change-1.png)
-
-## 5. Rochester’s Collapse
-
-**Rochester City SD lost 30% of enrollment** (32K to 23K) - the steepest
-decline among major urban districts.
-
-``` r
+## ----major-districts----------------------------------------------------------
 # Calculate 2012-2024 change by district
 dist_2012 <- enr %>% filter(end_year == 2012, grade_level == "TOTAL") %>%
   select(district_name, county, enr_2012 = n_students)
@@ -216,17 +172,8 @@ ggplot(big_declines, aes(x = reorder(district_short, pct_change), y = pct_change
     y = "Percent Change (2012-2024)"
   ) +
   theme_minimal()
-```
 
-![](district-hooks_files/figure-html/major-districts-1.png)
-
-## 6. NYC’s Special Ed Surge
-
-**District 75 grew 40% while nearly every other NYC district shrank.**
-NYC’s citywide special education district is one of very few that gained
-students.
-
-``` r
+## ----district75---------------------------------------------------------------
 # Find NYC District 75
 nyc_districts <- change %>%
   filter(grepl("NYC", district_name)) %>%
@@ -257,16 +204,8 @@ ggplot(nyc_display, aes(x = reorder(district_short, pct_change), y = pct_change,
     y = "Percent Change"
   ) +
   theme_minimal()
-```
 
-![](district-hooks_files/figure-html/district75-1.png)
-
-## 7. First Grade Cratering
-
-**Grade 1 enrollment fell 17.4%** - the steepest decline by grade level,
-reflecting birth rate drops and family out-migration.
-
-``` r
+## ----grade-change-------------------------------------------------------------
 grade_totals <- enr %>%
   filter(grade_level %in% c("K", "01", "05", "08", "09", "12")) %>%
   group_by(end_year, grade_level) %>%
@@ -301,21 +240,12 @@ ggplot(grade_change, aes(x = reorder(grade_label, pct_change), y = pct_change)) 
     y = "Percent Change"
   ) +
   theme_minimal()
-```
 
-![](district-hooks_files/figure-html/grade-change-1.png)
-
-## 8. Charter Schools’ Rising Market Share
-
-``` r
+## ----charter-data, cache=TRUE-------------------------------------------------
 # Need school-level data for charter information
 enr_schools <- fetch_enr_years(2023:2024, level = "school", tidy = TRUE)
-```
 
-**Charter schools now enroll ~181K students (7.5% of total)** across 343
-schools, growing even as traditional public school enrollment declines.
-
-``` r
+## ----charter-share------------------------------------------------------------
 charter_summary <- enr_schools %>%
   filter(grade_level == "TOTAL", is_school == TRUE) %>%
   group_by(end_year, is_charter) %>%
@@ -338,23 +268,8 @@ charter_summary %>%
     format.args = list(big.mark = ","),
     caption = "Charter schools grew from 175K to 181K students in one year"
   )
-```
 
-|  Year | School Type | Total Students | \# Schools | Avg Size |
-|------:|:------------|---------------:|-----------:|---------:|
-| 2,023 | Traditional |      2,308,189 |      4,402 |      524 |
-| 2,023 | Charter     |        175,396 |        342 |      513 |
-| 2,024 | Traditional |      2,307,920 |      4,406 |      524 |
-| 2,024 | Charter     |        181,334 |        343 |      529 |
-
-Charter schools grew from 175K to 181K students in one year
-
-## 9. Only One County Grew
-
-**Saratoga County is the only county that GREW (+0.3%).** Suburban
-counties held steady while urban and rural areas declined sharply.
-
-``` r
+## ----county-growth------------------------------------------------------------
 county_all <- county_2012 %>%
   inner_join(county_2024, by = "county") %>%
   mutate(
@@ -367,36 +282,14 @@ n_grew <- sum(county_all$grew)
 n_declined <- sum(!county_all$grew)
 
 cat(paste0("Counties that grew: ", n_grew, "\n"))
-```
-
-    ## Counties that grew: 1
-
-``` r
 cat(paste0("Counties that declined: ", n_declined, "\n"))
-```
 
-    ## Counties that declined: 61
-
-``` r
 # The one county that grew
 county_all %>% filter(grew) %>%
   select(county, enr_2012, enr_2024, pct_change) %>%
   knitr::kable(caption = "The Only Growing County")
-```
 
-| county   | enr_2012 | enr_2024 | pct_change |
-|:---------|---------:|---------:|-----------:|
-| SARATOGA |    31661 |    31746 |        0.3 |
-
-The Only Growing County
-
-## 10. The Pre-K Inversion
-
-**NYC Pre-K is now 99% full-day (103K of 104K), while rest of state is
-only 85% full-day.** This represents a fundamental policy shift in early
-childhood education.
-
-``` r
+## ----prek-fullday-------------------------------------------------------------
 enr_2024 <- fetch_enr(2024, level = "district", tidy = TRUE)
 
 pk_comparison <- enr_2024 %>%
@@ -426,96 +319,7 @@ ggplot(pk_comparison, aes(x = region, y = pct_full_day, fill = region)) +
     axis.text.x = element_text(size = 12, face = "bold"),
     plot.title = element_text(face = "bold", size = 14)
   )
-```
 
-![](district-hooks_files/figure-html/prek-fullday-1.png)
-
-## The Big Picture
-
-New York’s public school enrollment data reveals a state in profound
-transformation:
-
-### Winners and Losers
-
-| Growing                       | Shrinking               |
-|-------------------------------|-------------------------|
-| Full-day Pre-K (+463%)        | Total enrollment (-11%) |
-| District 75 special ed (+40%) | The Bronx (-24%)        |
-| Charter schools (7.3% share)  | Rochester (-30%)        |
-| Saratoga County (+0.3%)       | Grade 1 (-17%)          |
-
-### Key Statistics
-
-| Finding                 | Key Statistic             |
-|-------------------------|---------------------------|
-| Total enrollment loss   | -295,521 students (-11%)  |
-| COVID impact (2021)     | -106,560 students (-4.2%) |
-| Pre-K full-day growth   | +129,231 students (+463%) |
-| Bronx county loss       | -49,447 students (-23.7%) |
-| Rochester district loss | -9,621 students (-29.8%)  |
-| District 75 growth      | +7,784 students (+40.1%)  |
-| Grade 1 decline         | -33,643 students (-17.4%) |
-| Charter market share    | 181K students (7.3%)      |
-| Growing counties        | 1 of 62 (Saratoga)        |
-| NYC full-day Pre-K      | 99% vs 85% rest of state  |
-
-### What Does This Mean?
-
-These patterns reflect three converging forces:
-
-1.  **Demographic decline**: New York’s birth rate has fallen sharply,
-    especially in urban areas. The pipeline of future students is
-    shrinking.
-
-2.  **Policy success**: Universal Pre-K transformed early childhood
-    education in NYC. The 463% growth in full-day Pre-K is one of the
-    most dramatic policy-driven enrollment shifts in state history.
-
-3.  **COVID disruption**: The pandemic accelerated pre-existing trends
-    and may have permanently altered family choices about public
-    vs. private schooling, remote work migration, and urban living.
-
-The 2024 data shows the first positive year-over-year change (+0.02%),
-suggesting possible stabilization - but with Grade 1 enrollment still
-declining, the long-term trajectory remains uncertain.
-
-## Session Info
-
-``` r
+## ----session-info-------------------------------------------------------------
 sessionInfo()
-```
 
-    ## R version 4.5.0 (2025-04-11)
-    ## Platform: aarch64-apple-darwin22.6.0
-    ## Running under: macOS 26.1
-    ## 
-    ## Matrix products: default
-    ## BLAS:   /opt/homebrew/Cellar/openblas/0.3.30/lib/libopenblasp-r0.3.30.dylib 
-    ## LAPACK: /opt/homebrew/Cellar/r/4.5.0/lib/R/lib/libRlapack.dylib;  LAPACK version 3.12.1
-    ## 
-    ## locale:
-    ## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
-    ## 
-    ## time zone: America/New_York
-    ## tzcode source: internal
-    ## 
-    ## attached base packages:
-    ## [1] stats     graphics  grDevices utils     datasets  methods   base     
-    ## 
-    ## other attached packages:
-    ## [1] tidyr_1.3.2        scales_1.4.0       ggplot2_4.0.1      dplyr_1.1.4       
-    ## [5] nyschooldata_0.1.0
-    ## 
-    ## loaded via a namespace (and not attached):
-    ##  [1] gtable_0.3.6       jsonlite_2.0.0     compiler_4.5.0     tidyselect_1.2.1  
-    ##  [5] jquerylib_0.1.4    systemfonts_1.3.1  textshaping_1.0.4  yaml_2.3.12       
-    ##  [9] fastmap_1.2.0      R6_2.6.1           labeling_0.4.3     generics_0.1.4    
-    ## [13] knitr_1.51         htmlwidgets_1.6.4  tibble_3.3.0       desc_1.4.3        
-    ## [17] bslib_0.9.0        pillar_1.11.1      RColorBrewer_1.1-3 rlang_1.1.6       
-    ## [21] cachem_1.1.0       xfun_0.55          fs_1.6.6           sass_0.4.10       
-    ## [25] S7_0.2.1           otel_0.2.0         cli_3.6.5          withr_3.0.2       
-    ## [29] pkgdown_2.2.0      magrittr_2.0.4     digest_0.6.39      grid_4.5.0        
-    ## [33] rappdirs_0.3.3     lifecycle_1.0.4    vctrs_0.6.5        evaluate_1.0.5    
-    ## [37] glue_1.8.0         farver_2.1.2       codetools_0.2-20   ragg_1.5.0        
-    ## [41] purrr_1.2.0        rmarkdown_2.30     tools_4.5.0        pkgconfig_2.0.3   
-    ## [45] htmltools_0.5.9

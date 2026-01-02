@@ -1,0 +1,407 @@
+---
+title: "Data Quality QA: NY School Enrollment"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data Quality QA: NY School Enrollment}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = TRUE,
+  warning = TRUE,
+  fig.width = 8,
+  fig.height = 5,
+  cache = TRUE
+)
+```
+
+## Overview
+
+This vignette performs data quality checks on New York State school enrollment
+data from 2012-2024. We examine:
+
+1. Statewide enrollment trends (noting year-over-year changes > 5%)
+2. District-level analysis for 5 major districts
+3. Data completeness and anomalies
+
+```{r load-packages, message=FALSE}
+library(nyschooldata)
+library(dplyr)
+library(ggplot2)
+library(scales)
+```
+
+## Fetch Multi-Year Data
+
+We retrieve enrollment data for all available years (2012-2024).
+
+```{r fetch-data, cache=TRUE}
+# Fetch district-level data for all available years
+years <- 2012:2024
+
+# Get enrollment data year by year (handles errors gracefully)
+enr_all <- fetch_enr_years(years, level = "district", tidy = TRUE)
+
+# Check what years we actually got
+years_retrieved <- sort(unique(enr_all$end_year))
+message("Years retrieved: ", paste(years_retrieved, collapse = ", "))
+```
+
+## Statewide Enrollment Trends
+
+### Total State Enrollment by Year
+
+```{r state-totals}
+state_totals <- enr_all %>%
+  filter(grade_level == "TOTAL") %>%
+  group_by(end_year) %>%
+  summarize(
+    total_enrollment = sum(n_students, na.rm = TRUE),
+    n_districts = n_distinct(district_code),
+    .groups = "drop"
+  ) %>%
+  arrange(end_year) %>%
+  mutate(
+    yoy_change = total_enrollment - lag(total_enrollment),
+    yoy_pct = yoy_change / lag(total_enrollment) * 100,
+    flag_large_change = abs(yoy_pct) > 5
+  )
+
+state_totals
+```
+
+### Identify Large Year-Over-Year Changes
+
+Changes greater than 5% warrant investigation:
+
+```{r large-changes}
+large_changes <- state_totals %>%
+  filter(flag_large_change == TRUE)
+
+if (nrow(large_changes) > 0) {
+  message("WARNING: Found ", nrow(large_changes), " year(s) with >5% enrollment change:")
+  print(large_changes %>% select(end_year, total_enrollment, yoy_pct))
+} else {
+  message("No year-over-year changes exceeded 5% threshold")
+}
+```
+
+### Statewide Trend Visualization
+
+```{r state-trend-plot, fig.cap="NY State Total Public School Enrollment"}
+ggplot(state_totals, aes(x = end_year, y = total_enrollment)) +
+  geom_line(linewidth = 1, color = "steelblue") +
+  geom_point(size = 2.5, color = "steelblue") +
+  geom_point(
+    data = state_totals %>% filter(flag_large_change),
+    aes(x = end_year, y = total_enrollment),
+    color = "red", size = 4
+  ) +
+  scale_y_continuous(labels = comma, limits = c(0, NA)) +
+  scale_x_continuous(breaks = years_retrieved) +
+  labs(
+    title = "New York State Total Public School Enrollment",
+    subtitle = "Red points indicate >5% year-over-year change",
+    x = "School Year (End Year)",
+    y = "Total Enrollment",
+    caption = "Source: NYSED IRS Public School Enrollment"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    plot.title = element_text(face = "bold")
+  )
+```
+
+### Year-Over-Year Percentage Change
+
+```{r yoy-plot, fig.cap="Year-over-year percentage change in enrollment"}
+ggplot(
+  state_totals %>% filter(!is.na(yoy_pct)),
+  aes(x = end_year, y = yoy_pct)
+) +
+  geom_col(
+    aes(fill = yoy_pct > 0),
+    show.legend = FALSE
+  ) +
+  geom_hline(yintercept = c(-5, 5), linetype = "dashed", color = "red") +
+  scale_fill_manual(values = c("TRUE" = "steelblue", "FALSE" = "coral")) +
+  scale_x_continuous(breaks = years_retrieved[-1]) +
+  labs(
+    title = "Year-Over-Year Enrollment Change (%)",
+    subtitle = "Dashed lines show +/- 5% threshold",
+    x = "School Year (End Year)",
+    y = "Percentage Change"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+## Major District Analysis
+
+We examine 5 major NY districts:
+
+1. **NYC DOE** - New York City Department of Education (district code starting with "31")
+2. **Buffalo City SD** - Second largest district
+3. **Rochester City SD** - Third largest district
+4. **Yonkers Public Schools** - Fourth largest district
+5. **Syracuse City SD** - Fifth largest district
+
+```{r major-districts}
+# Major district codes (first 6 digits of BEDS code)
+major_districts <- tribble(
+  ~district_code, ~district_label,
+  "310200", "NYC DOE",
+  "140600", "Buffalo City SD",
+  "261600", "Rochester City SD",
+  "662300", "Yonkers Public Schools",
+  "421800", "Syracuse City SD"
+)
+
+# Note: NYC has multiple district_code prefixes (31xxxx)
+# Let's identify the actual codes in our data
+
+# Find NYC districts
+nyc_districts <- enr_all %>%
+  filter(is_nyc, grade_level == "TOTAL") %>%
+  distinct(district_code, district_name) %>%
+  head(5)
+
+message("NYC district codes found:")
+print(nyc_districts)
+
+# Find other major districts by name
+all_districts <- enr_all %>%
+  filter(grade_level == "TOTAL") %>%
+  distinct(district_code, district_name)
+
+# Search for our target districts
+buffalo <- all_districts %>% filter(grepl("BUFFALO", toupper(district_name)))
+rochester <- all_districts %>% filter(grepl("ROCHESTER", toupper(district_name)))
+yonkers <- all_districts %>% filter(grepl("YONKERS", toupper(district_name)))
+syracuse <- all_districts %>% filter(grepl("SYRACUSE", toupper(district_name)))
+
+message("\nDistrict codes found:")
+message("Buffalo: ", paste(buffalo$district_code, collapse = ", "))
+message("Rochester: ", paste(rochester$district_code, collapse = ", "))
+message("Yonkers: ", paste(yonkers$district_code, collapse = ", "))
+message("Syracuse: ", paste(syracuse$district_code, collapse = ", "))
+```
+
+### District-Level Enrollment Trends
+
+```{r district-trends}
+# Combine district codes for filtering
+# NYC is special - aggregate all 31xxxx districts
+target_districts <- c(
+  buffalo$district_code[1],
+  rochester$district_code[1],
+  yonkers$district_code[1],
+  syracuse$district_code[1]
+)
+
+# Get NYC aggregate
+nyc_trend <- enr_all %>%
+  filter(is_nyc, grade_level == "TOTAL") %>%
+  group_by(end_year) %>%
+  summarize(
+    n_students = sum(n_students, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(district_label = "NYC DOE")
+
+# Get other major districts
+other_trends <- enr_all %>%
+  filter(
+    district_code %in% target_districts,
+    grade_level == "TOTAL"
+  ) %>%
+  select(end_year, district_name, n_students) %>%
+  mutate(district_label = case_when(
+    grepl("BUFFALO", toupper(district_name)) ~ "Buffalo City SD",
+    grepl("ROCHESTER", toupper(district_name)) ~ "Rochester City SD",
+    grepl("YONKERS", toupper(district_name)) ~ "Yonkers Public Schools",
+    grepl("SYRACUSE", toupper(district_name)) ~ "Syracuse City SD",
+    TRUE ~ district_name
+  )) %>%
+  select(end_year, district_label, n_students)
+
+# Combine
+district_trends <- bind_rows(nyc_trend, other_trends)
+
+district_trends
+```
+
+### District Enrollment Visualization
+
+```{r district-plot, fig.height=7, fig.cap="Major district enrollment trends"}
+# Calculate YoY changes by district
+district_yoy <- district_trends %>%
+  arrange(district_label, end_year) %>%
+  group_by(district_label) %>%
+  mutate(
+    yoy_pct = (n_students - lag(n_students)) / lag(n_students) * 100,
+    flag_change = abs(yoy_pct) > 5
+  ) %>%
+  ungroup()
+
+# Plot
+ggplot(district_yoy, aes(x = end_year, y = n_students, color = district_label)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  geom_point(
+    data = district_yoy %>% filter(flag_change == TRUE),
+    size = 4, shape = 1, stroke = 1.5
+  ) +
+  scale_y_continuous(labels = comma) +
+  scale_x_continuous(breaks = years_retrieved) +
+  scale_color_brewer(palette = "Set1") +
+  labs(
+    title = "Enrollment Trends: Major NY Districts",
+    subtitle = "Circled points indicate >5% year-over-year change",
+    x = "School Year (End Year)",
+    y = "Total Enrollment",
+    color = "District",
+    caption = "Source: NYSED IRS Public School Enrollment"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "bottom"
+  ) +
+  guides(color = guide_legend(nrow = 2))
+```
+
+### District-Level Large Changes
+
+```{r district-flags}
+district_flags <- district_yoy %>%
+  filter(flag_change == TRUE) %>%
+  arrange(district_label, end_year) %>%
+  select(district_label, end_year, n_students, yoy_pct)
+
+if (nrow(district_flags) > 0) {
+  message("Districts with >5% YoY changes:")
+  print(district_flags)
+} else {
+  message("No major districts had >5% year-over-year changes")
+}
+```
+
+### District Enrollment Table
+
+```{r district-table}
+# Wide table of enrollment by district and year
+district_wide <- district_trends %>%
+  tidyr::pivot_wider(
+    names_from = end_year,
+    values_from = n_students
+  )
+
+district_wide
+```
+
+## Data Completeness Checks
+
+### Missing Data by Year
+
+```{r missing-data}
+missing_summary <- enr_all %>%
+  filter(grade_level == "TOTAL") %>%
+  group_by(end_year) %>%
+  summarize(
+    n_districts = n_distinct(district_code),
+    n_missing_enrollment = sum(is.na(n_students)),
+    pct_missing = n_missing_enrollment / n() * 100,
+    .groups = "drop"
+  )
+
+missing_summary
+```
+### Grade-Level Data Availability
+
+Check which grade levels are available across years:
+
+```{r grade-availability}
+grade_avail <- enr_all %>%
+  group_by(end_year, grade_level) %>%
+  summarize(
+    n_records = n(),
+    n_with_data = sum(!is.na(n_students)),
+    .groups = "drop"
+  ) %>%
+  filter(grade_level %in% c("TOTAL", "K", "01", "05", "09", "12"))
+
+tidyr::pivot_wider(
+  grade_avail,
+  id_cols = end_year,
+  names_from = grade_level,
+  values_from = n_with_data
+)
+```
+
+## Data Quality Issues Found
+
+Based on the analysis above, document any issues:
+
+```{r quality-summary}
+issues <- list()
+
+# Check for years with large statewide changes
+if (nrow(large_changes) > 0) {
+  issues$statewide_jumps <- large_changes$end_year
+}
+
+# Check for district-level anomalies
+if (nrow(district_flags) > 0) {
+  issues$district_anomalies <- district_flags
+}
+
+# Check for missing data
+high_missing <- missing_summary %>% filter(pct_missing > 1)
+if (nrow(high_missing) > 0) {
+  issues$high_missing_years <- high_missing$end_year
+}
+
+# Print summary
+message("\n=== DATA QUALITY SUMMARY ===\n")
+
+if (length(issues) == 0) {
+  message("No significant data quality issues identified.")
+} else {
+  if (!is.null(issues$statewide_jumps)) {
+    message("Statewide enrollment jumps (>5%) in years: ",
+            paste(issues$statewide_jumps, collapse = ", "))
+  }
+  if (!is.null(issues$district_anomalies)) {
+    message("\nDistrict-level anomalies:")
+    print(issues$district_anomalies)
+  }
+  if (!is.null(issues$high_missing_years)) {
+    message("\nYears with >1% missing data: ",
+            paste(issues$high_missing_years, collapse = ", "))
+  }
+}
+```
+
+## Recommendations
+
+Based on this QA analysis:
+
+1. **Statewide trends**: Review any years flagged with >5% changes to determine
+   if they represent genuine enrollment shifts or data collection issues.
+
+2. **District analysis**: Major urban districts (NYC, Buffalo, Rochester,
+   Yonkers, Syracuse) should be monitored for unusual year-over-year changes.
+
+3. **Data completeness**: Years with high missing data rates may need special
+   handling in analyses.
+
+## Session Info
+
+```{r session-info}
+sessionInfo()
+```
