@@ -12,15 +12,15 @@
 #' Downloads raw enrollment data files from the NYSED IRS archive. These files
 #' contain grade-level enrollment by school or district for all students.
 #'
-#' @param end_year School year end (2023-24 = 2024). Valid years: 1977-2025.
+#' @param end_year School year end (2023-24 = 2024). Valid years: 1977-2024.
 #' @param level Data level: "school" (default) or "district"
 #' @return Raw data frame from NYSED
 #' @keywords internal
 get_raw_enr <- function(end_year, level = "school") {
 
   # Validate inputs
-  if (end_year < 1977 || end_year > 2025) {
-    stop("end_year must be between 1977 and 2025")
+  if (end_year < 1977 || end_year > 2024) {
+    stop("end_year must be between 1977 and 2024")
   }
 
   if (!level %in% c("school", "district")) {

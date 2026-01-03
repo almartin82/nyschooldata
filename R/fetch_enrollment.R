@@ -14,7 +14,7 @@
 #' Department (NYSED) IRS Public School Enrollment archive.
 #'
 #' @param end_year A school year. Year is the end of the academic year - eg 2023-24
-#'   school year is year '2024'. Valid values are 2012-2025.
+#'   school year is year '2024'. Valid values are 2012-2024.
 #' @param level Data level: "school" (default) or "district"
 #' @param tidy If TRUE (default), returns data in long (tidy) format with
 #'   grade_level column. If FALSE, returns wide format.
@@ -39,8 +39,8 @@
 fetch_enr <- function(end_year, level = "school", tidy = TRUE, use_cache = TRUE) {
 
   # Validate year
-  if (end_year < 1977 || end_year > 2025) {
-    stop("end_year must be between 1977 and 2025")
+  if (end_year < 1977 || end_year > 2024) {
+    stop("end_year must be between 1977 and 2024")
   }
 
   # Validate level
@@ -98,10 +98,10 @@ fetch_enr <- function(end_year, level = "school", tidy = TRUE, use_cache = TRUE)
 fetch_enr_multi <- function(end_years, level = "school", tidy = TRUE, use_cache = TRUE) {
 
   # Validate years
-  invalid_years <- end_years[end_years < 1977 | end_years > 2025]
+  invalid_years <- end_years[end_years < 1977 | end_years > 2024]
   if (length(invalid_years) > 0) {
     stop(paste("Invalid years:", paste(invalid_years, collapse = ", "),
-               "\nend_year must be between 1977 and 2025"))
+               "\nend_year must be between 1977 and 2024"))
   }
 
   # Fetch each year
