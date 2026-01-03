@@ -51,7 +51,8 @@ test_that("get_available_years returns valid range", {
 
 
 test_that("fetch_enr validates year range", {
-  expect_error(fetch_enr(2000), "end_year must be between")
+  # NY data available 1977-2024, so test with years outside that range
+  expect_error(fetch_enr(1976), "end_year must be between")
   expect_error(fetch_enr(2030), "end_year must be between")
 })
 
