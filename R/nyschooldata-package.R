@@ -1,3 +1,8 @@
+# Global variables used in NSE (non-standard evaluation) contexts
+utils::globalVariables(c(
+  "grade_level", "is_nyc", "n_students", "row_total", "school_code", "subgroup"
+))
+
 #' nyschooldata: Fetch and Process New York School Data
 #'
 #' Downloads and processes school data from the New York State Education
