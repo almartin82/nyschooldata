@@ -38,6 +38,11 @@
       <small class="dont-index">Source: <a href="https://github.com/almartin82/nyschooldata/blob/main/CLAUDE.md" class="external-link"><code>CLAUDE.md</code></a></small>
     </div>
 
+
+<div class="section level2">
+<h2 id="critical-data-source-rules">CRITICAL DATA SOURCE RULES<a class="anchor" aria-label="anchor" href="#critical-data-source-rules"></a></h2>
+<p><strong>NEVER use Urban Institute API, NCES CCD, or ANY federal data source</strong> — the entire point of these packages is to provide STATE-LEVEL data directly from state DOEs. Federal sources aggregate/transform data differently and lose state-specific details. If a state DOE source is broken, FIX IT or find an alternative STATE source — do not fall back to federal data.</p>
+<hr></div>
 <div id="claude-code-instructions" class="section level1">
 
 <div class="section level2">
@@ -79,8 +84,8 @@
 </div>
 <div class="section level3">
 <h3 id="pre-pr-checklist">Pre-PR Checklist<a class="anchor" aria-label="anchor" href="#pre-pr-checklist"></a></h3>
-<p>Before opening a PR, verify: - [ ] <code>devtools::check()</code> — 0 errors, 0 warnings - [ ] <code>pytest tests/test_pynyschooldata.py</code> — all tests pass - [ ] <code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site()</a></code> — builds without errors - [ ] Vignettes render (no <code>eval=FALSE</code> hacks) —</p>
-</div>
+<p>Before opening a PR, verify: - [ ] <code>devtools::check()</code> — 0 errors, 0 warnings - [ ] <code>pytest tests/test_pynyschooldata.py</code> — all tests pass - [ ] <code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site()</a></code> — builds without errors - [ ] Vignettes render (no <code>eval=FALSE</code> hacks)</p>
+<hr></div>
 </div>
 <div class="section level2">
 <h2 id="git-workflow-required">Git Workflow (REQUIRED)<a class="anchor" aria-label="anchor" href="#git-workflow-required"></a></h2>
@@ -115,9 +120,31 @@
 <h3 id="auto-merge-requirements">Auto-Merge Requirements<a class="anchor" aria-label="anchor" href="#auto-merge-requirements"></a></h3>
 <p>PRs auto-merge when ALL CI checks pass: - R-CMD-check (0 errors, 0 warnings) - Python tests (if py{st}schooldata exists) - pkgdown build (vignettes must render)</p>
 <p>If CI fails, fix the issue and push - auto-merge triggers when checks pass.</p>
+<hr></div>
+</div>
+<div class="section level2">
+<h2 id="live-pipeline-testing">LIVE Pipeline Testing<a class="anchor" aria-label="anchor" href="#live-pipeline-testing"></a></h2>
+<p>This package includes <code>tests/testthat/test-pipeline-live.R</code> with LIVE network tests.</p>
+<div class="section level3">
+<h3 id="test-categories">Test Categories:<a class="anchor" aria-label="anchor" href="#test-categories"></a></h3>
+<ol style="list-style-type: decimal"><li>URL Availability - HTTP 200 checks</li>
+<li>File Download - Verify actual file (not HTML error)</li>
+<li>File Parsing - readxl/readr succeeds</li>
+<li>Column Structure - Expected columns exist</li>
+<li>get_raw_enr() - Raw data function works</li>
+<li>Data Quality - No Inf/NaN, non-negative counts</li>
+<li>Aggregation - State total &gt; 0</li>
+<li>Output Fidelity - tidy=TRUE matches raw</li>
+</ol></div>
+<div class="section level3">
+<h3 id="running-tests">Running Tests:<a class="anchor" aria-label="anchor" href="#running-tests"></a></h3>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span>filter <span class="op">=</span> <span class="st">"pipeline-live"</span><span class="op">)</span></span></code></pre></div>
+<p>See <code>state-schooldata/CLAUDE.md</code> for complete testing framework documentation.</p>
 </div>
 </div>
 </div>
+
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
