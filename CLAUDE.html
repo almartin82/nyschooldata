@@ -79,7 +79,42 @@
 </div>
 <div class="section level3">
 <h3 id="pre-pr-checklist">Pre-PR Checklist<a class="anchor" aria-label="anchor" href="#pre-pr-checklist"></a></h3>
-<p>Before opening a PR, verify: - [ ] <code>devtools::check()</code> — 0 errors, 0 warnings - [ ] <code>pytest tests/test_pynyschooldata.py</code> — all tests pass - [ ] <code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site()</a></code> — builds without errors - [ ] Vignettes render (no <code>eval=FALSE</code> hacks)</p>
+<p>Before opening a PR, verify: - [ ] <code>devtools::check()</code> — 0 errors, 0 warnings - [ ] <code>pytest tests/test_pynyschooldata.py</code> — all tests pass - [ ] <code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site()</a></code> — builds without errors - [ ] Vignettes render (no <code>eval=FALSE</code> hacks) —</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="git-workflow-required">Git Workflow (REQUIRED)<a class="anchor" aria-label="anchor" href="#git-workflow-required"></a></h2>
+<div class="section level3">
+<h3 id="feature-branch--pr--auto-merge-policy">Feature Branch + PR + Auto-Merge Policy<a class="anchor" aria-label="anchor" href="#feature-branch--pr--auto-merge-policy"></a></h3>
+<p><strong>NEVER push directly to main.</strong> All changes must go through PRs with auto-merge:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># 1. Create feature branch</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">git</span> checkout <span class="at">-b</span> fix/description-of-change</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># 2. Make changes, commit</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="fu">git</span> add <span class="at">-A</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Fix: description of change"</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co"># 3. Push and create PR with auto-merge</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin fix/description-of-change</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="ex">gh</span> pr create <span class="at">--title</span> <span class="st">"Fix: description"</span> <span class="at">--body</span> <span class="st">"Description of changes"</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="ex">gh</span> pr merge <span class="at">--auto</span> <span class="at">--squash</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co"># 4. Clean up stale branches after PR merges</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="fu">git</span> checkout main <span class="kw">&amp;&amp;</span> <span class="fu">git</span> pull <span class="kw">&amp;&amp;</span> <span class="fu">git</span> fetch <span class="at">--prune</span> origin</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="branch-cleanup-required">Branch Cleanup (REQUIRED)<a class="anchor" aria-label="anchor" href="#branch-cleanup-required"></a></h3>
+<p><strong>Clean up stale branches every time you touch this package:</strong></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Delete local branches merged to main</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">git</span> branch <span class="at">--merged</span> main <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> main <span class="kw">|</span> <span class="fu">xargs</span> <span class="at">-r</span> git branch <span class="at">-d</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># Prune remote tracking branches</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">git</span> fetch <span class="at">--prune</span> origin</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="auto-merge-requirements">Auto-Merge Requirements<a class="anchor" aria-label="anchor" href="#auto-merge-requirements"></a></h3>
+<p>PRs auto-merge when ALL CI checks pass: - R-CMD-check (0 errors, 0 warnings) - Python tests (if py{st}schooldata exists) - pkgdown build (vignettes must render)</p>
+<p>If CI fails, fix the issue and push - auto-merge triggers when checks pass.</p>
 </div>
 </div>
 </div>
