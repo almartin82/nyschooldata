@@ -99,12 +99,13 @@ test_that("get_available_years returns valid year range", {
   if (is.list(result)) {
     expect_true("min_year" %in% names(result) || "years" %in% names(result))
     if ("min_year" %in% names(result)) {
-      expect_true(result$min_year >= 1990 & result$min_year <= 2030)
-      expect_true(result$max_year >= 1990 & result$max_year <= 2030)
+      # NY has historical data going back to 1977
+      expect_true(result$min_year >= 1970 & result$min_year <= 2030)
+      expect_true(result$max_year >= 2000 & result$max_year <= 2030)
     }
   } else {
     expect_true(is.numeric(result) || is.integer(result))
-    expect_true(all(result >= 1990 & result <= 2030, na.rm = TRUE))
+    expect_true(all(result >= 1970 & result <= 2030, na.rm = TRUE))
   }
 })
 
