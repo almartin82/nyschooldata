@@ -48,6 +48,52 @@ Before opening a PR, verify:
 
 ---
 
+## Git Workflow (REQUIRED)
+
+### Feature Branch + PR + Auto-Merge Policy
+
+**NEVER push directly to main.** All changes must go through PRs with auto-merge:
+
+```bash
+# 1. Create feature branch
+git checkout -b fix/description-of-change
+
+# 2. Make changes, commit
+git add -A
+git commit -m "Fix: description of change"
+
+# 3. Push and create PR with auto-merge
+git push -u origin fix/description-of-change
+gh pr create --title "Fix: description" --body "Description of changes"
+gh pr merge --auto --squash
+
+# 4. Clean up stale branches after PR merges
+git checkout main && git pull && git fetch --prune origin
+```
+
+### Branch Cleanup (REQUIRED)
+
+**Clean up stale branches every time you touch this package:**
+
+```bash
+# Delete local branches merged to main
+git branch --merged main | grep -v main | xargs -r git branch -d
+
+# Prune remote tracking branches
+git fetch --prune origin
+```
+
+### Auto-Merge Requirements
+
+PRs auto-merge when ALL CI checks pass:
+- R-CMD-check (0 errors, 0 warnings)
+- Python tests (if py{st}schooldata exists)
+- pkgdown build (vignettes must render)
+
+If CI fails, fix the issue and push - auto-merge triggers when checks pass.
+
+---
+
 ## LIVE Pipeline Testing
 
 This package includes `tests/testthat/test-pipeline-live.R` with LIVE network tests.
