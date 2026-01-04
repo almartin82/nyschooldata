@@ -11,3 +11,4 @@
 ^Meta$
 ^py.*schooldata$
 ^vignettes/.*_cache$
+^CLAUDE\.md$
