@@ -2,8 +2,7 @@ Package: nyschooldata
 Title: New York School Data
 Version: 0.1.0
 Authors@R:
-    person("Andy", "Martin", , "almartin@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = ""))
+    person("Andy", "Martin", , "almartin@gmail.com", role = c("aut", "cre"))
 Description: A simple, consistent interface for accessing New York
     school data in Python and R.
 License: MIT + file LICENSE
