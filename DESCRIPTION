@@ -28,7 +28,8 @@ Suggests:
     rmarkdown,
     ggplot2,
     scales,
-    curl
+    curl,
+    httr
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 URL: https://almartin82.github.io/nyschooldata/, https://github.com/almartin82/nyschooldata

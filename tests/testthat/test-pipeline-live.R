@@ -74,16 +74,16 @@ test_that("nyschooldata data file has expected columns", {
 
 test_that("get_raw_enr returns data for valid year", {
   skip_if_offline()
-  
+
   # Get available years
   years_info <- nyschooldata::get_available_years()
-  
+
   if (is.list(years_info)) {
     test_year <- years_info$max_year
   } else {
     test_year <- max(years_info)
   }
-  
+
   # This may fail if data source is broken - that is the test!
   tryCatch({
     raw <- nyschooldata:::get_raw_enr(test_year)
@@ -95,7 +95,7 @@ test_that("get_raw_enr returns data for valid year", {
 
 test_that("get_available_years returns valid year range", {
   result <- nyschooldata::get_available_years()
-  
+
   if (is.list(result)) {
     expect_true("min_year" %in% names(result) || "years" %in% names(result))
     if ("min_year" %in% names(result)) {
@@ -114,7 +114,7 @@ test_that("get_available_years returns valid year range", {
 
 test_that("fetch_enr returns data with no Inf or NaN", {
   skip_if_offline()
-  
+
   tryCatch({
     years_info <- nyschooldata::get_available_years()
     if (is.list(years_info)) {
@@ -122,13 +122,13 @@ test_that("fetch_enr returns data with no Inf or NaN", {
     } else {
       test_year <- max(years_info)
     }
-    
+
     data <- nyschooldata::fetch_enr(test_year, tidy = TRUE)
-    
+
     for (col in names(data)[sapply(data, is.numeric)]) {
-      expect_false(any(is.infinite(data[[col]]), na.rm = TRUE), 
+      expect_false(any(is.infinite(data[[col]]), na.rm = TRUE),
                    info = paste("No Inf in", col))
-      expect_false(any(is.nan(data[[col]]), na.rm = TRUE), 
+      expect_false(any(is.nan(data[[col]]), na.rm = TRUE),
                    info = paste("No NaN in", col))
     }
   }, error = function(e) {
@@ -138,7 +138,7 @@ test_that("fetch_enr returns data with no Inf or NaN", {
 
 test_that("Enrollment counts are non-negative", {
   skip_if_offline()
-  
+
   tryCatch({
     years_info <- nyschooldata::get_available_years()
     if (is.list(years_info)) {
@@ -146,9 +146,9 @@ test_that("Enrollment counts are non-negative", {
     } else {
       test_year <- max(years_info)
     }
-    
+
     data <- nyschooldata::fetch_enr(test_year, tidy = FALSE)
-    
+
     if ("row_total" %in% names(data)) {
       expect_true(all(data$row_total >= 0, na.rm = TRUE))
     }
@@ -163,7 +163,7 @@ test_that("Enrollment counts are non-negative", {
 
 test_that("State total is reasonable (not zero)", {
   skip_if_offline()
-  
+
   tryCatch({
     years_info <- nyschooldata::get_available_years()
     if (is.list(years_info)) {
@@ -171,14 +171,14 @@ test_that("State total is reasonable (not zero)", {
     } else {
       test_year <- max(years_info)
     }
-    
+
     data <- nyschooldata::fetch_enr(test_year, tidy = FALSE)
-    
+
     state_rows <- data[data$type == "State", ]
     if (nrow(state_rows) > 0 && "row_total" %in% names(state_rows)) {
       state_total <- sum(state_rows$row_total, na.rm = TRUE)
       # State total should be > 0 (unless data source is broken)
-      expect_gt(state_total, 0, 
+      expect_gt(state_total, 0,
                 label = "State total enrollment should be > 0")
     }
   }, error = function(e) {
@@ -192,7 +192,7 @@ test_that("State total is reasonable (not zero)", {
 
 test_that("tidy=TRUE and tidy=FALSE return consistent totals", {
   skip_if_offline()
-  
+
   tryCatch({
     years_info <- nyschooldata::get_available_years()
     if (is.list(years_info)) {
@@ -200,14 +200,14 @@ test_that("tidy=TRUE and tidy=FALSE return consistent totals", {
     } else {
       test_year <- max(years_info)
     }
-    
+
     wide <- nyschooldata::fetch_enr(test_year, tidy = FALSE)
     tidy <- nyschooldata::fetch_enr(test_year, tidy = TRUE)
-    
+
     # Both should have data
     expect_gt(nrow(wide), 0)
     expect_gt(nrow(tidy), 0)
-    
+
   }, error = function(e) {
     skip(paste("Data source may be broken:", e$message))
   })
@@ -227,4 +227,3 @@ test_that("Cache functions exist and work", {
     skip("Cache functions may not be implemented")
   })
 })
-
