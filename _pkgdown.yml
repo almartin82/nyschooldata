@@ -53,6 +53,7 @@ reference:
   - fetch_enr_school
   - fetch_enr_district
   - fetch_enr_nyc
+  - fetch_directory
 
 - title: Process & Tidy
   desc: Transform data into analysis-ready formats
