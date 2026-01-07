@@ -1,6 +1,7 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://almartin82.github.io/nyschooldata/404.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/CLAUDE.html</loc></url>
+<url><loc>https://almartin82.github.io/nyschooldata/EXPANSION.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/LICENSE-text.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/articles/data-quality-qa.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/articles/district-hooks.html</loc></url>
@@ -12,8 +13,13 @@
 <url><loc>https://almartin82.github.io/nyschooldata/reference/build_enr_url.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/cache_exists.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/cache_status.html</loc></url>
+<url><loc>https://almartin82.github.io/nyschooldata/reference/clean_column_names.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/clear_enr_cache.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/enr_grade_aggs.html</loc></url>
+<url><loc>https://almartin82.github.io/nyschooldata/reference/extract_column.html</loc></url>
+<url><loc>https://almartin82.github.io/nyschooldata/reference/extract_district_id.html</loc></url>
+<url><loc>https://almartin82.github.io/nyschooldata/reference/extract_district_name.html</loc></url>
+<url><loc>https://almartin82.github.io/nyschooldata/reference/fetch_directory.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/fetch_enr.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/fetch_enr_district.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/fetch_enr_multi.html</loc></url>
@@ -21,9 +27,13 @@
 <url><loc>https://almartin82.github.io/nyschooldata/reference/fetch_enr_school.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/fetch_enr_years.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/filter_grade_span.html</loc></url>
+<url><loc>https://almartin82.github.io/nyschooldata/reference/filter_schools_only.html</loc></url>
+<url><loc>https://almartin82.github.io/nyschooldata/reference/format_beds_code.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/get_available_years.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/get_cache_dir.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/get_cache_path.html</loc></url>
+<url><loc>https://almartin82.github.io/nyschooldata/reference/get_directory_years.html</loc></url>
+<url><loc>https://almartin82.github.io/nyschooldata/reference/get_raw_directory.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/get_raw_enr.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/get_raw_enr_archive.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/get_raw_enr_demographics.html</loc></url>
@@ -34,6 +44,7 @@
 <url><loc>https://almartin82.github.io/nyschooldata/reference/nyschooldata-package.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/parse_beds_code.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/parse_school_year.html</loc></url>
+<url><loc>https://almartin82.github.io/nyschooldata/reference/process_directory.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/process_enr.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/read_cache.html</loc></url>
 <url><loc>https://almartin82.github.io/nyschooldata/reference/safe_numeric.html</loc></url>
