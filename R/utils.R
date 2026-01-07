@@ -5,6 +5,9 @@
 #' @importFrom rlang .data
 NULL
 
+#' @importFrom utils URLencode
+NULL
+
 
 #' @importFrom rlang .data
 NULL
