@@ -54,6 +54,7 @@ reference:
   - fetch_enr_district
   - fetch_enr_nyc
   - fetch_directory
+  - get_directory_years
 
 - title: Process & Tidy
   desc: Transform data into analysis-ready formats
@@ -77,3 +78,9 @@ reference:
   - get_available_years
   - validate_beds_code
   - parse_beds_code
+  - clean_column_names
+  - extract_column
+  - extract_district_id
+  - extract_district_name
+  - filter_schools_only
+  - format_beds_code
