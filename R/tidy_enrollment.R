@@ -138,14 +138,22 @@ id_enr_aggs <- function(df) {
       dplyr::mutate(
         is_school = !is.na(school_code) & school_code != "0000",
         is_district = !is.na(school_code) & school_code == "0000",
-        is_state = FALSE
+        is_state = FALSE,
+        # Aggregation flag based on ID presence
+        aggregation_flag = dplyr::case_when(
+          !is.na(school_code) & school_code != "0000" ~ "campus",
+          !is.na(school_code) & school_code == "0000" ~ "district",
+          TRUE ~ "state"
+        )
       )
   } else if ("district_beds" %in% names(df)) {
     df <- df |>
       dplyr::mutate(
         is_school = FALSE,
         is_district = TRUE,
-        is_state = FALSE
+        is_state = FALSE,
+        # Aggregation flag based on ID presence
+        aggregation_flag = "district"
       )
   }
 
