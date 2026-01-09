@@ -16,6 +16,10 @@ Download enrollment data from NYSED
   : Get enrollment for a specific district
 - [`fetch_enr_nyc()`](https://almartin82.github.io/nyschooldata/reference/fetch_enr_nyc.md)
   : Get NYC enrollment data
+- [`fetch_directory()`](https://almartin82.github.io/nyschooldata/reference/fetch_directory.md)
+  : Fetch New York school directory data
+- [`get_directory_years()`](https://almartin82.github.io/nyschooldata/reference/get_directory_years.md)
+  : Get available years for directory data
 
 ## Process & Tidy
 
@@ -53,3 +57,15 @@ Helper functions for working with NY school data
   : Validate BEDS code format
 - [`parse_beds_code()`](https://almartin82.github.io/nyschooldata/reference/parse_beds_code.md)
   : Parse BEDS code into components
+- [`clean_column_names()`](https://almartin82.github.io/nyschooldata/reference/clean_column_names.md)
+  : Clean column names
+- [`extract_column()`](https://almartin82.github.io/nyschooldata/reference/extract_column.md)
+  : Extract column from data frame with multiple possible names
+- [`extract_district_id()`](https://almartin82.github.io/nyschooldata/reference/extract_district_id.md)
+  : Extract district ID from school data
+- [`extract_district_name()`](https://almartin82.github.io/nyschooldata/reference/extract_district_name.md)
+  : Extract district name from data
+- [`filter_schools_only()`](https://almartin82.github.io/nyschooldata/reference/filter_schools_only.md)
+  : Filter to keep only schools (remove district-only rows)
+- [`format_beds_code()`](https://almartin82.github.io/nyschooldata/reference/format_beds_code.md)
+  : Format BEDS code with leading zeros

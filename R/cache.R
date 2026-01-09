@@ -30,12 +30,20 @@ get_cache_dir <- function() {
 #' Get cached file path for a given year
 #'
 #' @param end_year School year end
-#' @param type File type ("raw" or "processed" or "tidy")
+#' @param type File type ("raw", "processed", "tidy", "grad_wide", "grad_tidy")
 #' @return Path to cached file
 #' @keywords internal
 get_cache_path <- function(end_year, type = "raw") {
   cache_dir <- get_cache_dir()
-  file.path(cache_dir, paste0("enr_", type, "_", end_year, ".rds"))
+
+  # Determine prefix based on type
+  if (grepl("^grad_", type)) {
+    prefix <- "grad_"
+  } else {
+    prefix <- "enr_"
+  }
+
+  file.path(cache_dir, paste0(prefix, type, "_", end_year, ".rds"))
 }
 
 
@@ -91,6 +99,8 @@ write_cache <- function(data, end_year, type = "raw") {
 #' Removes all cached data files.
 #'
 #' @param years Optional vector of years to clear. If NULL, clears all.
+#' @param data_type Type of cache to clear: "enr" (enrollment), "grad" (graduation),
+#'   or NULL (both).
 #' @return Invisibly returns the number of files removed
 #' @export
 #' @examples
@@ -100,14 +110,25 @@ write_cache <- function(data, end_year, type = "raw") {
 #'
 #' # Clear only 2024 data
 #' clear_enr_cache(2024)
+#'
+#' # Clear only graduation cache
+#' clear_enr_cache(data_type = "grad")
 #' }
-clear_enr_cache <- function(years = NULL) {
+clear_enr_cache <- function(years = NULL, data_type = NULL) {
   cache_dir <- get_cache_dir()
 
   if (is.null(years)) {
-    files <- list.files(cache_dir, pattern = "\\.rds$", full.names = TRUE)
+    if (is.null(data_type)) {
+      files <- list.files(cache_dir, pattern = "\\.rds$", full.names = TRUE)
+    } else {
+      files <- list.files(cache_dir, pattern = paste0("^", data_type, "_.*\\.rds$"), full.names = TRUE)
+    }
   } else {
-    patterns <- paste0("enr_.*_", years, "\\.rds$")
+    if (is.null(data_type)) {
+      patterns <- paste0(c("enr", "grad"), "_.*_", years, "\\.rds$")
+    } else {
+      patterns <- paste0(data_type, "_.*_", years, "\\.rds$")
+    }
     files <- unlist(lapply(patterns, function(p) {
       list.files(cache_dir, pattern = p, full.names = TRUE)
     }))
@@ -146,12 +167,16 @@ cache_status <- function() {
   info <- file.info(files)
   info$file <- basename(files)
   info$year <- as.integer(gsub(".*_(\\d{4})\\.rds$", "\\1", info$file))
-  info$type <- gsub("^enr_(.*)_\\d{4}\\.rds$", "\\1", info$file)
+
+  # Extract type (enr_tidy, grad_wide, etc.)
+  info$type <- gsub("^(enr|grad)_(.*)_\\d{4}\\.rds$", "\\2", info$file)
+  info$data_type <- gsub("^(enr|grad)_.*_\\d{4}\\.rds$", "\\1", info$file)
+
   info$size_mb <- round(info$size / 1024 / 1024, 2)
   info$age_days <- round(as.numeric(difftime(Sys.time(), info$mtime, units = "days")), 1)
 
-  result <- info[, c("year", "type", "size_mb", "age_days")]
-  result <- result[order(result$year, result$type), ]
+  result <- info[, c("year", "data_type", "type", "size_mb", "age_days")]
+  result <- result[order(result$data_type, result$year, result$type), ]
   rownames(result) <- NULL
 
   print(result)
