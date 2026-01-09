@@ -13,11 +13,13 @@ Depends:
     R (>= 4.1.0)
 Imports:
     dplyr,
-    readxl,
+    httr,
     purrr,
     rlang,
-    downloader,
+    readr,
+    readxl,
     rappdirs
+SystemRequirements: mdbtools (https://github.com/mdbtools/mdbtools)
 Suggests:
     testthat (>= 3.0.0),
     knitr,

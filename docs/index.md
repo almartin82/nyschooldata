@@ -7,7 +7,7 @@ Fetch and analyze New York State school enrollment data from
 
 ## What can you find with nyschooldata?
 
-**48 years of enrollment data** (1977-2025). 4,700+ schools. 700+
+**47 years of enrollment data** (1977-2024). 4,700+ schools. 700+
 districts. 62 counties. Here are the stories hiding in the numbers.
 
 ``` r
@@ -347,7 +347,7 @@ enr_multi = ny.fetch_enr_multi([2020, 2021, 2022, 2023, 2024])
 # Check available years
 years = ny.get_available_years()
 print(f"Data available: {years['min_year']}-{years['max_year']}")
-#> Data available: 1977-2025
+#> Data available: 1977-2024
 ```
 
 ## Data Availability & Format
@@ -359,7 +359,7 @@ print(f"Data available: {years['min_year']}-{years['max_year']}")
 | **Archive I**  | 1977-1993 | K-12 enrollment by grade, district & school level    |
 | **Archive II** | 1994-2011 | \+ Pre-K, + Gender breakdowns                        |
 | **Modern**     | 2012-2021 | \+ Econ Disadvantaged, ELL, Students w/ Disabilities |
-| **Current**    | 2022-2025 | Same as Modern, updated file format                  |
+| **Current**    | 2022-2024 | Same as Modern, updated file format                  |
 
 ### Grade Levels
 

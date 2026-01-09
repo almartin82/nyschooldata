@@ -508,14 +508,14 @@ sessionInfo()
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] gtable_0.3.6       jsonlite_2.0.0     compiler_4.5.0     tidyselect_1.2.1  
-    ##  [5] jquerylib_0.1.4    systemfonts_1.3.1  textshaping_1.0.4  yaml_2.3.12       
-    ##  [9] fastmap_1.2.0      R6_2.6.1           labeling_0.4.3     generics_0.1.4    
-    ## [13] knitr_1.51         htmlwidgets_1.6.4  tibble_3.3.0       desc_1.4.3        
-    ## [17] bslib_0.9.0        pillar_1.11.1      RColorBrewer_1.1-3 rlang_1.1.6       
-    ## [21] cachem_1.1.0       xfun_0.55          fs_1.6.6           sass_0.4.10       
-    ## [25] S7_0.2.1           otel_0.2.0         cli_3.6.5          withr_3.0.2       
-    ## [29] pkgdown_2.2.0      magrittr_2.0.4     digest_0.6.39      grid_4.5.0        
-    ## [33] rappdirs_0.3.3     lifecycle_1.0.4    vctrs_0.6.5        evaluate_1.0.5    
-    ## [37] glue_1.8.0         farver_2.1.2       codetools_0.2-20   ragg_1.5.0        
-    ## [41] purrr_1.2.0        rmarkdown_2.30     tools_4.5.0        pkgconfig_2.0.3   
-    ## [45] htmltools_0.5.9
+    ##  [5] jquerylib_0.1.4    systemfonts_1.3.1  textshaping_1.0.4  readxl_1.4.5      
+    ##  [9] yaml_2.3.12        fastmap_1.2.0      R6_2.6.1           labeling_0.4.3    
+    ## [13] generics_0.1.4     knitr_1.51         htmlwidgets_1.6.4  tibble_3.3.0      
+    ## [17] desc_1.4.3         downloader_0.4.1   bslib_0.9.0        pillar_1.11.1     
+    ## [21] RColorBrewer_1.1-3 rlang_1.1.6        cachem_1.1.0       xfun_0.55         
+    ## [25] fs_1.6.6           sass_0.4.10        S7_0.2.1           otel_0.2.0        
+    ## [29] cli_3.6.5          withr_3.0.2        pkgdown_2.2.0      magrittr_2.0.4    
+    ## [33] digest_0.6.39      grid_4.5.0         rappdirs_0.3.3     lifecycle_1.0.4   
+    ## [37] vctrs_0.6.5        evaluate_1.0.5     glue_1.8.0         cellranger_1.1.0  
+    ## [41] farver_2.1.2       codetools_0.2-20   ragg_1.5.0         purrr_1.2.0       
+    ## [45] rmarkdown_2.30     tools_4.5.0        pkgconfig_2.0.3    htmltools_0.5.9

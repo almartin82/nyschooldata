@@ -7,3 +7,4 @@ src/*.so
 src/*.dll
 *.Rcheck/
 *_cache/
+data-cache/
