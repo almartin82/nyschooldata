@@ -358,7 +358,7 @@ county_all %>% filter(grew) %>%
 **NYC Pre-K is now 99% full-day (103K of 104K), while rest of state is only 85% full-day.** This represents a fundamental policy shift in early childhood education.
 
 ```{r prek-fullday}
-enr_2024 <- fetch_enr(2024, level = "district", tidy = TRUE)
+enr_2024 <- fetch_enr(2024, level = "district", tidy = TRUE, use_cache = TRUE)
 
 pk_comparison <- enr_2024 %>%
   filter(grade_level %in% c("PK_FULL", "PK_HALF")) %>%
