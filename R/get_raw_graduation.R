@@ -18,6 +18,7 @@ NYSED_GRAD_BASE_URL <- "https://data.nysed.gov/files/gradrate"
 
 #' Data cache directory for converted CSV files
 #' @keywords internal
+#' @importFrom utils unzip
 DATA_CACHE_DIR <- "data-cache"
 
 #' Get available graduation years

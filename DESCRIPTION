@@ -13,6 +13,7 @@ Depends:
     R (>= 4.1.0)
 Imports:
     dplyr,
+    downloader,
     httr,
     purrr,
     rlang,
@@ -21,13 +22,12 @@ Imports:
     rappdirs
 SystemRequirements: mdbtools (https://github.com/mdbtools/mdbtools)
 Suggests:
-    testthat (>= 3.0.0),
+    curl,
+    ggplot2,
     knitr,
     rmarkdown,
-    ggplot2,
     scales,
-    curl,
-    httr,
+    testthat (>= 3.0.0),
     tidyr
 VignetteBuilder: knitr
 Config/testthat/edition: 3
