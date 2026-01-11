@@ -321,6 +321,8 @@ extract_column <- function(df, possible_names) {
 #' @param left Left value
 #' @param right Right value (default)
 #' @return left if not null/NA, else right
+#' @name null_coalesce
+#' @alias %||%
 #' @keywords internal
 `%||%` <- function(left, right) {
   if (is.null(left) || all(is.na(left))) {
