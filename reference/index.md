@@ -2,7 +2,7 @@
 
 ## Fetch Data
 
-Download enrollment data from NYSED
+Download enrollment and graduation data from NYSED
 
 - [`fetch_enr()`](https://almartin82.github.io/nyschooldata/reference/fetch_enr.md)
   : Fetch New York enrollment data
@@ -20,6 +20,12 @@ Download enrollment data from NYSED
   : Fetch New York school directory data
 - [`get_directory_years()`](https://almartin82.github.io/nyschooldata/reference/get_directory_years.md)
   : Get available years for directory data
+- [`fetch_graduation()`](https://almartin82.github.io/nyschooldata/reference/fetch_graduation.md)
+  : Fetch New York graduation rate data
+- [`fetch_graduation_multi()`](https://almartin82.github.io/nyschooldata/reference/fetch_graduation_multi.md)
+  : Fetch graduation rate data for multiple years
+- [`get_available_grad_years()`](https://almartin82.github.io/nyschooldata/reference/get_available_grad_years.md)
+  : Get available graduation years
 
 ## Process & Tidy
 
@@ -42,6 +48,8 @@ Manage locally cached data
   : Show cache status
 - [`clear_enr_cache()`](https://almartin82.github.io/nyschooldata/reference/clear_enr_cache.md)
   : Clear the nyschooldata cache
+- [`clear_grad_cache()`](https://almartin82.github.io/nyschooldata/reference/clear_grad_cache.md)
+  : Clear graduation rate cache
 
 ## Utilities
 

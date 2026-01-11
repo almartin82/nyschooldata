@@ -110,6 +110,27 @@ processes enrollment data for a given school year:</p>
 <span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">enr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   end_year county district_beds district_code district_name    beds_code</span></span>
+<span><span class="co">## 1     2024 ALBANY  010100010000        010100        ALBANY 010100010014</span></span>
+<span><span class="co">## 2     2024 ALBANY  010100010000        010100        ALBANY 010100010016</span></span>
+<span><span class="co">## 3     2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 4     2024 ALBANY  010100010000        010100        ALBANY 010100010019</span></span>
+<span><span class="co">## 5     2024 ALBANY  010100010000        010100        ALBANY 010100010023</span></span>
+<span><span class="co">## 6     2024 ALBANY  010100010000        010100        ALBANY 010100010027</span></span>
+<span><span class="co">##   school_code                    school_name school_type is_state is_district</span></span>
+<span><span class="co">## 1        0100       MONTESSORI MAGNET SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 2        0100   PINE HILLS ELEMENTARY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 3        0100      DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 4        0100 NEW SCOTLAND ELEMENTARY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 5        0100    ALBANY SCHOOL OF HUMANITIES      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 6        0100  EAGLE POINT ELEMENTARY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">##   is_school is_nyc is_charter grade_level         subgroup n_students pct</span></span>
+<span><span class="co">## 1      TRUE  FALSE      FALSE       TOTAL total_enrollment        324   1</span></span>
+<span><span class="co">## 2      TRUE  FALSE      FALSE       TOTAL total_enrollment        347   1</span></span>
+<span><span class="co">## 3      TRUE  FALSE      FALSE       TOTAL total_enrollment        311   1</span></span>
+<span><span class="co">## 4      TRUE  FALSE      FALSE       TOTAL total_enrollment        459   1</span></span>
+<span><span class="co">## 5      TRUE  FALSE      FALSE       TOTAL total_enrollment        332   1</span></span>
+<span><span class="co">## 6      TRUE  FALSE      FALSE       TOTAL total_enrollment        286   1</span></span></code></pre>
 <p>The <code>end_year</code> parameter refers to the end of the school
 year. For example: - <code>fetch_enr(2024)</code> returns data for the
 2023-24 school year - <code>fetch_enr(2020)</code> returns data for the
@@ -120,14 +141,19 @@ year. For example: - <code>fetch_enr(2024)</code> returns data for the
 </h3>
 <p>Data is available from 2012 (2011-12 school year) through 2024
 (2023-24 school year):</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_available_years.html">get_available_years</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## $min_year</span></span>
+<span><span class="co">## [1] 1977</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $max_year</span></span>
+<span><span class="co">## [1] 2024</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="data-levels">Data Levels<a class="anchor" aria-label="anchor" href="#data-levels"></a>
 </h3>
 <p>You can fetch school-level or district-level data:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># School-level data (default)</span></span>
 <span><span class="va">school_enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"school"</span><span class="op">)</span></span>
 <span></span>
@@ -139,7 +165,7 @@ year. For example: - <code>fetch_enr(2024)</code> returns data for the
 </h3>
 <p>By default, data is returned in <strong>tidy (long) format</strong>
 with one row per school/grade combination:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Tidy format (default): one row per school per grade</span></span>
 <span><span class="va">enr_tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, tidy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -147,8 +173,19 @@ with one row per school/grade combination:</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_school</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">school_name</span>, <span class="va">grade_level</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##                            school_name grade_level n_students</span></span>
+<span><span class="co">## 1             MONTESSORI MAGNET SCHOOL       TOTAL        324</span></span>
+<span><span class="co">## 2         PINE HILLS ELEMENTARY SCHOOL       TOTAL        347</span></span>
+<span><span class="co">## 3            DELAWARE COMMUNITY SCHOOL       TOTAL        311</span></span>
+<span><span class="co">## 4       NEW SCOTLAND ELEMENTARY SCHOOL       TOTAL        459</span></span>
+<span><span class="co">## 5          ALBANY SCHOOL OF HUMANITIES       TOTAL        332</span></span>
+<span><span class="co">## 6        EAGLE POINT ELEMENTARY SCHOOL       TOTAL        286</span></span>
+<span><span class="co">## 7  THOMAS S O'BRIEN ACAD OF SCI &amp; TECH       TOTAL        263</span></span>
+<span><span class="co">## 8    GIFFEN MEMORIAL ELEMENTARY SCHOOL       TOTAL        406</span></span>
+<span><span class="co">## 9      WILLIAM S HACKETT MIDDLE SCHOOL       TOTAL        630</span></span>
+<span><span class="co">## 10                  ALBANY HIGH SCHOOL       TOTAL       2764</span></span></code></pre>
 <p>For <strong>wide format</strong> with one column per grade level:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Wide format: one row per school, columns for each grade</span></span>
 <span><span class="va">enr_wide</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, tidy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
@@ -156,6 +193,18 @@ with one row per school/grade combination:</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_school</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">school_name</span>, <span class="va">row_total</span>, <span class="va">grade_pk</span>, <span class="va">grade_k</span>, <span class="va">grade_01</span>, <span class="va">grade_09</span>, <span class="va">grade_12</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##                      school_name row_total grade_pk grade_k grade_01 grade_09</span></span>
+<span><span class="co">## 1       MONTESSORI MAGNET SCHOOL       324       32      51       48        0</span></span>
+<span><span class="co">## 2   PINE HILLS ELEMENTARY SCHOOL       347        0      55       68        0</span></span>
+<span><span class="co">## 3      DELAWARE COMMUNITY SCHOOL       311       20      51       49        0</span></span>
+<span><span class="co">## 4 NEW SCOTLAND ELEMENTARY SCHOOL       459        0      72       87        0</span></span>
+<span><span class="co">## 5    ALBANY SCHOOL OF HUMANITIES       332        0      41       58        0</span></span>
+<span><span class="co">##   grade_12</span></span>
+<span><span class="co">## 1        0</span></span>
+<span><span class="co">## 2        0</span></span>
+<span><span class="co">## 3        0</span></span>
+<span><span class="co">## 4        0</span></span>
+<span><span class="co">## 5        0</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -242,22 +291,26 @@ with one row per school/grade combination:</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># All districts</span></span>
 <span><span class="va">districts</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">districts</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># All schools</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">districts</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0</span></span></code></pre>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># All schools</span></span>
 <span><span class="va">schools</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_school</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">schools</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Only NYC schools</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">schools</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 4749</span></span></code></pre>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Only NYC schools</span></span>
 <span><span class="va">nyc_schools</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_school</span>, <span class="va">is_nyc</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">nyc_schools</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Only charter schools</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">nyc_schools</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 1864</span></span></code></pre>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Only charter schools</span></span>
 <span><span class="va">charters</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_school</span>, <span class="va">is_charter</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">charters</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 343</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="grade-level-values">Grade Level Values<a class="anchor" aria-label="anchor" href="#grade-level-values"></a>
@@ -305,45 +358,145 @@ uniquely identify schools and districts:</p>
 <h3 id="parsing-beds-codes">Parsing BEDS Codes<a class="anchor" aria-label="anchor" href="#parsing-beds-codes"></a>
 </h3>
 <p>Use <code><a href="../reference/parse_beds_code.html">parse_beds_code()</a></code> to extract components:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Parse a BEDS code</span></span>
-<span><span class="fu"><a href="../reference/parse_beds_code.html">parse_beds_code</a></span><span class="op">(</span><span class="st">"010100010018"</span><span class="op">)</span></span>
-<span><span class="co"># Returns:</span></span>
+<span><span class="fu"><a href="../reference/parse_beds_code.html">parse_beds_code</a></span><span class="op">(</span><span class="st">"010100010018"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##      beds_code district_code school_code check_digits</span></span>
+<span><span class="co">## 1 010100010018        010100        0100           18</span></span></code></pre>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Returns:</span></span>
 <span><span class="co">#      beds_code district_code school_code check_digits</span></span>
 <span><span class="co"># 1 010100010018        010100        0001           18</span></span>
 <span></span>
 <span><span class="co"># Parse multiple codes</span></span>
 <span><span class="va">beds_codes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"010100010018"</span>, <span class="st">"310200010001"</span>, <span class="st">"261600010001"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/parse_beds_code.html">parse_beds_code</a></span><span class="op">(</span><span class="va">beds_codes</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##      beds_code district_code school_code check_digits</span></span>
+<span><span class="co">## 1 010100010018        010100        0100           18</span></span>
+<span><span class="co">## 2 310200010001        310200        0100           01</span></span>
+<span><span class="co">## 3 261600010001        261600        0100           01</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="validating-beds-codes">Validating BEDS Codes<a class="anchor" aria-label="anchor" href="#validating-beds-codes"></a>
 </h3>
 <p>Check if codes are properly formatted:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Validate BEDS codes</span></span>
-<span><span class="fu"><a href="../reference/validate_beds_code.html">validate_beds_code</a></span><span class="op">(</span><span class="st">"010100010018"</span><span class="op">)</span>    <span class="co"># TRUE - valid</span></span>
-<span><span class="fu"><a href="../reference/validate_beds_code.html">validate_beds_code</a></span><span class="op">(</span><span class="st">"31000001023"</span><span class="op">)</span>     <span class="co"># FALSE - only 11 digits</span></span>
-<span><span class="fu"><a href="../reference/validate_beds_code.html">validate_beds_code</a></span><span class="op">(</span><span class="st">"invalid"</span><span class="op">)</span>          <span class="co"># FALSE - not numeric</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/validate_beds_code.html">validate_beds_code</a></span><span class="op">(</span><span class="st">"010100010018"</span><span class="op">)</span>    <span class="co"># TRUE - valid</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/validate_beds_code.html">validate_beds_code</a></span><span class="op">(</span><span class="st">"31000001023"</span><span class="op">)</span>     <span class="co"># FALSE - only 11 digits</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] FALSE</span></span></code></pre>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/validate_beds_code.html">validate_beds_code</a></span><span class="op">(</span><span class="st">"invalid"</span><span class="op">)</span>          <span class="co"># FALSE - not numeric</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] FALSE</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="looking-up-specific-schools">Looking Up Specific Schools<a class="anchor" aria-label="anchor" href="#looking-up-specific-schools"></a>
 </h3>
 <p>Use <code><a href="../reference/fetch_enr_school.html">fetch_enr_school()</a></code> to get data for a single
 school:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get enrollment for a specific school by BEDS code</span></span>
 <span><span class="va">school_enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_school.html">fetch_enr_school</a></span><span class="op">(</span><span class="st">"010100010018"</span>, <span class="fl">2024</span><span class="op">)</span></span>
-<span><span class="va">school_enr</span></span>
-<span></span>
-<span><span class="co"># Get multiple years for a school</span></span>
+<span><span class="va">school_enr</span></span></code></pre></div>
+<pre><code><span><span class="co">##    end_year county district_beds district_code district_name    beds_code</span></span>
+<span><span class="co">## 1      2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 2      2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 3      2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 4      2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 5      2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 6      2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 7      2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 8      2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 9      2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 10     2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 11     2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 12     2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 13     2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 14     2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 15     2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 16     2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 17     2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 18     2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 19     2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 20     2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">## 21     2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
+<span><span class="co">##    school_code               school_name school_type is_state is_district</span></span>
+<span><span class="co">## 1         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 2         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 3         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 4         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 5         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 6         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 7         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 8         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 9         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 10        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 11        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 12        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 13        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 14        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 15        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 16        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 17        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 18        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 19        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 20        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">## 21        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE</span></span>
+<span><span class="co">##    is_school is_nyc is_charter grade_level         subgroup n_students</span></span>
+<span><span class="co">## 1       TRUE  FALSE      FALSE       TOTAL total_enrollment        311</span></span>
+<span><span class="co">## 2       TRUE  FALSE      FALSE          PK total_enrollment         20</span></span>
+<span><span class="co">## 3       TRUE  FALSE      FALSE     PK_HALF total_enrollment          0</span></span>
+<span><span class="co">## 4       TRUE  FALSE      FALSE     PK_FULL total_enrollment         20</span></span>
+<span><span class="co">## 5       TRUE  FALSE      FALSE           K total_enrollment         51</span></span>
+<span><span class="co">## 6       TRUE  FALSE      FALSE      K_HALF total_enrollment          0</span></span>
+<span><span class="co">## 7       TRUE  FALSE      FALSE      K_FULL total_enrollment         51</span></span>
+<span><span class="co">## 8       TRUE  FALSE      FALSE          01 total_enrollment         49</span></span>
+<span><span class="co">## 9       TRUE  FALSE      FALSE          02 total_enrollment         52</span></span>
+<span><span class="co">## 10      TRUE  FALSE      FALSE          03 total_enrollment         52</span></span>
+<span><span class="co">## 11      TRUE  FALSE      FALSE          04 total_enrollment         45</span></span>
+<span><span class="co">## 12      TRUE  FALSE      FALSE          05 total_enrollment         42</span></span>
+<span><span class="co">## 13      TRUE  FALSE      FALSE          06 total_enrollment          0</span></span>
+<span><span class="co">## 14      TRUE  FALSE      FALSE          07 total_enrollment          0</span></span>
+<span><span class="co">## 15      TRUE  FALSE      FALSE          08 total_enrollment          0</span></span>
+<span><span class="co">## 16      TRUE  FALSE      FALSE          09 total_enrollment          0</span></span>
+<span><span class="co">## 17      TRUE  FALSE      FALSE          10 total_enrollment          0</span></span>
+<span><span class="co">## 18      TRUE  FALSE      FALSE          11 total_enrollment          0</span></span>
+<span><span class="co">## 19      TRUE  FALSE      FALSE          12 total_enrollment          0</span></span>
+<span><span class="co">## 20      TRUE  FALSE      FALSE     UG_ELEM total_enrollment          0</span></span>
+<span><span class="co">## 21      TRUE  FALSE      FALSE      UG_SEC total_enrollment          0</span></span>
+<span><span class="co">##           pct</span></span>
+<span><span class="co">## 1  1.00000000</span></span>
+<span><span class="co">## 2  0.06430868</span></span>
+<span><span class="co">## 3  0.00000000</span></span>
+<span><span class="co">## 4  0.06430868</span></span>
+<span><span class="co">## 5  0.16398714</span></span>
+<span><span class="co">## 6  0.00000000</span></span>
+<span><span class="co">## 7  0.16398714</span></span>
+<span><span class="co">## 8  0.15755627</span></span>
+<span><span class="co">## 9  0.16720257</span></span>
+<span><span class="co">## 10 0.16720257</span></span>
+<span><span class="co">## 11 0.14469453</span></span>
+<span><span class="co">## 12 0.13504823</span></span>
+<span><span class="co">## 13 0.00000000</span></span>
+<span><span class="co">## 14 0.00000000</span></span>
+<span><span class="co">## 15 0.00000000</span></span>
+<span><span class="co">## 16 0.00000000</span></span>
+<span><span class="co">## 17 0.00000000</span></span>
+<span><span class="co">## 18 0.00000000</span></span>
+<span><span class="co">## 19 0.00000000</span></span>
+<span><span class="co">## 20 0.00000000</span></span>
+<span><span class="co">## 21 0.00000000</span></span></code></pre>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Get multiple years for a school</span></span>
 <span><span class="va">school_history</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_school.html">fetch_enr_school</a></span><span class="op">(</span><span class="st">"010100010018"</span>, <span class="fl">2020</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="looking-up-districts">Looking Up Districts<a class="anchor" aria-label="anchor" href="#looking-up-districts"></a>
 </h3>
 <p>Use <code><a href="../reference/fetch_enr_district.html">fetch_enr_district()</a></code> for district-level queries:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get all schools in a district</span></span>
 <span><span class="va">albany_schools</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_district.html">fetch_enr_district</a></span><span class="op">(</span><span class="st">"010100"</span>, <span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"school"</span><span class="op">)</span></span>
 <span></span>
@@ -357,17 +510,19 @@ school:</p>
 <div class="section level3">
 <h3 id="top-districts-by-enrollment">Top Districts by Enrollment<a class="anchor" aria-label="anchor" href="#top-districts-by-enrollment"></a>
 </h3>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district_name</span>, <span class="va">county</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] district_name county        n_students   </span></span>
+<span><span class="co">## &lt;0 rows&gt; (or 0-length row.names)</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="enrollment-by-county">Enrollment by County<a class="anchor" aria-label="anchor" href="#enrollment-by-county"></a>
 </h3>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">county</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -377,23 +532,27 @@ school:</p>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">total_enrollment</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 0 × 3</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 3 variables: county &lt;chr&gt;, n_districts &lt;int&gt;, total_enrollment &lt;dbl&gt;</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="grade-level-distribution">Grade-Level Distribution<a class="anchor" aria-label="anchor" href="#grade-level-distribution"></a>
 </h3>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Statewide grade distribution</span></span>
 <span><span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">grade_level</span> <span class="op">!=</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">grade_level</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">grade_level</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PK"</span>, <span class="st">"K"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%02d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 0 × 2</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 2 variables: grade_level &lt;chr&gt;, total &lt;dbl&gt;</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="filtering-by-grade-span">Filtering by Grade Span<a class="anchor" aria-label="anchor" href="#filtering-by-grade-span"></a>
 </h3>
 <p>Use <code><a href="../reference/filter_grade_span.html">filter_grade_span()</a></code> for common grade groupings:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get only elementary grades (K-5)</span></span>
 <span><span class="va">elem_enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_grade_span.html">filter_grade_span</a></span><span class="op">(</span><span class="va">enr</span>, <span class="st">"elem"</span><span class="op">)</span></span>
 <span></span>
@@ -407,7 +566,7 @@ school:</p>
 </h3>
 <p>Create K-8, HS, and K-12 aggregates with
 <code><a href="../reference/enr_grade_aggs.html">enr_grade_aggs()</a></code>:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get grade span aggregates</span></span>
 <span><span class="va">aggs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/enr_grade_aggs.html">enr_grade_aggs</a></span><span class="op">(</span><span class="va">enr</span><span class="op">)</span></span>
 <span></span>
@@ -415,6 +574,8 @@ school:</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district_name</span>, <span class="va">grade_level</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">15</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 0 × 3</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 3 variables: district_name &lt;chr&gt;, grade_level &lt;chr&gt;, n_students &lt;dbl&gt;</span></span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -423,7 +584,7 @@ school:</p>
 <p>NYC is unique in New York - it’s organized as 32 geographic Community
 School Districts plus District 75 (special education) and District 79
 (alternative schools). Use the convenience function:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get NYC enrollment directly</span></span>
 <span><span class="va">nyc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_nyc.html">fetch_enr_nyc</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
 <span></span>
@@ -433,6 +594,17 @@ School Districts plus District 75 (special education) and District 79
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">school_name</span>, <span class="va">district_name</span>, <span class="va">n_students</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##                    school_name                 district_name n_students</span></span>
+<span><span class="co">## 1        BROOKLYN TECHNICAL HS  NYC GEOG DIST #13 - BROOKLYN       5810</span></span>
+<span><span class="co">## 2    FRANCIS LEWIS HIGH SCHOOL    NYC GEOG DIST #26 - QUEENS       4404</span></span>
+<span><span class="co">## 3    FORT HAMILTON HIGH SCHOOL  NYC GEOG DIST #20 - BROOKLYN       3980</span></span>
+<span><span class="co">## 4          MIDWOOD HIGH SCHOOL  NYC GEOG DIST #22 - BROOKLYN       3905</span></span>
+<span><span class="co">## 5      TOTTENVILLE HIGH SCHOOL        NYC GEOG DIST #31 - SI       3796</span></span>
+<span><span class="co">## 6    JAMES MADISON HIGH SCHOOL  NYC GEOG DIST #22 - BROOKLYN       3766</span></span>
+<span><span class="co">## 7  EDWARD R MURROW HIGH SCHOOL  NYC GEOG DIST #21 - BROOKLYN       3589</span></span>
+<span><span class="co">## 8     FOREST HILLS HIGH SCHOOL    NYC GEOG DIST #28 - QUEENS       3420</span></span>
+<span><span class="co">## 9      FRANKLIN D ROOSEVELT HS  NYC GEOG DIST #20 - BROOKLYN       3409</span></span>
+<span><span class="co">## 10      STUYVESANT HIGH SCHOOL NYC GEOG DIST # 2 - MANHATTAN       3258</span></span></code></pre>
 <p>NYC district codes follow this pattern: - <code>30xxxx</code> -
 District 75 (citywide special education) - <code>31xxxx</code> -
 Manhattan districts - <code>32xxxx</code> - Bronx districts -
@@ -445,17 +617,18 @@ districts - <code>35xxxx</code> - Staten Island district</p>
 <div class="section level3">
 <h3 id="fetching-multiple-years">Fetching Multiple Years<a class="anchor" aria-label="anchor" href="#fetching-multiple-years"></a>
 </h3>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Fetch 5 years of data</span></span>
 <span><span class="va">enr_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fl">2020</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Check years retrieved</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">enr_multi</span><span class="op">$</span><span class="va">end_year</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 2020 2021 2022 2023 2024</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="enrollment-trends">Enrollment Trends<a class="anchor" aria-label="anchor" href="#enrollment-trends"></a>
 </h3>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Statewide enrollment trend</span></span>
 <span><span class="va">state_trend</span> <span class="op">&lt;-</span> <span class="va">enr_multi</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -463,6 +636,12 @@ districts - <code>35xxxx</code> - Staten Island district</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total_enrollment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">state_trend</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
+<span><span class="co">##   end_year total_enrollment</span></span>
+<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>     <span style="text-decoration: underline;">2</span>020          2<span style="text-decoration: underline;">638</span>949</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>     <span style="text-decoration: underline;">2</span>021          2<span style="text-decoration: underline;">559</span>164</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>     <span style="text-decoration: underline;">2</span>022          2<span style="text-decoration: underline;">505</span>517</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -471,7 +650,7 @@ districts - <code>35xxxx</code> - Staten Island district</p>
 <div class="section level3">
 <h3 id="statewide-enrollment-trend">Statewide Enrollment Trend<a class="anchor" aria-label="anchor" href="#statewide-enrollment-trend"></a>
 </h3>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span></span>
 <span></span>
@@ -490,7 +669,7 @@ districts - <code>35xxxx</code> - Staten Island district</p>
 <div class="section level3">
 <h3 id="grade-level-distribution-1">Grade-Level Distribution<a class="anchor" aria-label="anchor" href="#grade-level-distribution-1"></a>
 </h3>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">grade_dist</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="op">!</span><span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TOTAL"</span>, <span class="st">"PK_HALF"</span>, <span class="st">"PK_FULL"</span>, <span class="st">"K_HALF"</span>, <span class="st">"K_FULL"</span>, <span class="st">"UG_ELEM"</span>, <span class="st">"UG_SEC"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">grade_level</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -510,7 +689,7 @@ districts - <code>35xxxx</code> - Staten Island district</p>
 <div class="section level3">
 <h3 id="comparing-districts">Comparing Districts<a class="anchor" aria-label="anchor" href="#comparing-districts"></a>
 </h3>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Compare top 5 districts over time</span></span>
 <span><span class="va">top_districts</span> <span class="op">&lt;-</span> <span class="va">enr_multi</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>, <span class="va">end_year</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -540,11 +719,31 @@ districts - <code>35xxxx</code> - Staten Island district</p>
 </h2>
 <p>Data is cached locally by default to avoid repeated downloads. Manage
 the cache with:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># View cache status</span></span>
-<span><span class="fu"><a href="../reference/cache_status.html">cache_status</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Clear all cached data</span></span>
+<span><span class="fu"><a href="../reference/cache_status.html">cache_status</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##    year data_type          type size_mb age_days</span></span>
+<span><span class="co">## 1  2012       enr district_tidy    0.10        0</span></span>
+<span><span class="co">## 2  2013       enr district_tidy    0.10        0</span></span>
+<span><span class="co">## 3  2014       enr district_tidy    0.10        0</span></span>
+<span><span class="co">## 4  2015       enr district_tidy    0.10        0</span></span>
+<span><span class="co">## 5  2016       enr district_tidy    0.10        0</span></span>
+<span><span class="co">## 6  2017       enr district_tidy    0.10        0</span></span>
+<span><span class="co">## 7  2018       enr district_tidy    0.10        0</span></span>
+<span><span class="co">## 8  2019       enr district_tidy    0.10        0</span></span>
+<span><span class="co">## 9  2020       enr district_tidy    0.10        0</span></span>
+<span><span class="co">## 10 2020       enr   school_tidy    1.07        0</span></span>
+<span><span class="co">## 11 2021       enr district_tidy    0.09        0</span></span>
+<span><span class="co">## 12 2021       enr   school_tidy    1.07        0</span></span>
+<span><span class="co">## 13 2022       enr district_tidy    0.09        0</span></span>
+<span><span class="co">## 14 2022       enr   school_tidy    0.91        0</span></span>
+<span><span class="co">## 15 2023       enr district_tidy    0.12        0</span></span>
+<span><span class="co">## 16 2023       enr   school_tidy    1.82        0</span></span>
+<span><span class="co">## 17 2024       enr district_tidy    0.12        0</span></span>
+<span><span class="co">## 18 2024       enr   school_tidy    1.83        0</span></span>
+<span><span class="co">## 19 2024       enr   school_wide    0.17        0</span></span></code></pre>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Clear all cached data</span></span>
 <span><span class="fu"><a href="../reference/clear_enr_cache.html">clear_enr_cache</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Clear only 2024 data</span></span>
@@ -557,18 +756,24 @@ the cache with:</p>
 <h2 id="school-year-labels">School Year Labels<a class="anchor" aria-label="anchor" href="#school-year-labels"></a>
 </h2>
 <p>Convert between year integers and label strings:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Convert end year to label</span></span>
-<span><span class="fu"><a href="../reference/school_year_label.html">school_year_label</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
-<span><span class="co"># [1] "2023-24"</span></span>
+<span><span class="fu"><a href="../reference/school_year_label.html">school_year_label</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "2023-24"</span></span></code></pre>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># [1] "2023-24"</span></span>
 <span></span>
 <span><span class="co"># Parse label back to end year</span></span>
-<span><span class="fu"><a href="../reference/parse_school_year.html">parse_school_year</a></span><span class="op">(</span><span class="st">"2023-24"</span><span class="op">)</span></span>
-<span><span class="co"># [1] 2024</span></span>
+<span><span class="fu"><a href="../reference/parse_school_year.html">parse_school_year</a></span><span class="op">(</span><span class="st">"2023-24"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 2024</span></span></code></pre>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># [1] 2024</span></span>
 <span></span>
 <span><span class="co"># Works with "2023-2024" format too</span></span>
-<span><span class="fu"><a href="../reference/parse_school_year.html">parse_school_year</a></span><span class="op">(</span><span class="st">"2023-2024"</span><span class="op">)</span></span>
-<span><span class="co"># [1] 2024</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/parse_school_year.html">parse_school_year</a></span><span class="op">(</span><span class="st">"2023-2024"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 2024</span></span></code></pre>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># [1] 2024</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="next-steps">Next Steps<a class="anchor" aria-label="anchor" href="#next-steps"></a>
