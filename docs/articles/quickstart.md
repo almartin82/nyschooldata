@@ -53,7 +53,7 @@ example: - `fetch_enr(2024)` returns data for the 2023-24 school year -
 
 ### Available Years
 
-Data is available from 2012 (2011-12 school year) through 2025 (2024-25
+Data is available from 2012 (2011-12 school year) through 2024 (2023-24
 school year):
 
 ``` r

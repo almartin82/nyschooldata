@@ -4,10 +4,13 @@
 \alias{clear_enr_cache}
 \title{Clear the nyschooldata cache}
 \usage{
-clear_enr_cache(years = NULL)
+clear_enr_cache(years = NULL, data_type = NULL)
 }
 \arguments{
 \item{years}{Optional vector of years to clear. If NULL, clears all.}
+
+\item{data_type}{Type of cache to clear: "enr" (enrollment), "grad" (graduation),
+or NULL (both).}
 }
 \value{
 Invisibly returns the number of files removed
@@ -22,5 +25,8 @@ clear_enr_cache()
 
 # Clear only 2024 data
 clear_enr_cache(2024)
+
+# Clear only graduation cache
+clear_enr_cache(data_type = "grad")
 }
 }

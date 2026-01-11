@@ -9,7 +9,7 @@ get_cache_path(end_year, type = "raw")
 \arguments{
 \item{end_year}{School year end}
 
-\item{type}{File type ("raw" or "processed" or "tidy")}
+\item{type}{File type ("raw", "processed", "tidy", "grad_wide", "grad_tidy")}
 }
 \value{
 Path to cached file

@@ -14,7 +14,7 @@ get_raw_enr(end_year, level = "school")
 
 - end_year:
 
-  School year end (2023-24 = 2024). Valid years: 1977-2025.
+  School year end (2023-24 = 2024). Valid years: 1977-2024.
 
 - level:
 

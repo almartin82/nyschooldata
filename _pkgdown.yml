@@ -45,7 +45,7 @@ articles:
 
 reference:
 - title: Fetch Data
-  desc: Download enrollment data from NYSED
+  desc: Download enrollment and graduation data from NYSED
   contents:
   - fetch_enr
   - fetch_enr_multi
@@ -55,6 +55,9 @@ reference:
   - fetch_enr_nyc
   - fetch_directory
   - get_directory_years
+  - fetch_graduation
+  - fetch_graduation_multi
+  - get_available_grad_years
 
 - title: Process & Tidy
   desc: Transform data into analysis-ready formats
@@ -69,6 +72,7 @@ reference:
   contents:
   - cache_status
   - clear_enr_cache
+  - clear_grad_cache
 
 - title: Utilities
   desc: Helper functions for working with NY school data

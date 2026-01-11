@@ -14,7 +14,7 @@ fetch_enr(end_year, level = "school", tidy = TRUE, use_cache = TRUE)
 - end_year:
 
   A school year. Year is the end of the academic year - eg 2023-24
-  school year is year '2024'. Valid values are 2012-2025.
+  school year is year '2024'. Valid values are 2012-2024.
 
 - level:
 
