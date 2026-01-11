@@ -101,7 +101,7 @@ get_mdb_filename <- function(end_year, temp_dir) {
 #' @param end_year School year end
 #' @return Path to cached CSV file
 #' @keywords internal
-get_cache_path <- function(end_year) {
+get_grad_cache_path <- function(end_year) {
   file.path(DATA_CACHE_DIR, paste0("ny_grad_", end_year, ".csv"))
 }
 
@@ -216,7 +216,7 @@ get_raw_graduation <- function(end_year, force_refresh = FALSE) {
   }
 
   # Check cache
-  cache_path <- get_cache_path(end_year)
+  cache_path <- get_grad_cache_path(end_year)
   use_cache <- FALSE
 
   if (!force_refresh && file.exists(cache_path)) {
