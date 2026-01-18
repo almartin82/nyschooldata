@@ -42,6 +42,8 @@ articles:
   contents:
   - quickstart
   - data-quality-qa
+- title: internal
+  contents: []
 
 reference:
 - title: Fetch Data
