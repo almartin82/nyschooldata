@@ -25,7 +25,7 @@ We retrieve enrollment data for all available years (2012-2024).
 years <- 2012:2024
 
 # Get enrollment data year by year (handles errors gracefully)
-enr_all <- fetch_enr_years(years, level = "district", tidy = TRUE)
+enr_all <- fetch_enr_years(years, level = "district", tidy = TRUE, use_cache = TRUE)
 ```
 
     ## Downloading district enrollment data for 2012 ...
@@ -675,12 +675,12 @@ sessionInfo()
     ##  [1] gtable_0.3.6       jsonlite_2.0.0     compiler_4.5.2     tidyselect_1.2.1  
     ##  [5] tidyr_1.3.2        jquerylib_0.1.4    systemfonts_1.3.1  textshaping_1.0.4 
     ##  [9] readxl_1.4.5       yaml_2.3.12        fastmap_1.2.0      R6_2.6.1          
-    ## [13] labeling_0.4.3     generics_0.1.4     knitr_1.51         tibble_3.3.0      
+    ## [13] labeling_0.4.3     generics_0.1.4     knitr_1.51         tibble_3.3.1      
     ## [17] desc_1.4.3         downloader_0.4.1   bslib_0.9.0        pillar_1.11.1     
     ## [21] RColorBrewer_1.1-3 rlang_1.1.7        utf8_1.2.6         cachem_1.1.0      
     ## [25] xfun_0.55          fs_1.6.6           sass_0.4.10        S7_0.2.1          
     ## [29] cli_3.6.5          pkgdown_2.2.0      withr_3.0.2        magrittr_2.0.4    
     ## [33] digest_0.6.39      grid_4.5.2         rappdirs_0.3.3     lifecycle_1.0.5   
-    ## [37] vctrs_0.6.5        evaluate_1.0.5     glue_1.8.0         cellranger_1.1.0  
+    ## [37] vctrs_0.7.0        evaluate_1.0.5     glue_1.8.0         cellranger_1.1.0  
     ## [41] farver_2.1.2       codetools_0.2-20   ragg_1.5.0         purrr_1.2.1       
     ## [45] rmarkdown_2.30     tools_4.5.2        pkgconfig_2.0.3    htmltools_0.5.9

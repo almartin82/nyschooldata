@@ -107,7 +107,7 @@ processes enrollment data for a given school year:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Fetch 2024 enrollment data (2023-24 school year)</span></span>
 <span><span class="co"># Note: year refers to the END of the school year</span></span>
-<span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">enr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   end_year county district_beds district_code district_name    beds_code</span></span>
@@ -155,10 +155,10 @@ year. For example: - <code>fetch_enr(2024)</code> returns data for the
 <p>You can fetch school-level or district-level data:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># School-level data (default)</span></span>
-<span><span class="va">school_enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"school"</span><span class="op">)</span></span>
+<span><span class="va">school_enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"school"</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># District-level aggregates</span></span>
-<span><span class="va">district_enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">district_enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="wide-vs--tidy-format">Wide vs. Tidy Format<a class="anchor" aria-label="anchor" href="#wide-vs--tidy-format"></a>
@@ -167,7 +167,7 @@ year. For example: - <code>fetch_enr(2024)</code> returns data for the
 with one row per school/grade combination:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Tidy format (default): one row per school per grade</span></span>
-<span><span class="va">enr_tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, tidy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">enr_tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, tidy <span class="op">=</span> <span class="cn">TRUE</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">enr_tidy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_school</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -187,7 +187,7 @@ with one row per school/grade combination:</p>
 <p>For <strong>wide format</strong> with one column per grade level:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Wide format: one row per school, columns for each grade</span></span>
-<span><span class="va">enr_wide</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, tidy <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">enr_wide</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, tidy <span class="op">=</span> <span class="cn">FALSE</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">enr_wide</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_school</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -398,7 +398,7 @@ uniquely identify schools and districts:</p>
 school:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get enrollment for a specific school by BEDS code</span></span>
-<span><span class="va">school_enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_school.html">fetch_enr_school</a></span><span class="op">(</span><span class="st">"010100010018"</span>, <span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">school_enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_school.html">fetch_enr_school</a></span><span class="op">(</span><span class="st">"010100010018"</span>, <span class="fl">2024</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">school_enr</span></span></code></pre></div>
 <pre><code><span><span class="co">##    end_year county district_beds district_code district_name    beds_code</span></span>
 <span><span class="co">## 1      2024 ALBANY  010100010000        010100        ALBANY 010100010018</span></span>
@@ -490,7 +490,7 @@ school:</p>
 <span><span class="co">## 21 0.00000000</span></span></code></pre>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get multiple years for a school</span></span>
-<span><span class="va">school_history</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_school.html">fetch_enr_school</a></span><span class="op">(</span><span class="st">"010100010018"</span>, <span class="fl">2020</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">school_history</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_school.html">fetch_enr_school</a></span><span class="op">(</span><span class="st">"010100010018"</span>, <span class="fl">2020</span><span class="op">:</span><span class="fl">2024</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="looking-up-districts">Looking Up Districts<a class="anchor" aria-label="anchor" href="#looking-up-districts"></a>
@@ -498,10 +498,10 @@ school:</p>
 <p>Use <code><a href="../reference/fetch_enr_district.html">fetch_enr_district()</a></code> for district-level queries:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get all schools in a district</span></span>
-<span><span class="va">albany_schools</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_district.html">fetch_enr_district</a></span><span class="op">(</span><span class="st">"010100"</span>, <span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"school"</span><span class="op">)</span></span>
+<span><span class="va">albany_schools</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_district.html">fetch_enr_district</a></span><span class="op">(</span><span class="st">"010100"</span>, <span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"school"</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Get district aggregates only</span></span>
-<span><span class="va">albany_district</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_district.html">fetch_enr_district</a></span><span class="op">(</span><span class="st">"010100"</span>, <span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">albany_district</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_district.html">fetch_enr_district</a></span><span class="op">(</span><span class="st">"010100"</span>, <span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -586,7 +586,7 @@ School Districts plus District 75 (special education) and District 79
 (alternative schools). Use the convenience function:</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Get NYC enrollment directly</span></span>
-<span><span class="va">nyc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_nyc.html">fetch_enr_nyc</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">nyc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_nyc.html">fetch_enr_nyc</a></span><span class="op">(</span><span class="fl">2024</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Largest NYC schools</span></span>
 <span><span class="va">nyc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -619,7 +619,7 @@ districts - <code>35xxxx</code> - Staten Island district</p>
 </h3>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Fetch 5 years of data</span></span>
-<span><span class="va">enr_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fl">2020</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">enr_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fl">2020</span><span class="op">:</span><span class="fl">2024</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Check years retrieved</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">enr_multi</span><span class="op">$</span><span class="va">end_year</span><span class="op">)</span></span></code></pre></div>

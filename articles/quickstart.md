@@ -42,7 +42,7 @@ which downloads and processes enrollment data for a given school year:
 ``` r
 # Fetch 2024 enrollment data (2023-24 school year)
 # Note: year refers to the END of the school year
-enr <- fetch_enr(2024)
+enr <- fetch_enr(2024, use_cache = TRUE)
 
 head(enr)
 ```
@@ -94,10 +94,10 @@ You can fetch school-level or district-level data:
 
 ``` r
 # School-level data (default)
-school_enr <- fetch_enr(2024, level = "school")
+school_enr <- fetch_enr(2024, level = "school", use_cache = TRUE)
 
 # District-level aggregates
-district_enr <- fetch_enr(2024, level = "district")
+district_enr <- fetch_enr(2024, level = "district", use_cache = TRUE)
 ```
 
 ### Wide vs. Tidy Format
@@ -107,7 +107,7 @@ school/grade combination:
 
 ``` r
 # Tidy format (default): one row per school per grade
-enr_tidy <- fetch_enr(2024, tidy = TRUE)
+enr_tidy <- fetch_enr(2024, tidy = TRUE, use_cache = TRUE)
 
 enr_tidy %>%
   filter(is_school) %>%
@@ -131,7 +131,7 @@ For **wide format** with one column per grade level:
 
 ``` r
 # Wide format: one row per school, columns for each grade
-enr_wide <- fetch_enr(2024, tidy = FALSE)
+enr_wide <- fetch_enr(2024, tidy = FALSE, use_cache = TRUE)
 
 enr_wide %>%
   filter(is_school) %>%
@@ -302,7 +302,7 @@ to get data for a single school:
 
 ``` r
 # Get enrollment for a specific school by BEDS code
-school_enr <- fetch_enr_school("010100010018", 2024)
+school_enr <- fetch_enr_school("010100010018", 2024, use_cache = TRUE)
 school_enr
 ```
 
@@ -397,7 +397,7 @@ school_enr
 
 ``` r
 # Get multiple years for a school
-school_history <- fetch_enr_school("010100010018", 2020:2024)
+school_history <- fetch_enr_school("010100010018", 2020:2024, use_cache = TRUE)
 ```
 
 ### Looking Up Districts
@@ -408,10 +408,10 @@ for district-level queries:
 
 ``` r
 # Get all schools in a district
-albany_schools <- fetch_enr_district("010100", 2024, level = "school")
+albany_schools <- fetch_enr_district("010100", 2024, level = "school", use_cache = TRUE)
 
 # Get district aggregates only
-albany_district <- fetch_enr_district("010100", 2024, level = "district")
+albany_district <- fetch_enr_district("010100", 2024, level = "district", use_cache = TRUE)
 ```
 
 ## Filtering and Analysis
@@ -502,7 +502,7 @@ School Districts plus District 75 (special education) and District 79
 
 ``` r
 # Get NYC enrollment directly
-nyc <- fetch_enr_nyc(2024)
+nyc <- fetch_enr_nyc(2024, use_cache = TRUE)
 
 # Largest NYC schools
 nyc %>%
@@ -535,7 +535,7 @@ Queens districts - `35xxxx` - Staten Island district
 
 ``` r
 # Fetch 5 years of data
-enr_multi <- fetch_enr_years(2020:2024)
+enr_multi <- fetch_enr_years(2020:2024, use_cache = TRUE)
 
 # Check years retrieved
 unique(enr_multi$end_year)
