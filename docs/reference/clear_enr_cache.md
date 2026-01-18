@@ -5,7 +5,7 @@ Removes all cached data files.
 ## Usage
 
 ``` r
-clear_enr_cache(years = NULL)
+clear_enr_cache(years = NULL, data_type = NULL)
 ```
 
 ## Arguments
@@ -13,6 +13,11 @@ clear_enr_cache(years = NULL)
 - years:
 
   Optional vector of years to clear. If NULL, clears all.
+
+- data_type:
+
+  Type of cache to clear: "enr" (enrollment), "grad" (graduation), or
+  NULL (both).
 
 ## Value
 
@@ -27,5 +32,8 @@ clear_enr_cache()
 
 # Clear only 2024 data
 clear_enr_cache(2024)
+
+# Clear only graduation cache
+clear_enr_cache(data_type = "grad")
 } # }
 ```
