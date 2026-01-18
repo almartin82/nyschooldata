@@ -93,22 +93,34 @@ enrollment data from 2012-2024. We examine:</p>
 <span><span class="va">years</span> <span class="op">&lt;-</span> <span class="fl">2012</span><span class="op">:</span><span class="fl">2024</span></span>
 <span></span>
 <span><span class="co"># Get enrollment data year by year (handles errors gracefully)</span></span>
-<span><span class="va">enr_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="va">years</span>, level <span class="op">=</span> <span class="st">"district"</span>, tidy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Using cached data for 2012</span></span></code></pre>
-<pre><code><span><span class="co">## Using cached data for 2013</span></span></code></pre>
-<pre><code><span><span class="co">## Using cached data for 2014</span></span></code></pre>
-<pre><code><span><span class="co">## Using cached data for 2015</span></span></code></pre>
-<pre><code><span><span class="co">## Using cached data for 2016</span></span></code></pre>
-<pre><code><span><span class="co">## Using cached data for 2017</span></span></code></pre>
-<pre><code><span><span class="co">## Using cached data for 2018</span></span></code></pre>
-<pre><code><span><span class="co">## Using cached data for 2019</span></span></code></pre>
-<pre><code><span><span class="co">## Using cached data for 2020</span></span></code></pre>
-<pre><code><span><span class="co">## Using cached data for 2021</span></span></code></pre>
-<pre><code><span><span class="co">## Using cached data for 2022</span></span></code></pre>
-<pre><code><span><span class="co">## Using cached data for 2023</span></span></code></pre>
+<span><span class="va">enr_all</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="va">years</span>, level <span class="op">=</span> <span class="st">"district"</span>, tidy <span class="op">=</span> <span class="cn">TRUE</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Downloading district enrollment data for 2012 ...</span></span></code></pre>
+<pre><code><span><span class="co">## Cached data for 2012</span></span></code></pre>
+<pre><code><span><span class="co">## Downloading district enrollment data for 2013 ...</span></span></code></pre>
+<pre><code><span><span class="co">## Cached data for 2013</span></span></code></pre>
+<pre><code><span><span class="co">## Downloading district enrollment data for 2014 ...</span></span></code></pre>
+<pre><code><span><span class="co">## Cached data for 2014</span></span></code></pre>
+<pre><code><span><span class="co">## Downloading district enrollment data for 2015 ...</span></span></code></pre>
+<pre><code><span><span class="co">## Cached data for 2015</span></span></code></pre>
+<pre><code><span><span class="co">## Downloading district enrollment data for 2016 ...</span></span></code></pre>
+<pre><code><span><span class="co">## Cached data for 2016</span></span></code></pre>
+<pre><code><span><span class="co">## Downloading district enrollment data for 2017 ...</span></span></code></pre>
+<pre><code><span><span class="co">## Cached data for 2017</span></span></code></pre>
+<pre><code><span><span class="co">## Downloading district enrollment data for 2018 ...</span></span></code></pre>
+<pre><code><span><span class="co">## Cached data for 2018</span></span></code></pre>
+<pre><code><span><span class="co">## Downloading district enrollment data for 2019 ...</span></span></code></pre>
+<pre><code><span><span class="co">## Cached data for 2019</span></span></code></pre>
+<pre><code><span><span class="co">## Downloading district enrollment data for 2020 ...</span></span></code></pre>
+<pre><code><span><span class="co">## Cached data for 2020</span></span></code></pre>
+<pre><code><span><span class="co">## Downloading district enrollment data for 2021 ...</span></span></code></pre>
+<pre><code><span><span class="co">## Cached data for 2021</span></span></code></pre>
+<pre><code><span><span class="co">## Downloading district enrollment data for 2022 ...</span></span></code></pre>
+<pre><code><span><span class="co">## Cached data for 2022</span></span></code></pre>
+<pre><code><span><span class="co">## Downloading district enrollment data for 2023 ...</span></span></code></pre>
+<pre><code><span><span class="co">## Cached data for 2023</span></span></code></pre>
 <pre><code><span><span class="co">## Downloading district enrollment data for 2024 ...</span></span></code></pre>
 <pre><code><span><span class="co">## Cached data for 2024</span></span></code></pre>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Check what years we actually got</span></span>
 <span><span class="va">years_retrieved</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">enr_all</span><span class="op">$</span><span class="va">end_year</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Years retrieved: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">years_retrieved</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -120,7 +132,7 @@ enrollment data from 2012-2024. We examine:</p>
 <div class="section level3">
 <h3 id="total-state-enrollment-by-year">Total State Enrollment by Year<a class="anchor" aria-label="anchor" href="#total-state-enrollment-by-year"></a>
 </h3>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">state_totals</span> <span class="op">&lt;-</span> <span class="va">enr_all</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -158,7 +170,7 @@ enrollment data from 2012-2024. We examine:</p>
 <h3 id="identify-large-year-over-year-changes">Identify Large Year-Over-Year Changes<a class="anchor" aria-label="anchor" href="#identify-large-year-over-year-changes"></a>
 </h3>
 <p>Changes greater than 5% warrant investigation:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">large_changes</span> <span class="op">&lt;-</span> <span class="va">state_totals</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">flag_large_change</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -173,7 +185,7 @@ enrollment data from 2012-2024. We examine:</p>
 <div class="section level3">
 <h3 id="statewide-trend-visualization">Statewide Trend Visualization<a class="anchor" aria-label="anchor" href="#statewide-trend-visualization"></a>
 </h3>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">state_totals</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">end_year</span>, y <span class="op">=</span> <span class="va">total_enrollment</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"steelblue"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2.5</span>, color <span class="op">=</span> <span class="st">"steelblue"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -205,7 +217,7 @@ NY State Total Public School Enrollment
 <div class="section level3">
 <h3 id="year-over-year-percentage-change">Year-Over-Year Percentage Change<a class="anchor" aria-label="anchor" href="#year-over-year-percentage-change"></a>
 </h3>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span></span>
 <span>  <span class="va">state_totals</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">yoy_pct</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">end_year</span>, y <span class="op">=</span> <span class="va">yoy_pct</span><span class="op">)</span></span>
@@ -250,7 +262,7 @@ district</li>
 <li>
 <strong>Syracuse City SD</strong> - Fifth largest district</li>
 </ol>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Major district codes (first 6 digits of BEDS code)</span></span>
 <span><span class="va">major_districts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html" class="external-link">tribble</a></span><span class="op">(</span></span>
 <span>  <span class="op">~</span><span class="va">district_code</span>, <span class="op">~</span><span class="va">district_label</span>,</span>
@@ -272,7 +284,7 @@ district</li>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"NYC district codes found:"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## NYC district codes found:</span></span></code></pre>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">nyc_districts</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   district_code                 district_name</span></span>
 <span><span class="co">## 1        307500    NYC SPEC SCHOOLS - DIST 75</span></span>
@@ -280,7 +292,7 @@ district</li>
 <span><span class="co">## 3        310200 NYC GEOG DIST # 2 - MANHATTAN</span></span>
 <span><span class="co">## 4        310300 NYC GEOG DIST # 3 - MANHATTAN</span></span>
 <span><span class="co">## 5        310400 NYC GEOG DIST # 4 - MANHATTAN</span></span></code></pre>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Find other major districts by name</span></span>
 <span><span class="va">all_districts</span> <span class="op">&lt;-</span> <span class="va">enr_all</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -295,22 +307,22 @@ district</li>
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"\nDistrict codes found:"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## District codes found:</span></span></code></pre>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Buffalo: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">buffalo</span><span class="op">$</span><span class="va">district_code</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Buffalo: NA, 140600</span></span></code></pre>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Rochester: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">rochester</span><span class="op">$</span><span class="va">district_code</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Rochester: NA, NA, 261313, 261600</span></span></code></pre>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Yonkers: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">yonkers</span><span class="op">$</span><span class="va">district_code</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Yonkers: NA, 662300</span></span></code></pre>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"Syracuse: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">syracuse</span><span class="op">$</span><span class="va">district_code</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Syracuse: NA, NA, NA, 420303, 420401, 421800</span></span></code></pre>
 <div class="section level3">
 <h3 id="district-level-enrollment-trends">District-Level Enrollment Trends<a class="anchor" aria-label="anchor" href="#district-level-enrollment-trends"></a>
 </h3>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Combine district codes for filtering</span></span>
 <span><span class="co"># NYC is special - aggregate all 31xxxx districts</span></span>
 <span><span class="va">target_districts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -368,7 +380,7 @@ district</li>
 <div class="section level3">
 <h3 id="district-enrollment-visualization">District Enrollment Visualization<a class="anchor" aria-label="anchor" href="#district-enrollment-visualization"></a>
 </h3>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate YoY changes by district</span></span>
 <span><span class="va">district_yoy</span> <span class="op">&lt;-</span> <span class="va">district_trends</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">district_label</span>, <span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -421,7 +433,7 @@ Major district enrollment trends
 <div class="section level3">
 <h3 id="district-level-large-changes">District-Level Large Changes<a class="anchor" aria-label="anchor" href="#district-level-large-changes"></a>
 </h3>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">district_flags</span> <span class="op">&lt;-</span> <span class="va">district_yoy</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">flag_change</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">district_label</span>, <span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -452,7 +464,7 @@ Major district enrollment trends
 <div class="section level3">
 <h3 id="district-enrollment-table">District Enrollment Table<a class="anchor" aria-label="anchor" href="#district-enrollment-table"></a>
 </h3>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Wide table of enrollment by district and year</span></span>
 <span><span class="va">district_wide</span> <span class="op">&lt;-</span> <span class="va">district_trends</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span></span>
@@ -467,7 +479,7 @@ Major district enrollment trends
 <span><span class="co">##   {data} |&gt;</span></span>
 <span><span class="co">##   dplyr::summarise(n = dplyr::n(), .by = c(district_label, end_year)) |&gt;</span></span>
 <span><span class="co">##   dplyr::filter(n &gt; 1L)</span></span></code></pre>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">district_wide</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 730 × 14</span></span></span>
 <span><span class="co">##    district_label `2023` `2024` `2012` `2013` `2014` `2015` `2016` `2017` `2018`</span></span>
@@ -493,7 +505,7 @@ Major district enrollment trends
 <div class="section level3">
 <h3 id="missing-data-by-year">Missing Data by Year<a class="anchor" aria-label="anchor" href="#missing-data-by-year"></a>
 </h3>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">missing_summary</span> <span class="op">&lt;-</span> <span class="va">enr_all</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -526,7 +538,7 @@ Major district enrollment trends
 <h3 id="grade-level-data-availability">Grade-Level Data Availability<a class="anchor" aria-label="anchor" href="#grade-level-data-availability"></a>
 </h3>
 <p>Check which grade levels are available across years:</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">grade_avail</span> <span class="op">&lt;-</span> <span class="va">enr_all</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">grade_level</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
@@ -564,7 +576,7 @@ Major district enrollment trends
 <h2 id="data-quality-issues-found">Data Quality Issues Found<a class="anchor" aria-label="anchor" href="#data-quality-issues-found"></a>
 </h2>
 <p>Based on the analysis above, document any issues:</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">issues</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Check for years with large statewide changes</span></span>
@@ -587,7 +599,7 @@ Major district enrollment trends
 <span><span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"\n=== DATA QUALITY SUMMARY ===\n"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## === DATA QUALITY SUMMARY ===</span></span></code></pre>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">issues</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">message</a></span><span class="op">(</span><span class="st">"No significant data quality issues identified."</span><span class="op">)</span></span>
 <span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
@@ -639,7 +651,7 @@ rates may need special handling in analyses.</p></li>
 <div class="section level2">
 <h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## R version 4.5.0 (2025-04-11)</span></span>
 <span><span class="co">## Platform: aarch64-apple-darwin22.6.0</span></span>
@@ -666,14 +678,14 @@ rates may need special handling in analyses.</p></li>
 <span><span class="co">##  [5] tidyr_1.3.2        jquerylib_0.1.4    systemfonts_1.3.1  textshaping_1.0.4 </span></span>
 <span><span class="co">##  [9] readxl_1.4.5       yaml_2.3.12        fastmap_1.2.0      R6_2.6.1          </span></span>
 <span><span class="co">## [13] labeling_0.4.3     generics_0.1.4     knitr_1.51         htmlwidgets_1.6.4 </span></span>
-<span><span class="co">## [17] tibble_3.3.0       desc_1.4.3         downloader_0.4.1   bslib_0.9.0       </span></span>
-<span><span class="co">## [21] pillar_1.11.1      RColorBrewer_1.1-3 rlang_1.1.6        utf8_1.2.6        </span></span>
+<span><span class="co">## [17] tibble_3.3.1       desc_1.4.3         downloader_0.4.1   bslib_0.9.0       </span></span>
+<span><span class="co">## [21] pillar_1.11.1      RColorBrewer_1.1-3 rlang_1.1.7        utf8_1.2.6        </span></span>
 <span><span class="co">## [25] cachem_1.1.0       xfun_0.55          fs_1.6.6           sass_0.4.10       </span></span>
 <span><span class="co">## [29] S7_0.2.1           otel_0.2.0         cli_3.6.5          withr_3.0.2       </span></span>
 <span><span class="co">## [33] pkgdown_2.2.0      magrittr_2.0.4     digest_0.6.39      grid_4.5.0        </span></span>
-<span><span class="co">## [37] rappdirs_0.3.3     lifecycle_1.0.4    vctrs_0.6.5        evaluate_1.0.5    </span></span>
+<span><span class="co">## [37] rappdirs_0.3.4     lifecycle_1.0.5    vctrs_0.7.0        evaluate_1.0.5    </span></span>
 <span><span class="co">## [41] glue_1.8.0         cellranger_1.1.0   farver_2.1.2       codetools_0.2-20  </span></span>
-<span><span class="co">## [45] ragg_1.5.0         purrr_1.2.0        rmarkdown_2.30     tools_4.5.0       </span></span>
+<span><span class="co">## [45] ragg_1.5.0         purrr_1.2.1        rmarkdown_2.30     tools_4.5.0       </span></span>
 <span><span class="co">## [49] pkgconfig_2.0.3    htmltools_0.5.9</span></span></code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

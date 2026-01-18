@@ -309,7 +309,8 @@ Based on 2023-24 statewide data:
 
 7.  **Add helper functions**
 
-    - `get_available_grad_years()` - return 2005:2024
+    - [`get_available_grad_years()`](https://almartin82.github.io/nyschooldata/reference/get_available_grad_years.md) -
+      return 2005:2024
     - `validate_cohort_type()` - check for valid cohort codes
     - `extract_cohort_year()` - parse membership_desc
 

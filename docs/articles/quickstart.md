@@ -42,10 +42,32 @@ which downloads and processes enrollment data for a given school year:
 ``` r
 # Fetch 2024 enrollment data (2023-24 school year)
 # Note: year refers to the END of the school year
-enr <- fetch_enr(2024)
+enr <- fetch_enr(2024, use_cache = TRUE)
 
 head(enr)
 ```
+
+    ##   end_year county district_beds district_code district_name    beds_code
+    ## 1     2024 ALBANY  010100010000        010100        ALBANY 010100010014
+    ## 2     2024 ALBANY  010100010000        010100        ALBANY 010100010016
+    ## 3     2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 4     2024 ALBANY  010100010000        010100        ALBANY 010100010019
+    ## 5     2024 ALBANY  010100010000        010100        ALBANY 010100010023
+    ## 6     2024 ALBANY  010100010000        010100        ALBANY 010100010027
+    ##   school_code                    school_name school_type is_state is_district
+    ## 1        0100       MONTESSORI MAGNET SCHOOL      Public    FALSE       FALSE
+    ## 2        0100   PINE HILLS ELEMENTARY SCHOOL      Public    FALSE       FALSE
+    ## 3        0100      DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 4        0100 NEW SCOTLAND ELEMENTARY SCHOOL      Public    FALSE       FALSE
+    ## 5        0100    ALBANY SCHOOL OF HUMANITIES      Public    FALSE       FALSE
+    ## 6        0100  EAGLE POINT ELEMENTARY SCHOOL      Public    FALSE       FALSE
+    ##   is_school is_nyc is_charter grade_level         subgroup n_students pct
+    ## 1      TRUE  FALSE      FALSE       TOTAL total_enrollment        324   1
+    ## 2      TRUE  FALSE      FALSE       TOTAL total_enrollment        347   1
+    ## 3      TRUE  FALSE      FALSE       TOTAL total_enrollment        311   1
+    ## 4      TRUE  FALSE      FALSE       TOTAL total_enrollment        459   1
+    ## 5      TRUE  FALSE      FALSE       TOTAL total_enrollment        332   1
+    ## 6      TRUE  FALSE      FALSE       TOTAL total_enrollment        286   1
 
 The `end_year` parameter refers to the end of the school year. For
 example: - `fetch_enr(2024)` returns data for the 2023-24 school year -
@@ -60,16 +82,22 @@ school year):
 get_available_years()
 ```
 
+    ## $min_year
+    ## [1] 1977
+    ## 
+    ## $max_year
+    ## [1] 2024
+
 ### Data Levels
 
 You can fetch school-level or district-level data:
 
 ``` r
 # School-level data (default)
-school_enr <- fetch_enr(2024, level = "school")
+school_enr <- fetch_enr(2024, level = "school", use_cache = TRUE)
 
 # District-level aggregates
-district_enr <- fetch_enr(2024, level = "district")
+district_enr <- fetch_enr(2024, level = "district", use_cache = TRUE)
 ```
 
 ### Wide vs. Tidy Format
@@ -79,7 +107,7 @@ school/grade combination:
 
 ``` r
 # Tidy format (default): one row per school per grade
-enr_tidy <- fetch_enr(2024, tidy = TRUE)
+enr_tidy <- fetch_enr(2024, tidy = TRUE, use_cache = TRUE)
 
 enr_tidy %>%
   filter(is_school) %>%
@@ -87,17 +115,42 @@ enr_tidy %>%
   head(10)
 ```
 
+    ##                            school_name grade_level n_students
+    ## 1             MONTESSORI MAGNET SCHOOL       TOTAL        324
+    ## 2         PINE HILLS ELEMENTARY SCHOOL       TOTAL        347
+    ## 3            DELAWARE COMMUNITY SCHOOL       TOTAL        311
+    ## 4       NEW SCOTLAND ELEMENTARY SCHOOL       TOTAL        459
+    ## 5          ALBANY SCHOOL OF HUMANITIES       TOTAL        332
+    ## 6        EAGLE POINT ELEMENTARY SCHOOL       TOTAL        286
+    ## 7  THOMAS S O'BRIEN ACAD OF SCI & TECH       TOTAL        263
+    ## 8    GIFFEN MEMORIAL ELEMENTARY SCHOOL       TOTAL        406
+    ## 9      WILLIAM S HACKETT MIDDLE SCHOOL       TOTAL        630
+    ## 10                  ALBANY HIGH SCHOOL       TOTAL       2764
+
 For **wide format** with one column per grade level:
 
 ``` r
 # Wide format: one row per school, columns for each grade
-enr_wide <- fetch_enr(2024, tidy = FALSE)
+enr_wide <- fetch_enr(2024, tidy = FALSE, use_cache = TRUE)
 
 enr_wide %>%
   filter(is_school) %>%
   select(school_name, row_total, grade_pk, grade_k, grade_01, grade_09, grade_12) %>%
   head(5)
 ```
+
+    ##                      school_name row_total grade_pk grade_k grade_01 grade_09
+    ## 1       MONTESSORI MAGNET SCHOOL       324       32      51       48        0
+    ## 2   PINE HILLS ELEMENTARY SCHOOL       347        0      55       68        0
+    ## 3      DELAWARE COMMUNITY SCHOOL       311       20      51       49        0
+    ## 4 NEW SCOTLAND ELEMENTARY SCHOOL       459        0      72       87        0
+    ## 5    ALBANY SCHOOL OF HUMANITIES       332        0      41       58        0
+    ##   grade_12
+    ## 1        0
+    ## 2        0
+    ## 3        0
+    ## 4        0
+    ## 5        0
 
 ## Understanding the Data Schema
 
@@ -133,19 +186,33 @@ Boolean flags help filter to the right level of data:
 # All districts
 districts <- enr %>% filter(is_district, grade_level == "TOTAL")
 nrow(districts)
+```
 
+    ## [1] 0
+
+``` r
 # All schools
 schools <- enr %>% filter(is_school, grade_level == "TOTAL")
 nrow(schools)
+```
 
+    ## [1] 4749
+
+``` r
 # Only NYC schools
 nyc_schools <- enr %>% filter(is_school, is_nyc, grade_level == "TOTAL")
 nrow(nyc_schools)
+```
 
+    ## [1] 1864
+
+``` r
 # Only charter schools
 charters <- enr %>% filter(is_school, is_charter, grade_level == "TOTAL")
 nrow(charters)
 ```
+
+    ## [1] 343
 
 ### Grade Level Values
 
@@ -184,6 +251,12 @@ to extract components:
 ``` r
 # Parse a BEDS code
 parse_beds_code("010100010018")
+```
+
+    ##      beds_code district_code school_code check_digits
+    ## 1 010100010018        010100        0100           18
+
+``` r
 # Returns:
 #      beds_code district_code school_code check_digits
 # 1 010100010018        010100        0001           18
@@ -193,6 +266,11 @@ beds_codes <- c("010100010018", "310200010001", "261600010001")
 parse_beds_code(beds_codes)
 ```
 
+    ##      beds_code district_code school_code check_digits
+    ## 1 010100010018        010100        0100           18
+    ## 2 310200010001        310200        0100           01
+    ## 3 261600010001        261600        0100           01
+
 ### Validating BEDS Codes
 
 Check if codes are properly formatted:
@@ -200,9 +278,21 @@ Check if codes are properly formatted:
 ``` r
 # Validate BEDS codes
 validate_beds_code("010100010018")    # TRUE - valid
+```
+
+    ## [1] TRUE
+
+``` r
 validate_beds_code("31000001023")     # FALSE - only 11 digits
+```
+
+    ## [1] FALSE
+
+``` r
 validate_beds_code("invalid")          # FALSE - not numeric
 ```
+
+    ## [1] FALSE
 
 ### Looking Up Specific Schools
 
@@ -212,11 +302,102 @@ to get data for a single school:
 
 ``` r
 # Get enrollment for a specific school by BEDS code
-school_enr <- fetch_enr_school("010100010018", 2024)
+school_enr <- fetch_enr_school("010100010018", 2024, use_cache = TRUE)
 school_enr
+```
 
+    ##    end_year county district_beds district_code district_name    beds_code
+    ## 1      2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 2      2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 3      2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 4      2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 5      2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 6      2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 7      2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 8      2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 9      2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 10     2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 11     2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 12     2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 13     2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 14     2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 15     2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 16     2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 17     2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 18     2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 19     2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 20     2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ## 21     2024 ALBANY  010100010000        010100        ALBANY 010100010018
+    ##    school_code               school_name school_type is_state is_district
+    ## 1         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 2         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 3         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 4         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 5         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 6         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 7         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 8         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 9         0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 10        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 11        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 12        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 13        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 14        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 15        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 16        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 17        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 18        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 19        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 20        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ## 21        0100 DELAWARE COMMUNITY SCHOOL      Public    FALSE       FALSE
+    ##    is_school is_nyc is_charter grade_level         subgroup n_students
+    ## 1       TRUE  FALSE      FALSE       TOTAL total_enrollment        311
+    ## 2       TRUE  FALSE      FALSE          PK total_enrollment         20
+    ## 3       TRUE  FALSE      FALSE     PK_HALF total_enrollment          0
+    ## 4       TRUE  FALSE      FALSE     PK_FULL total_enrollment         20
+    ## 5       TRUE  FALSE      FALSE           K total_enrollment         51
+    ## 6       TRUE  FALSE      FALSE      K_HALF total_enrollment          0
+    ## 7       TRUE  FALSE      FALSE      K_FULL total_enrollment         51
+    ## 8       TRUE  FALSE      FALSE          01 total_enrollment         49
+    ## 9       TRUE  FALSE      FALSE          02 total_enrollment         52
+    ## 10      TRUE  FALSE      FALSE          03 total_enrollment         52
+    ## 11      TRUE  FALSE      FALSE          04 total_enrollment         45
+    ## 12      TRUE  FALSE      FALSE          05 total_enrollment         42
+    ## 13      TRUE  FALSE      FALSE          06 total_enrollment          0
+    ## 14      TRUE  FALSE      FALSE          07 total_enrollment          0
+    ## 15      TRUE  FALSE      FALSE          08 total_enrollment          0
+    ## 16      TRUE  FALSE      FALSE          09 total_enrollment          0
+    ## 17      TRUE  FALSE      FALSE          10 total_enrollment          0
+    ## 18      TRUE  FALSE      FALSE          11 total_enrollment          0
+    ## 19      TRUE  FALSE      FALSE          12 total_enrollment          0
+    ## 20      TRUE  FALSE      FALSE     UG_ELEM total_enrollment          0
+    ## 21      TRUE  FALSE      FALSE      UG_SEC total_enrollment          0
+    ##           pct
+    ## 1  1.00000000
+    ## 2  0.06430868
+    ## 3  0.00000000
+    ## 4  0.06430868
+    ## 5  0.16398714
+    ## 6  0.00000000
+    ## 7  0.16398714
+    ## 8  0.15755627
+    ## 9  0.16720257
+    ## 10 0.16720257
+    ## 11 0.14469453
+    ## 12 0.13504823
+    ## 13 0.00000000
+    ## 14 0.00000000
+    ## 15 0.00000000
+    ## 16 0.00000000
+    ## 17 0.00000000
+    ## 18 0.00000000
+    ## 19 0.00000000
+    ## 20 0.00000000
+    ## 21 0.00000000
+
+``` r
 # Get multiple years for a school
-school_history <- fetch_enr_school("010100010018", 2020:2024)
+school_history <- fetch_enr_school("010100010018", 2020:2024, use_cache = TRUE)
 ```
 
 ### Looking Up Districts
@@ -227,10 +408,10 @@ for district-level queries:
 
 ``` r
 # Get all schools in a district
-albany_schools <- fetch_enr_district("010100", 2024, level = "school")
+albany_schools <- fetch_enr_district("010100", 2024, level = "school", use_cache = TRUE)
 
 # Get district aggregates only
-albany_district <- fetch_enr_district("010100", 2024, level = "district")
+albany_district <- fetch_enr_district("010100", 2024, level = "district", use_cache = TRUE)
 ```
 
 ## Filtering and Analysis
@@ -244,6 +425,9 @@ enr %>%
   select(district_name, county, n_students) %>%
   head(10)
 ```
+
+    ## [1] district_name county        n_students   
+    ## <0 rows> (or 0-length row.names)
 
 ### Enrollment by County
 
@@ -259,6 +443,9 @@ enr %>%
   head(10)
 ```
 
+    ## # A tibble: 0 × 3
+    ## # ℹ 3 variables: county <chr>, n_districts <int>, total_enrollment <dbl>
+
 ### Grade-Level Distribution
 
 ``` r
@@ -269,6 +456,9 @@ enr %>%
   summarize(total = sum(n_students, na.rm = TRUE)) %>%
   arrange(factor(grade_level, levels = c("PK", "K", sprintf("%02d", 1:12))))
 ```
+
+    ## # A tibble: 0 × 2
+    ## # ℹ 2 variables: grade_level <chr>, total <dbl>
 
 ### Filtering by Grade Span
 
@@ -301,6 +491,9 @@ aggs %>%
   head(15)
 ```
 
+    ## # A tibble: 0 × 3
+    ## # ℹ 3 variables: district_name <chr>, grade_level <chr>, n_students <dbl>
+
 ## NYC Schools
 
 NYC is unique in New York - it’s organized as 32 geographic Community
@@ -309,7 +502,7 @@ School Districts plus District 75 (special education) and District 79
 
 ``` r
 # Get NYC enrollment directly
-nyc <- fetch_enr_nyc(2024)
+nyc <- fetch_enr_nyc(2024, use_cache = TRUE)
 
 # Largest NYC schools
 nyc %>%
@@ -318,6 +511,18 @@ nyc %>%
   select(school_name, district_name, n_students) %>%
   head(10)
 ```
+
+    ##                    school_name                 district_name n_students
+    ## 1        BROOKLYN TECHNICAL HS  NYC GEOG DIST #13 - BROOKLYN       5810
+    ## 2    FRANCIS LEWIS HIGH SCHOOL    NYC GEOG DIST #26 - QUEENS       4404
+    ## 3    FORT HAMILTON HIGH SCHOOL  NYC GEOG DIST #20 - BROOKLYN       3980
+    ## 4          MIDWOOD HIGH SCHOOL  NYC GEOG DIST #22 - BROOKLYN       3905
+    ## 5      TOTTENVILLE HIGH SCHOOL        NYC GEOG DIST #31 - SI       3796
+    ## 6    JAMES MADISON HIGH SCHOOL  NYC GEOG DIST #22 - BROOKLYN       3766
+    ## 7  EDWARD R MURROW HIGH SCHOOL  NYC GEOG DIST #21 - BROOKLYN       3589
+    ## 8     FOREST HILLS HIGH SCHOOL    NYC GEOG DIST #28 - QUEENS       3420
+    ## 9      FRANKLIN D ROOSEVELT HS  NYC GEOG DIST #20 - BROOKLYN       3409
+    ## 10      STUYVESANT HIGH SCHOOL NYC GEOG DIST # 2 - MANHATTAN       3258
 
 NYC district codes follow this pattern: - `30xxxx` - District 75
 (citywide special education) - `31xxxx` - Manhattan districts -
@@ -330,11 +535,13 @@ Queens districts - `35xxxx` - Staten Island district
 
 ``` r
 # Fetch 5 years of data
-enr_multi <- fetch_enr_years(2020:2024)
+enr_multi <- fetch_enr_years(2020:2024, use_cache = TRUE)
 
 # Check years retrieved
 unique(enr_multi$end_year)
 ```
+
+    ## [1] 2020 2021 2022 2023 2024
 
 ### Enrollment Trends
 
@@ -347,6 +554,13 @@ state_trend <- enr_multi %>%
 
 state_trend
 ```
+
+    ## # A tibble: 3 × 2
+    ##   end_year total_enrollment
+    ##      <int>            <dbl>
+    ## 1     2020          2638949
+    ## 2     2021          2559164
+    ## 3     2022          2505517
 
 ## Visualization Examples
 
@@ -424,7 +638,30 @@ the cache with:
 ``` r
 # View cache status
 cache_status()
+```
 
+    ##    year data_type          type size_mb age_days
+    ## 1  2012       enr district_tidy    0.10        0
+    ## 2  2013       enr district_tidy    0.10        0
+    ## 3  2014       enr district_tidy    0.10        0
+    ## 4  2015       enr district_tidy    0.10        0
+    ## 5  2016       enr district_tidy    0.10        0
+    ## 6  2017       enr district_tidy    0.10        0
+    ## 7  2018       enr district_tidy    0.10        0
+    ## 8  2019       enr district_tidy    0.10        0
+    ## 9  2020       enr district_tidy    0.10        0
+    ## 10 2020       enr   school_tidy    1.07        0
+    ## 11 2021       enr district_tidy    0.09        0
+    ## 12 2021       enr   school_tidy    1.07        0
+    ## 13 2022       enr district_tidy    0.09        0
+    ## 14 2022       enr   school_tidy    0.91        0
+    ## 15 2023       enr district_tidy    0.12        0
+    ## 16 2023       enr   school_tidy    1.82        0
+    ## 17 2024       enr district_tidy    0.12        0
+    ## 18 2024       enr   school_tidy    1.83        0
+    ## 19 2024       enr   school_wide    0.17        0
+
+``` r
 # Clear all cached data
 clear_enr_cache()
 
@@ -442,14 +679,29 @@ Convert between year integers and label strings:
 ``` r
 # Convert end year to label
 school_year_label(2024)
+```
+
+    ## [1] "2023-24"
+
+``` r
 # [1] "2023-24"
 
 # Parse label back to end year
 parse_school_year("2023-24")
+```
+
+    ## [1] 2024
+
+``` r
 # [1] 2024
 
 # Works with "2023-2024" format too
 parse_school_year("2023-2024")
+```
+
+    ## [1] 2024
+
+``` r
 # [1] 2024
 ```
 

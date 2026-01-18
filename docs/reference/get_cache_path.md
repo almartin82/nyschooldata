@@ -16,7 +16,7 @@ get_cache_path(end_year, type = "raw")
 
 - type:
 
-  File type ("raw" or "processed" or "tidy")
+  File type ("raw", "processed", "tidy", "grad_wide", "grad_tidy")
 
 ## Value
 

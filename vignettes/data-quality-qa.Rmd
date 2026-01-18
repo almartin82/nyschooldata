@@ -43,7 +43,7 @@ We retrieve enrollment data for all available years (2012-2024).
 years <- 2012:2024
 
 # Get enrollment data year by year (handles errors gracefully)
-enr_all <- fetch_enr_years(years, level = "district", tidy = TRUE)
+enr_all <- fetch_enr_years(years, level = "district", tidy = TRUE, use_cache = TRUE)
 
 # Check what years we actually got
 years_retrieved <- sort(unique(enr_all$end_year))

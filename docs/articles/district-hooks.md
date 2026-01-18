@@ -21,7 +21,7 @@ library(tidyr)
 
 ``` r
 # Fetch district-level data for all available years
-enr <- fetch_enr_years(2012:2024, level = "district", tidy = TRUE)
+enr <- fetch_enr_years(2012:2024, level = "district", tidy = TRUE, use_cache = TRUE)
 ```
 
 ## 1. The Vanishing 300,000
@@ -309,7 +309,7 @@ ggplot(grade_change, aes(x = reorder(grade_label, pct_change), y = pct_change)) 
 
 ``` r
 # Need school-level data for charter information
-enr_schools <- fetch_enr_years(2023:2024, level = "school", tidy = TRUE)
+enr_schools <- fetch_enr_years(2023:2024, level = "school", tidy = TRUE, use_cache = TRUE)
 ```
 
 **Charter schools now enroll ~181K students (7.5% of total)** across 343
@@ -397,7 +397,7 @@ only 85% full-day.** This represents a fundamental policy shift in early
 childhood education.
 
 ``` r
-enr_2024 <- fetch_enr(2024, level = "district", tidy = TRUE)
+enr_2024 <- fetch_enr(2024, level = "district", tidy = TRUE, use_cache = TRUE)
 
 pk_comparison <- enr_2024 %>%
   filter(grade_level %in% c("PK_FULL", "PK_HALF")) %>%
@@ -510,12 +510,12 @@ sessionInfo()
     ##  [1] gtable_0.3.6       jsonlite_2.0.0     compiler_4.5.0     tidyselect_1.2.1  
     ##  [5] jquerylib_0.1.4    systemfonts_1.3.1  textshaping_1.0.4  readxl_1.4.5      
     ##  [9] yaml_2.3.12        fastmap_1.2.0      R6_2.6.1           labeling_0.4.3    
-    ## [13] generics_0.1.4     knitr_1.51         htmlwidgets_1.6.4  tibble_3.3.0      
+    ## [13] generics_0.1.4     knitr_1.51         htmlwidgets_1.6.4  tibble_3.3.1      
     ## [17] desc_1.4.3         downloader_0.4.1   bslib_0.9.0        pillar_1.11.1     
-    ## [21] RColorBrewer_1.1-3 rlang_1.1.6        cachem_1.1.0       xfun_0.55         
+    ## [21] RColorBrewer_1.1-3 rlang_1.1.7        cachem_1.1.0       xfun_0.55         
     ## [25] fs_1.6.6           sass_0.4.10        S7_0.2.1           otel_0.2.0        
     ## [29] cli_3.6.5          withr_3.0.2        pkgdown_2.2.0      magrittr_2.0.4    
-    ## [33] digest_0.6.39      grid_4.5.0         rappdirs_0.3.3     lifecycle_1.0.4   
-    ## [37] vctrs_0.6.5        evaluate_1.0.5     glue_1.8.0         cellranger_1.1.0  
-    ## [41] farver_2.1.2       codetools_0.2-20   ragg_1.5.0         purrr_1.2.0       
+    ## [33] digest_0.6.39      grid_4.5.0         rappdirs_0.3.4     lifecycle_1.0.5   
+    ## [37] vctrs_0.7.0        evaluate_1.0.5     glue_1.8.0         cellranger_1.1.0  
+    ## [41] farver_2.1.2       codetools_0.2-20   ragg_1.5.0         purrr_1.2.1       
     ## [45] rmarkdown_2.30     tools_4.5.0        pkgconfig_2.0.3    htmltools_0.5.9
