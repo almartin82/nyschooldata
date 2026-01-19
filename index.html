@@ -62,252 +62,264 @@
 <!-- badges: start -->
 
 <p><strong>Docs: <a href="https://almartin82.github.io/nyschooldata/" class="uri">https://almartin82.github.io/nyschooldata/</a></strong></p>
-<p>Fetch and analyze New York State school enrollment data from <a href="https://data.nysed.gov/" class="external-link">NYSED</a> in R or Python.</p>
 <div class="section level2">
-<h2 id="what-can-you-find-with-nyschooldata">What can you find with nyschooldata?<a class="anchor" aria-label="anchor" href="#what-can-you-find-with-nyschooldata"></a>
+<h2 id="why-this-package-exists">Why This Package Exists<a class="anchor" aria-label="anchor" href="#why-this-package-exists"></a>
 </h2>
-<p><strong>47 years of enrollment data</strong> (1977-2024). 4,700+ schools. 700+ districts. 62 counties. Here are the stories hiding in the numbers.</p>
+<p>New York public schools have lost <strong>295,521 students</strong> since 2012 - that’s the equivalent of emptying Buffalo, Rochester, Syracuse, and Yonkers combined. But this headline number hides a complex story of urban decline, Pre-K revolution, COVID disruption, and surprising pockets of growth.</p>
+<p>This package provides direct, automated access to enrollment data from <a href="https://data.nysed.gov/" class="external-link">NYSED</a>, making it easy to explore <strong>47 years of data</strong> (1977-2024) across 4,700+ schools and 700+ districts.</p>
+<p><strong>Part of the <a href="https://github.com/almartin82/njschooldata" class="external-link">State Schooldata Project</a></strong> - a family of R/Python packages providing consistent access to state-published school data. Started with <a href="https://github.com/almartin82/njschooldata" class="external-link">njschooldata</a>, now covering all 50 states.</p>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="id_10-surprising-findings-in-ny-school-enrollment">10 Surprising Findings in NY School Enrollment<a class="anchor" aria-label="anchor" href="#id_10-surprising-findings-in-ny-school-enrollment"></a>
+</h2>
+<p>These stories come from the <a href="https://almartin82.github.io/nyschooldata/articles/district-hooks.html">full analysis vignette</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://almartin82.github.io/nyschooldata/">nyschooldata</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
-<hr>
-<div class="section level3">
-<h3 id="the-long-view-a-generation-of-decline-1977-2024">The Long View: A Generation of Decline (1977-2024)<a class="anchor" aria-label="anchor" href="#the-long-view-a-generation-of-decline-1977-2024"></a>
-</h3>
-<p>New York had <strong>3.3 million students in 1977</strong>. Today: <strong>2.4 million</strong>. That’s 895,000 students—gone.</p>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org" class="external-link">scales</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1977</span>, <span class="fl">1990</span>, <span class="fl">2000</span>, <span class="fl">2010</span>, <span class="fl">2024</span><span class="op">)</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   end_year   total</span></span>
-<span><span class="co">#&gt; 1     1977 3299863</span></span>
-<span><span class="co">#&gt; 2     1990 2509928</span></span>
-<span><span class="co">#&gt; 3     2000 2864473</span></span>
-<span><span class="co">#&gt; 4     2010 2702000</span></span>
-<span><span class="co">#&gt; 5     2024 2404319</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Fetch district-level data for all available years</span></span>
+<span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fl">2012</span><span class="op">:</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span>, tidy <span class="op">=</span> <span class="cn">TRUE</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <hr>
-</div>
 <div class="section level3">
-<h3 id="the-millennial-plateau-2000-2012">The Millennial Plateau (2000-2012)<a class="anchor" aria-label="anchor" href="#the-millennial-plateau-2000-2012"></a>
+<h3 id="id_1-the-vanishing-300000">1. The Vanishing 300,000<a class="anchor" aria-label="anchor" href="#id_1-the-vanishing-300000"></a>
 </h3>
-<p>The early 2000s saw remarkable stability. Enrollment hovered around 2.7-2.8M for a decade before the decline accelerated.</p>
+<p><strong>New York lost 295,521 students (11%) from 2012 to 2024</strong> - equivalent to losing every student in Buffalo, Rochester, Syracuse, and Yonkers combined.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fl">2000</span><span class="op">:</span><span class="fl">2012</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">state_trend</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="the-modern-decline-2012-2024">The Modern Decline (2012-2024)<a class="anchor" aria-label="anchor" href="#the-modern-decline-2012-2024"></a>
-</h3>
-<p><strong>-295,521 students (-11%)</strong> in just 12 years. The decline accelerated in the 2010s.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fl">2012</span><span class="op">:</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Calculate loss</span></span>
+<span><span class="va">loss</span> <span class="op">&lt;-</span> <span class="va">state_trend</span><span class="op">$</span><span class="va">total</span><span class="op">[</span><span class="va">state_trend</span><span class="op">$</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2012</span><span class="op">]</span> <span class="op">-</span></span>
+<span>        <span class="va">state_trend</span><span class="op">$</span><span class="va">total</span><span class="op">[</span><span class="va">state_trend</span><span class="op">$</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2024</span><span class="op">]</span></span>
+<span><span class="co">#&gt; 295521</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/statewide-trend-1.png" alt="Statewide enrollment decline"><div class="figcaption">Statewide enrollment decline</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="the-covid-cliff-2019-2024">The COVID Cliff (2019-2024)<a class="anchor" aria-label="anchor" href="#the-covid-cliff-2019-2024"></a>
+<h3 id="id_2-the-covid-cliff">2. The COVID Cliff<a class="anchor" aria-label="anchor" href="#id_2-the-covid-cliff"></a>
 </h3>
-<p><strong>2021 lost 106,560 students in a single year</strong> (-4.2%)—the largest drop ever recorded. But 2024 shows signs of stabilization (+388 students).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fl">2019</span><span class="op">:</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>change <span class="op">=</span> <span class="va">total</span> <span class="op">-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">total</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   end_year   total  change</span></span>
-<span><span class="co">#&gt; 1     2019 2577890      NA</span></span>
-<span><span class="co">#&gt; 2     2020 2561821  -16069</span></span>
-<span><span class="co">#&gt; 3     2021 2455261 -106560  &lt;- COVID cliff</span></span>
-<span><span class="co">#&gt; 4     2022 2418631  -36630</span></span>
-<span><span class="co">#&gt; 5     2023 2403931  -14700</span></span>
-<span><span class="co">#&gt; 6     2024 2404319    +388  &lt;- first positive year</span></span></code></pre></div>
+<p><strong>2021 saw an unprecedented 4.2% single-year drop</strong> (106,560 students) - by far the largest decline in recorded data. But 2024 shows the first positive year (+0.02%), suggesting possible stabilization.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">state_yoy</span> <span class="op">&lt;-</span> <span class="va">state_trend</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    change <span class="op">=</span> <span class="va">total</span> <span class="op">-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">total</span><span class="op">)</span>,</span>
+<span>    pct_change <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">change</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">total</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; 2021: -106560 (-4.16%)</span></span>
+<span><span class="co">#&gt; 2024: +388 (+0.02%) &lt;- first positive year</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/covid-impact-1.png" alt="Year-over-year changes"><div class="figcaption">Year-over-year changes</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="grade-level-analysis-where-are-we-losing-students">Grade-Level Analysis: Where Are We Losing Students?<a class="anchor" aria-label="anchor" href="#grade-level-analysis-where-are-we-losing-students"></a>
+<h3 id="id_3-the-pre-k-revolution">3. The Pre-K Revolution<a class="anchor" aria-label="anchor" href="#id_3-the-pre-k-revolution"></a>
 </h3>
-<p><strong>Grade 1 fell 17%</strong> since 2012—the pipeline is shrinking. But Pre-K exploded.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Compare grade levels</span></span>
-<span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PK_FULL"</span>, <span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"05"</span>, <span class="st">"09"</span>, <span class="st">"12"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">grade_level</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">end_year</span>, values_from <span class="op">=</span> <span class="va">total</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   grade_level  `2012`  `2024`  change</span></span>
-<span><span class="co">#&gt; 1 PK_FULL      27885  157116  +463%</span></span>
-<span><span class="co">#&gt; 2 K           188512  166897   -11%</span></span>
-<span><span class="co">#&gt; 3 01          193366  159723   -17%</span></span>
-<span><span class="co">#&gt; 4 05          196429  168488   -14%</span></span>
-<span><span class="co">#&gt; 5 09          208901  176893   -15%</span></span>
-<span><span class="co">#&gt; 6 12          176789  171553    -3%</span></span></code></pre></div>
-<div class="float">
-<img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/grade-change-1.png" alt="Grade-level changes"><div class="figcaption">Grade-level changes</div>
-</div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="the-pre-k-revolution-2012-2024">The Pre-K Revolution (2012-2024)<a class="anchor" aria-label="anchor" href="#the-pre-k-revolution-2012-2024"></a>
-</h3>
-<p>Full-day Pre-K grew <strong>463%</strong>—from 28K to 157K. NYC’s Universal Pre-K launched in 2014 and drove a 115% jump in 2015.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fl">2012</span><span class="op">:</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PK_FULL"</span>, <span class="st">"PK_HALF"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">grade_level</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Full-day Pre-K exploded from 28K to 157K</strong> - a 463% increase. NYC’s Universal Pre-K program drove a stunning 115% jump in 2015 alone.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pk_trend</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"PK_FULL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    yoy_pct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">total</span> <span class="op">-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">total</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html" class="external-link">lag</a></span><span class="op">(</span><span class="va">total</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; 2012: 27,885 students</span></span>
+<span><span class="co">#&gt; 2015: 87,629 students (+115% from 2014)</span></span>
+<span><span class="co">#&gt; 2024: 157,116 students (+463% from 2012)</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/prek-growth-1.png" alt="Pre-K growth"><div class="figcaption">Pre-K growth</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="nyc-vs-rest-of-state">NYC vs Rest of State<a class="anchor" aria-label="anchor" href="#nyc-vs-rest-of-state"></a>
+<h3 id="id_4-the-bronx-exodus">4. The Bronx Exodus<a class="anchor" aria-label="anchor" href="#id_4-the-bronx-exodus"></a>
 </h3>
-<p>NYC is <strong>99% full-day Pre-K</strong>. The rest of the state? Only 85%.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PK_FULL"</span>, <span class="st">"PK_HALF"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">is_nyc</span>, <span class="va">grade_level</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">grade_level</span>, values_from <span class="op">=</span> <span class="va">total</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_full <span class="op">=</span> <span class="va">PK_FULL</span> <span class="op">/</span> <span class="op">(</span><span class="va">PK_FULL</span> <span class="op">+</span> <span class="va">PK_HALF</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   is_nyc PK_FULL PK_HALF pct_full</span></span>
-<span><span class="co">#&gt; 1 FALSE   53749    9416     85%</span></span>
-<span><span class="co">#&gt; 2 TRUE   103367     865     99%</span></span></code></pre></div>
-<div class="float">
-<img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/prek-fullday-1.png" alt="Pre-K full-day comparison"><div class="figcaption">Pre-K full-day comparison</div>
-</div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="nyc-special-education-district-75-2012-2024">NYC Special Education: District 75 (2012-2024)<a class="anchor" aria-label="anchor" href="#nyc-special-education-district-75-2012-2024"></a>
-</h3>
-<p>While NYC geographic districts shrank, <strong>District 75 grew 40%</strong>. NYC’s citywide special education program is one of the few growth areas.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_nyc.html">fetch_enr_nyc</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>, <span class="va">is_district</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"DIST 75|GEOG DIST"</span>, <span class="va">district_name</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">district_name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<div class="float">
-<img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/district75-1.png" alt="District 75 growth"><div class="figcaption">District 75 growth</div>
-</div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="county-analysis-winners-and-losers-2012-2024">County Analysis: Winners and Losers (2012-2024)<a class="anchor" aria-label="anchor" href="#county-analysis-winners-and-losers-2012-2024"></a>
-</h3>
-<p><strong>Only Saratoga County grew</strong> (+0.3%). The Bronx lost 24%—the worst decline among major counties.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">county</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">end_year</span>, values_from <span class="op">=</span> <span class="va">total</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct_change <span class="op">=</span> <span class="op">(</span><span class="va">`2024`</span> <span class="op">-</span> <span class="va">`2012`</span><span class="op">)</span> <span class="op">/</span> <span class="va">`2012`</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<p><strong>The Bronx lost 23.7% of its students</strong> - the worst percentage decline among major counties, losing nearly 50,000 students.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">county_2012</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2012</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">county</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>enr_2012 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
+<span><span class="va">county_2024</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2024</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">county</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>enr_2024 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">county_change</span> <span class="op">&lt;-</span> <span class="va">county_2012</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">county_2024</span>, by <span class="op">=</span> <span class="st">"county"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">enr_2012</span> <span class="op">&gt;</span> <span class="fl">10000</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>  <span class="co"># Major counties only</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    change <span class="op">=</span> <span class="va">enr_2024</span> <span class="op">-</span> <span class="va">enr_2012</span>,</span>
+<span>    pct_change <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">enr_2024</span> <span class="op">-</span> <span class="va">enr_2012</span><span class="op">)</span> <span class="op">/</span> <span class="va">enr_2012</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">pct_change</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Top decliners:</span></span>
 <span><span class="co">#&gt; BRONX:       -23.7%</span></span>
 <span><span class="co">#&gt; SCHENECTADY: -18.7%</span></span>
-<span><span class="co">#&gt; CHEMUNG:     -17.5%</span></span>
-<span><span class="co">#&gt; ...</span></span>
-<span><span class="co">#&gt; Only grower:</span></span>
-<span><span class="co">#&gt; SARATOGA:    +0.3%</span></span></code></pre></div>
+<span><span class="co">#&gt; CHEMUNG:     -17.5%</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/county-change-1.png" alt="County changes"><div class="figcaption">County changes</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="charter-school-growth-2023-2024">Charter School Growth (2023-2024)<a class="anchor" aria-label="anchor" href="#charter-school-growth-2023-2024"></a>
+<h3 id="id_5-rochesters-collapse">5. Rochester’s Collapse<a class="anchor" aria-label="anchor" href="#id_5-rochesters-collapse"></a>
 </h3>
-<p><strong>181,000 students (7.3%)</strong> now attend charter schools across 343 schools.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"school"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>, <span class="va">is_school</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">is_charter</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
-<span>    students <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>    schools <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span></span>
+<p><strong>Rochester City SD lost 30% of enrollment</strong> (32K to 23K) - the steepest decline among major urban districts.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Calculate 2012-2024 change by district</span></span>
+<span><span class="va">dist_2012</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2012</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district_name</span>, <span class="va">county</span>, enr_2012 <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span></span>
+<span><span class="va">dist_2024</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2024</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">district_name</span>, enr_2024 <span class="op">=</span> <span class="va">n_students</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">change</span> <span class="op">&lt;-</span> <span class="va">dist_2012</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">dist_2024</span>, by <span class="op">=</span> <span class="st">"district_name"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">enr_2012</span><span class="op">)</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">enr_2024</span><span class="op">)</span>, <span class="va">enr_2012</span> <span class="op">&gt;=</span> <span class="fl">10000</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    change <span class="op">=</span> <span class="va">enr_2024</span> <span class="op">-</span> <span class="va">enr_2012</span>,</span>
+<span>    pct_change <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">enr_2024</span> <span class="op">-</span> <span class="va">enr_2012</span><span class="op">)</span> <span class="op">/</span> <span class="va">enr_2012</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt;   is_charter students schools</span></span>
-<span><span class="co">#&gt; 1 FALSE      2307920    4406</span></span>
-<span><span class="co">#&gt; 2 TRUE        181334     343</span></span></code></pre></div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="major-district-trends-2012-2024">Major District Trends (2012-2024)<a class="anchor" aria-label="anchor" href="#major-district-trends-2012-2024"></a>
-</h3>
-<p>Rochester lost <strong>30%</strong>—the steepest decline among major districts.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Top 5 districts by 2012 enrollment</span></span>
-<span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">2024</span><span class="op">)</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">district_name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">end_year</span>, values_from <span class="op">=</span> <span class="va">total</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">`2012`</span> <span class="op">&gt;</span> <span class="fl">20000</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>pct <span class="op">=</span> <span class="op">(</span><span class="va">`2024`</span> <span class="op">-</span> <span class="va">`2012`</span><span class="op">)</span> <span class="op">/</span> <span class="va">`2012`</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">pct</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; Rochester City SD: -29.8%</span></span>
+<span><span class="co">#&gt; Buffalo City SD: -20.0%</span></span>
+<span><span class="co">#&gt; Syracuse City SD: -19.9%</span></span></code></pre></div>
 <div class="float">
 <img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/major-districts-1.png" alt="Major district declines"><div class="figcaption">Major district declines</div>
 </div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="kindergarten-half-day-vs-full-day-2012-2024">Kindergarten: Half-Day vs Full-Day (2012-2024)<a class="anchor" aria-label="anchor" href="#kindergarten-half-day-vs-full-day-2012-2024"></a>
+<h3 id="id_6-nycs-special-ed-surge">6. NYC’s Special Ed Surge<a class="anchor" aria-label="anchor" href="#id_6-nycs-special-ed-surge"></a>
 </h3>
-<p>Full-day K is now dominant. Half-day K collapsed from 35K to 8K students.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2012</span>, <span class="fl">2018</span>, <span class="fl">2024</span><span class="op">)</span>, level <span class="op">=</span> <span class="st">"district"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K_HALF"</span>, <span class="st">"K_FULL"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<p><strong>District 75 grew 40% while nearly every other NYC district shrank.</strong> NYC’s citywide special education district is one of very few that gained students.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Find NYC District 75</span></span>
+<span><span class="va">nyc_districts</span> <span class="op">&lt;-</span> <span class="va">change</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"NYC"</span>, <span class="va">district_name</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    is_d75 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"DIST 75"</span>, <span class="va">district_name</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">pct_change</span><span class="op">)</span></span>
+<span><span class="co">#&gt; NYC SPEC SCHOOLS - DIST 75: +40.1%</span></span>
+<span><span class="co">#&gt; NYC GEOG DIST 7: -30.0%</span></span>
+<span><span class="co">#&gt; NYC GEOG DIST 9: -28.0%</span></span></code></pre></div>
+<div class="float">
+<img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/district75-1.png" alt="District 75 growth"><div class="figcaption">District 75 growth</div>
+</div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="id_7-first-grade-cratering">7. First Grade Cratering<a class="anchor" aria-label="anchor" href="#id_7-first-grade-cratering"></a>
+</h3>
+<p><strong>Grade 1 enrollment fell 17.4%</strong> - the steepest decline by grade level, reflecting birth rate drops and family out-migration.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">grade_totals</span> <span class="op">&lt;-</span> <span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="st">"01"</span>, <span class="st">"05"</span>, <span class="st">"08"</span>, <span class="st">"09"</span>, <span class="st">"12"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">grade_level</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   end_year grade_level  total</span></span>
-<span><span class="co">#&gt; 1     2012 K_FULL      153125</span></span>
-<span><span class="co">#&gt; 2     2012 K_HALF       35387</span></span>
-<span><span class="co">#&gt; 3     2024 K_FULL      158575</span></span>
-<span><span class="co">#&gt; 4     2024 K_HALF        8322</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">g_2012</span> <span class="op">&lt;-</span> <span class="va">grade_totals</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2012</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>n_2012 <span class="op">=</span> <span class="va">total</span><span class="op">)</span></span>
+<span><span class="va">g_2024</span> <span class="op">&lt;-</span> <span class="va">grade_totals</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">end_year</span> <span class="op">==</span> <span class="fl">2024</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>n_2024 <span class="op">=</span> <span class="va">total</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">grade_level</span>, <span class="va">n_2024</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">grade_change</span> <span class="op">&lt;-</span> <span class="va">g_2012</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">g_2024</span>, by <span class="op">=</span> <span class="st">"grade_level"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    pct_change <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">n_2024</span> <span class="op">-</span> <span class="va">n_2012</span><span class="op">)</span> <span class="op">/</span> <span class="va">n_2012</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    grade_label <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"01"</span> <span class="op">~</span> <span class="st">"Grade 1"</span>,</span>
+<span>      <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"05"</span> <span class="op">~</span> <span class="st">"Grade 5"</span>,</span>
+<span>      <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"08"</span> <span class="op">~</span> <span class="st">"Grade 8"</span>,</span>
+<span>      <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"09"</span> <span class="op">~</span> <span class="st">"Grade 9"</span>,</span>
+<span>      <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"12"</span> <span class="op">~</span> <span class="st">"Grade 12"</span>,</span>
+<span>      <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"K"</span> <span class="op">~</span> <span class="st">"Kindergarten"</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Grade 1: -17.4%</span></span>
+<span><span class="co">#&gt; Grade 9: -15.4%</span></span>
+<span><span class="co">#&gt; Grade 5: -14.3%</span></span></code></pre></div>
+<div class="float">
+<img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/grade-change-1.png" alt="Grade-level changes"><div class="figcaption">Grade-level changes</div>
+</div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="individual-school-lookup">Individual School Lookup<a class="anchor" aria-label="anchor" href="#individual-school-lookup"></a>
+<h3 id="id_8-charter-schools-rising-market-share">8. Charter Schools’ Rising Market Share<a class="anchor" aria-label="anchor" href="#id_8-charter-schools-rising-market-share"></a>
 </h3>
-<p>Get any school’s enrollment by BEDS code:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Albany High School</span></span>
-<span><span class="fu"><a href="reference/fetch_enr_school.html">fetch_enr_school</a></span><span class="op">(</span><span class="st">"010100010023"</span>, <span class="fl">2020</span><span class="op">:</span><span class="fl">2024</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Charter schools now enroll ~181K students (7.5% of total)</strong> across 343 schools, growing even as traditional public school enrollment declines.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Need school-level data for charter information</span></span>
+<span><span class="va">enr_schools</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr_years.html">fetch_enr_years</a></span><span class="op">(</span><span class="fl">2023</span><span class="op">:</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"school"</span>, tidy <span class="op">=</span> <span class="cn">TRUE</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">charter_summary</span> <span class="op">&lt;-</span> <span class="va">enr_schools</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>, <span class="va">is_school</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">end_year</span>, <span class="va">is_charter</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
+<span>    total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    n_schools <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    .groups <span class="op">=</span> <span class="st">"drop"</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">is_charter</span>, <span class="st">"Charter"</span>, <span class="st">"Traditional"</span><span class="op">)</span>,</span>
+<span>    avg_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">total</span> <span class="op">/</span> <span class="va">n_schools</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; 2024 Charter: 181,334 students across 343 schools</span></span>
+<span><span class="co">#&gt; 2024 Traditional: 2,307,920 students across 4,406 schools</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="individual-district-lookup">Individual District Lookup<a class="anchor" aria-label="anchor" href="#individual-district-lookup"></a>
+<h3 id="id_9-only-one-county-grew">9. Only One County Grew<a class="anchor" aria-label="anchor" href="#id_9-only-one-county-grew"></a>
 </h3>
-<p>Get all schools in a district:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Rochester City SD</span></span>
-<span><span class="fu"><a href="reference/fetch_enr_district.html">fetch_enr_district</a></span><span class="op">(</span><span class="st">"261600"</span>, <span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"school"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span>, <span class="va">is_school</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html" class="external-link">desc</a></span><span class="op">(</span><span class="va">n_students</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Saratoga County is the only county that GREW (+0.3%).</strong> Suburban counties held steady while urban and rural areas declined sharply.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">county_all</span> <span class="op">&lt;-</span> <span class="va">county_2012</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">inner_join</a></span><span class="op">(</span><span class="va">county_2024</span>, by <span class="op">=</span> <span class="st">"county"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    pct_change <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="va">enr_2024</span> <span class="op">-</span> <span class="va">enr_2012</span><span class="op">)</span> <span class="op">/</span> <span class="va">enr_2012</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    grew <span class="op">=</span> <span class="va">pct_change</span> <span class="op">&gt;</span> <span class="fl">0</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Summary stats</span></span>
+<span><span class="va">n_grew</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">county_all</span><span class="op">$</span><span class="va">grew</span><span class="op">)</span></span>
+<span><span class="va">n_declined</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">!</span><span class="va">county_all</span><span class="op">$</span><span class="va">grew</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Counties that grew: 1</span></span>
+<span><span class="co">#&gt; Counties that declined: 61</span></span>
+<span><span class="co">#&gt; The one growing county: SARATOGA (+0.3%)</span></span></code></pre></div>
+<hr>
+</div>
+<div class="section level3">
+<h3 id="id_10-the-pre-k-inversion">10. The Pre-K Inversion<a class="anchor" aria-label="anchor" href="#id_10-the-pre-k-inversion"></a>
+</h3>
+<p><strong>NYC Pre-K is now 99% full-day (103K of 104K), while rest of state is only 85% full-day.</strong> This represents a fundamental policy shift in early childhood education.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">enr_2024</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, level <span class="op">=</span> <span class="st">"district"</span>, tidy <span class="op">=</span> <span class="cn">TRUE</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pk_comparison</span> <span class="op">&lt;-</span> <span class="va">enr_2024</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">grade_level</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PK_FULL"</span>, <span class="st">"PK_HALF"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">is_nyc</span>, <span class="va">grade_level</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>total <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">n_students</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">grade_level</span>, values_from <span class="op">=</span> <span class="va">total</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">is_nyc</span>, <span class="st">"NYC"</span>, <span class="st">"Rest of NY"</span><span class="op">)</span>,</span>
+<span>    total_pk <span class="op">=</span> <span class="va">PK_FULL</span> <span class="op">+</span> <span class="va">PK_HALF</span>,</span>
+<span>    pct_full_day <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">PK_FULL</span> <span class="op">/</span> <span class="va">total_pk</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; NYC: 99.2% full-day Pre-K</span></span>
+<span><span class="co">#&gt; Rest of NY: 85.1% full-day Pre-K</span></span></code></pre></div>
+<div class="float">
+<img src="https://almartin82.github.io/nyschooldata/articles/district-hooks_files/figure-html/prek-fullday-1.png" alt="Pre-K full-day comparison"><div class="figcaption">Pre-K full-day comparison</div>
+</div>
 <hr>
 </div>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"almartin82/nyschooldata"</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -317,12 +329,12 @@
 <div class="section level3">
 <h3 id="r">R<a class="anchor" aria-label="anchor" href="#r"></a>
 </h3>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://almartin82.github.io/nyschooldata/">nyschooldata</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Fetch 2024 data (2023-24 school year)</span></span>
-<span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span><span class="op">)</span></span>
+<span><span class="va">enr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fetch_enr.html">fetch_enr</a></span><span class="op">(</span><span class="fl">2024</span>, use_cache <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Statewide total</span></span>
 <span><span class="va">enr</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -333,28 +345,39 @@
 <div class="section level3">
 <h3 id="python">Python<a class="anchor" aria-label="anchor" href="#python"></a>
 </h3>
-<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="im">import</span> pynyschooldata <span class="im">as</span> ny</span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="co"># Fetch 2024 data (2023-24 school year)</span></span>
-<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>enr <span class="op">=</span> ny.fetch_enr(<span class="dv">2024</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co"># Statewide total</span></span>
-<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>total <span class="op">=</span> enr[enr[<span class="st">'is_district'</span>] <span class="op">&amp;</span> (enr[<span class="st">'grade_level'</span>] <span class="op">==</span> <span class="st">'TOTAL'</span>)][<span class="st">'n_students'</span>].<span class="bu">sum</span>()</span>
-<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>total<span class="sc">:,}</span><span class="ss"> students"</span>)</span>
-<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a><span class="co">#&gt; 2,404,319 students</span></span>
-<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a></span>
-<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="co"># Get multiple years</span></span>
-<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>enr_multi <span class="op">=</span> ny.fetch_enr_multi([<span class="dv">2020</span>, <span class="dv">2021</span>, <span class="dv">2022</span>, <span class="dv">2023</span>, <span class="dv">2024</span>])</span>
-<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a></span>
-<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="co"># Check available years</span></span>
-<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a>years <span class="op">=</span> ny.get_available_years()</span>
-<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Data available: </span><span class="sc">{</span>years[<span class="st">'min_year'</span>]<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>years[<span class="st">'max_year'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a><span class="co">#&gt; Data available: 1977-2024</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="im">import</span> pynyschooldata <span class="im">as</span> ny</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="co"># Fetch 2024 data (2023-24 school year)</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>enr <span class="op">=</span> ny.fetch_enr(<span class="dv">2024</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co"># Statewide total</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>total <span class="op">=</span> enr[enr[<span class="st">'is_district'</span>] <span class="op">&amp;</span> (enr[<span class="st">'grade_level'</span>] <span class="op">==</span> <span class="st">'TOTAL'</span>)][<span class="st">'n_students'</span>].<span class="bu">sum</span>()</span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>total<span class="sc">:,}</span><span class="ss"> students"</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co">#&gt; 2,404,319 students</span></span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="co"># Get multiple years</span></span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a>enr_multi <span class="op">=</span> ny.fetch_enr_multi([<span class="dv">2020</span>, <span class="dv">2021</span>, <span class="dv">2022</span>, <span class="dv">2023</span>, <span class="dv">2024</span>])</span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a><span class="co"># Check available years</span></span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a>years <span class="op">=</span> ny.get_available_years()</span>
+<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Data available: </span><span class="sc">{</span>years[<span class="st">'min_year'</span>]<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>years[<span class="st">'max_year'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a><span class="co">#&gt; Data available: 1977-2024</span></span></code></pre></div>
+<hr>
 </div>
 </div>
 <div class="section level2">
-<h2 id="data-availability--format">Data Availability &amp; Format<a class="anchor" aria-label="anchor" href="#data-availability--format"></a>
+<h2 id="data-notes">Data Notes<a class="anchor" aria-label="anchor" href="#data-notes"></a>
 </h2>
+<div class="section level3">
+<h3 id="data-source">Data Source<a class="anchor" aria-label="anchor" href="#data-source"></a>
+</h3>
+<p>All data comes directly from <a href="https://www.p12.nysed.gov/irs/statistics/enroll-n-staff/home.html" class="external-link">NYSED Information Reporting Services</a>. Files are downloaded, cached locally, and standardized into a consistent schema.</p>
+</div>
+<div class="section level3">
+<h3 id="census-date">Census Date<a class="anchor" aria-label="anchor" href="#census-date"></a>
+</h3>
+<p>Enrollment counts are collected on <strong>BEDS Day</strong> (Basic Educational Data System Day), which falls in early October each year. This is the official enrollment census date for New York State public schools.</p>
+</div>
 <div class="section level3">
 <h3 id="coverage-by-era">Coverage by Era<a class="anchor" aria-label="anchor" href="#coverage-by-era"></a>
 </h3>
@@ -394,19 +417,21 @@
 </table>
 </div>
 <div class="section level3">
-<h3 id="grade-levels">Grade Levels<a class="anchor" aria-label="anchor" href="#grade-levels"></a>
+<h3 id="suppression-rules">Suppression Rules<a class="anchor" aria-label="anchor" href="#suppression-rules"></a>
 </h3>
-<p>All years include: <strong>K, 1-12, Ungraded Elementary, Ungraded Secondary</strong></p>
-<p>Pre-K breakdown (1995+): <code>PK_HALF</code>, <code>PK_FULL</code></p>
-<p>Kindergarten breakdown: <code>K_HALF</code>, <code>K_FULL</code></p>
+<p>Small cell sizes may be suppressed to protect student privacy and shown as NA in the data.</p>
 </div>
 <div class="section level3">
-<h3 id="geographic-hierarchy">Geographic Hierarchy<a class="anchor" aria-label="anchor" href="#geographic-hierarchy"></a>
+<h3 id="known-caveats">Known Caveats<a class="anchor" aria-label="anchor" href="#known-caveats"></a>
 </h3>
-<pre><code>State (1)
-└── County (62)
-    └── District (~730)
-        └── School (~4,700)</code></pre>
+<ul>
+<li>
+<strong>Charter schools</strong>: Charter flag requires school-level data (2012+)</li>
+<li>
+<strong>Historical comparisons</strong>: Pre-K wasn’t tracked before 1995; use K-12 totals for long-term trends</li>
+<li>
+<strong>NYC structure</strong>: NYC has 32 geographic districts + District 75 (special ed) + District 79 (alternative)</li>
+</ul>
 </div>
 <div class="section level3">
 <h3 id="identifiers">Identifiers<a class="anchor" aria-label="anchor" href="#identifiers"></a>
@@ -451,25 +476,7 @@
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section level3">
-<h3 id="data-source">Data Source<a class="anchor" aria-label="anchor" href="#data-source"></a>
-</h3>
-<p>All data comes from <a href="https://www.p12.nysed.gov/irs/statistics/enroll-n-staff/home.html" class="external-link">NYSED Information Reporting Services</a>. Files are downloaded, cached locally, and standardized into a consistent schema.</p>
-</div>
-<div class="section level3">
-<h3 id="caveats">Caveats<a class="anchor" aria-label="anchor" href="#caveats"></a>
-</h3>
-<ul>
-<li>
-<strong>Suppression</strong>: Small cell sizes may be suppressed (shown as NA)</li>
-<li>
-<strong>Charter schools</strong>: Charter flag requires school-level data (2012+)</li>
-<li>
-<strong>Historical comparisons</strong>: Pre-K wasn’t tracked before 1995; use K-12 totals for long-term trends</li>
-<li>
-<strong>NYC structure</strong>: NYC has 32 geographic districts + District 75 (special ed) + District 79 (alternative)</li>
-</ul>
+<hr>
 </div>
 </div>
 <div class="section level2">
@@ -512,16 +519,12 @@
 <h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
 </h2>
 <ul>
-<li><a href="https://almartin82.github.io/nyschooldata/articles/district-hooks.html">Full Analysis with Charts</a></li>
+<li>
+<a href="https://almartin82.github.io/nyschooldata/articles/district-hooks.html">10 Surprising Findings</a> - Full analysis with charts</li>
 <li><a href="https://almartin82.github.io/nyschooldata/articles/quickstart.html">Getting Started Guide</a></li>
+<li><a href="https://almartin82.github.io/nyschooldata/articles/data-quality-qa.html">Data Quality QA</a></li>
 <li><a href="https://almartin82.github.io/nyschooldata/reference/">API Reference</a></li>
 </ul>
-</div>
-<div class="section level2">
-<h2 id="part-of-the-state-schooldata-project">Part of the State Schooldata Project<a class="anchor" aria-label="anchor" href="#part-of-the-state-schooldata-project"></a>
-</h2>
-<p>A simple, consistent interface for accessing state-published school data in Python and R.</p>
-<p><strong>All 50 state packages:</strong> <a href="https://github.com/almartin82?tab=repositories&amp;q=schooldata" class="external-link">github.com/almartin82</a></p>
 </div>
 <div class="section level2">
 <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a>
