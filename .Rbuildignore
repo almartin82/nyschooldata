@@ -12,3 +12,5 @@
 ^py.*schooldata$
 ^vignettes/.*_cache$
 ^CLAUDE\.md$
+^EXPANSION\.md$
+^NY-GRADUATION-RESEARCH\.md$

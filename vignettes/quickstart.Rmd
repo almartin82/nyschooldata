@@ -462,3 +462,9 @@ parse_school_year("2023-2024")
 - Explore the [Data Quality QA](data-quality-qa.html) vignette for validation examples
 - Check `get_available_years()` for the current range of available data
 - Visit the [pkgdown site](https://almartin82.github.io/nyschooldata/) for full API reference
+
+## Session Info
+
+```{r session-info}
+sessionInfo()
+```
