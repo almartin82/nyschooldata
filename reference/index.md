@@ -1,8 +1,8 @@
 # Package index
 
-## Fetch Data
+## Fetch Enrollment Data
 
-Download enrollment and graduation data from NYSED
+Download enrollment data from NYSED
 
 - [`fetch_enr()`](https://almartin82.github.io/nyschooldata/reference/fetch_enr.md)
   : Fetch New York enrollment data
@@ -20,12 +20,34 @@ Download enrollment and graduation data from NYSED
   : Fetch New York school directory data
 - [`get_directory_years()`](https://almartin82.github.io/nyschooldata/reference/get_directory_years.md)
   : Get available years for directory data
+
+## Fetch Graduation Data
+
+Download graduation rate data from NYSED
+
 - [`fetch_graduation()`](https://almartin82.github.io/nyschooldata/reference/fetch_graduation.md)
   : Fetch New York graduation rate data
 - [`fetch_graduation_multi()`](https://almartin82.github.io/nyschooldata/reference/fetch_graduation_multi.md)
   : Fetch graduation rate data for multiple years
 - [`get_available_grad_years()`](https://almartin82.github.io/nyschooldata/reference/get_available_grad_years.md)
   : Get available graduation years
+
+## Fetch Assessment Data
+
+Download NY State Test and Regents assessment data
+
+- [`fetch_assessment()`](https://almartin82.github.io/nyschooldata/reference/fetch_assessment.md)
+  : Fetch New York State assessment data
+- [`fetch_assessment_multi()`](https://almartin82.github.io/nyschooldata/reference/fetch_assessment_multi.md)
+  : Fetch assessment data for multiple years
+- [`fetch_district_assessment()`](https://almartin82.github.io/nyschooldata/reference/fetch_district_assessment.md)
+  : Get assessment data for a specific district
+- [`fetch_school_assessment()`](https://almartin82.github.io/nyschooldata/reference/fetch_school_assessment.md)
+  : Get assessment data for a specific school
+- [`get_available_assessment_years()`](https://almartin82.github.io/nyschooldata/reference/get_available_assessment_years.md)
+  : Get available assessment years for New York
+- [`calculate_proficiency_rates()`](https://almartin82.github.io/nyschooldata/reference/calculate_proficiency_rates.md)
+  : Calculate proficiency rates from tidy assessment data
 
 ## Process & Tidy
 
@@ -46,7 +68,8 @@ Manage locally cached data
 
 - [`cache_status()`](https://almartin82.github.io/nyschooldata/reference/cache_status.md)
   : Show cache status
-- [`clear_enr_cache()`](https://almartin82.github.io/nyschooldata/reference/clear_enr_cache.md)
+- [`clear_cache()`](https://almartin82.github.io/nyschooldata/reference/clear_cache.md)
+  [`clear_enr_cache()`](https://almartin82.github.io/nyschooldata/reference/clear_cache.md)
   : Clear the nyschooldata cache
 - [`clear_grad_cache()`](https://almartin82.github.io/nyschooldata/reference/clear_grad_cache.md)
   : Clear graduation rate cache

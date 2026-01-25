@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/district-hooks.html">10 Surprising Findings</a></li>
+    <li><a class="dropdown-item" href="../articles/newyork-assessment.html">NY Assessment Data</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../articles/quickstart.html">Getting Started</a></li>
     <li><a class="dropdown-item" href="../articles/data-quality-qa.html">Data Quality QA</a></li>
@@ -38,9 +39,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="fetch-data">Fetch Data<a class="anchor" aria-label="anchor" href="#fetch-data"></a></h2>
+      <h2 id="fetch-enrollment-data">Fetch Enrollment Data<a class="anchor" aria-label="anchor" href="#fetch-enrollment-data"></a></h2>
 
-      <div class="section-desc"><p>Download enrollment and graduation data from NYSED</p></div>
+      <div class="section-desc"><p>Download enrollment data from NYSED</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -102,8 +103,17 @@
 
         </dt>
         <dd>Get available years for directory data</dd>
+      </dl></div><div class="section level2">
+      <h2 id="fetch-graduation-data">Fetch Graduation Data<a class="anchor" aria-label="anchor" href="#fetch-graduation-data"></a></h2>
 
-        <dt>
+      <div class="section-desc"><p>Download graduation rate data from NYSED</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
 
           <code><a href="fetch_graduation.html">fetch_graduation()</a></code>
 
@@ -123,6 +133,57 @@
 
         </dt>
         <dd>Get available graduation years</dd>
+      </dl></div><div class="section level2">
+      <h2 id="fetch-assessment-data">Fetch Assessment Data<a class="anchor" aria-label="anchor" href="#fetch-assessment-data"></a></h2>
+
+      <div class="section-desc"><p>Download NY State Test and Regents assessment data</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="fetch_assessment.html">fetch_assessment()</a></code>
+
+        </dt>
+        <dd>Fetch New York State assessment data</dd>
+
+        <dt>
+
+          <code><a href="fetch_assessment_multi.html">fetch_assessment_multi()</a></code>
+
+        </dt>
+        <dd>Fetch assessment data for multiple years</dd>
+
+        <dt>
+
+          <code><a href="fetch_district_assessment.html">fetch_district_assessment()</a></code>
+
+        </dt>
+        <dd>Get assessment data for a specific district</dd>
+
+        <dt>
+
+          <code><a href="fetch_school_assessment.html">fetch_school_assessment()</a></code>
+
+        </dt>
+        <dd>Get assessment data for a specific school</dd>
+
+        <dt>
+
+          <code><a href="get_available_assessment_years.html">get_available_assessment_years()</a></code>
+
+        </dt>
+        <dd>Get available assessment years for New York</dd>
+
+        <dt>
+
+          <code><a href="calculate_proficiency_rates.html">calculate_proficiency_rates()</a></code>
+
+        </dt>
+        <dd>Calculate proficiency rates from tidy assessment data</dd>
       </dl></div><div class="section level2">
       <h2 id="process-tidy">Process &amp; Tidy<a class="anchor" aria-label="anchor" href="#process-tidy"></a></h2>
 
@@ -179,7 +240,7 @@
 
         <dt>
 
-          <code><a href="clear_enr_cache.html">clear_enr_cache()</a></code>
+          <code><a href="clear_cache.html">clear_cache()</a></code> <code><a href="clear_cache.html">clear_enr_cache()</a></code>
 
         </dt>
         <dd>Clear the nyschooldata cache</dd>
