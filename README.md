@@ -380,6 +380,8 @@ Small cell sizes may be suppressed to protect student privacy and shown as NA in
 
 ## Key Functions
 
+### Enrollment Data
+
 | Function | Description |
 |----------|-------------|
 | `fetch_enr(year)` | Get enrollment for one year |
@@ -389,9 +391,41 @@ Small cell sizes may be suppressed to protect student privacy and shown as NA in
 | `fetch_enr_nyc(year)` | Get NYC schools only |
 | `get_available_years()` | Check year range |
 
+### Assessment Data
+
+| Function | Description |
+|----------|-------------|
+| `fetch_assessment(year)` | Get NY State Tests (ELA, Math, Science) |
+| `fetch_assessment_multi(years)` | Get multiple years of assessment data |
+| `fetch_district_assessment(year, district_cd)` | Get specific district |
+| `get_available_assessment_years()` | Check assessment year range |
+| `calculate_proficiency_rates(data)` | Summarize proficiency from tidy data |
+
+**Note:** Assessment data requires [mdbtools](https://github.com/mdbtools/mdbtools) to read NYSED Access databases.
+
+## Assessment Data Quick Start
+
+```r
+library(nyschooldata)
+library(dplyr)
+
+# Get 2024 ELA assessment data
+assess <- fetch_assessment(2024, subject = "ela", use_cache = TRUE)
+
+# Check proficiency by grade
+assess |>
+  filter(grepl("^ELA[3-8]$", assessment_name),
+         subgroup_name == "All Students",
+         grepl("New York City", entity_name)) |>
+  select(assessment_name, per_prof)
+```
+
+See the [NY Assessment Data vignette](https://almartin82.github.io/nyschooldata/articles/newyork-assessment.html) for detailed analysis.
+
 ## Documentation
 
 - [10 Surprising Findings](https://almartin82.github.io/nyschooldata/articles/district-hooks.html) - Full analysis with charts
+- [NY Assessment Data](https://almartin82.github.io/nyschooldata/articles/newyork-assessment.html) - Assessment analysis
 - [Getting Started Guide](https://almartin82.github.io/nyschooldata/articles/quickstart.html)
 - [Data Quality QA](https://almartin82.github.io/nyschooldata/articles/data-quality-qa.html)
 - [API Reference](https://almartin82.github.io/nyschooldata/reference/)

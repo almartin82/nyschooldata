@@ -19,7 +19,8 @@ Imports:
     rlang,
     readr,
     readxl,
-    rappdirs
+    rappdirs,
+    tidyr
 SystemRequirements: mdbtools (https://github.com/mdbtools/mdbtools)
 Suggests:
     curl,
@@ -27,8 +28,7 @@ Suggests:
     knitr,
     rmarkdown,
     scales,
-    testthat (>= 3.0.0),
-    tidyr
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 URL: https://almartin82.github.io/nyschooldata/, https://github.com/almartin82/nyschooldata

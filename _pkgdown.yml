@@ -27,6 +27,8 @@ navbar:
       menu:
       - text: "10 Surprising Findings"
         href: articles/district-hooks.html
+      - text: "NY Assessment Data"
+        href: articles/newyork-assessment.html
       - text: "---"
       - text: Getting Started
         href: articles/quickstart.html
@@ -38,14 +40,15 @@ articles:
   navbar: ~
   contents:
   - district-hooks
+  - newyork-assessment
 - title: Reference
   contents:
   - quickstart
   - data-quality-qa
 
 reference:
-- title: Fetch Data
-  desc: Download enrollment and graduation data from NYSED
+- title: Fetch Enrollment Data
+  desc: Download enrollment data from NYSED
   contents:
   - fetch_enr
   - fetch_enr_multi
@@ -55,9 +58,23 @@ reference:
   - fetch_enr_nyc
   - fetch_directory
   - get_directory_years
+
+- title: Fetch Graduation Data
+  desc: Download graduation rate data from NYSED
+  contents:
   - fetch_graduation
   - fetch_graduation_multi
   - get_available_grad_years
+
+- title: Fetch Assessment Data
+  desc: Download NY State Test and Regents assessment data
+  contents:
+  - fetch_assessment
+  - fetch_assessment_multi
+  - fetch_district_assessment
+  - fetch_school_assessment
+  - get_available_assessment_years
+  - calculate_proficiency_rates
 
 - title: Process & Tidy
   desc: Transform data into analysis-ready formats
@@ -71,6 +88,7 @@ reference:
   desc: Manage locally cached data
   contents:
   - cache_status
+  - clear_cache
   - clear_enr_cache
   - clear_grad_cache
 

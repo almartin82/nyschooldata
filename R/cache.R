@@ -30,7 +30,8 @@ get_cache_dir <- function() {
 #' Get cached file path for a given year
 #'
 #' @param end_year School year end
-#' @param type File type ("raw", "processed", "tidy", "grad_wide", "grad_tidy")
+#' @param type File type ("raw", "processed", "tidy", "grad_wide", "grad_tidy",
+#'   "assessment_tidy_all", "assessment_wide_ela", etc.)
 #' @return Path to cached file
 #' @keywords internal
 get_cache_path <- function(end_year, type = "raw") {
@@ -39,6 +40,8 @@ get_cache_path <- function(end_year, type = "raw") {
   # Determine prefix based on type
   if (grepl("^grad_", type)) {
     prefix <- "grad_"
+  } else if (grepl("^assessment_", type)) {
+    prefix <- "assess_"
   } else {
     prefix <- "enr_"
   }
@@ -100,21 +103,24 @@ write_cache <- function(data, end_year, type = "raw") {
 #'
 #' @param years Optional vector of years to clear. If NULL, clears all.
 #' @param data_type Type of cache to clear: "enr" (enrollment), "grad" (graduation),
-#'   or NULL (both).
+#'   "assess" (assessment), or NULL (all).
 #' @return Invisibly returns the number of files removed
 #' @export
 #' @examples
 #' \dontrun{
 #' # Clear all cached data
-#' clear_enr_cache()
+#' clear_cache()
 #'
 #' # Clear only 2024 data
-#' clear_enr_cache(2024)
+#' clear_cache(2024)
 #'
 #' # Clear only graduation cache
-#' clear_enr_cache(data_type = "grad")
+#' clear_cache(data_type = "grad")
+#'
+#' # Clear only assessment cache
+#' clear_cache(data_type = "assess")
 #' }
-clear_enr_cache <- function(years = NULL, data_type = NULL) {
+clear_cache <- function(years = NULL, data_type = NULL) {
   cache_dir <- get_cache_dir()
 
   if (is.null(years)) {
@@ -125,7 +131,7 @@ clear_enr_cache <- function(years = NULL, data_type = NULL) {
     }
   } else {
     if (is.null(data_type)) {
-      patterns <- paste0(c("enr", "grad"), "_.*_", years, "\\.rds$")
+      patterns <- paste0(c("enr", "grad", "assess"), "_.*_", years, "\\.rds$")
     } else {
       patterns <- paste0(data_type, "_.*_", years, "\\.rds$")
     }
@@ -142,6 +148,13 @@ clear_enr_cache <- function(years = NULL, data_type = NULL) {
   }
 
   invisible(length(files))
+}
+
+
+#' @rdname clear_cache
+#' @export
+clear_enr_cache <- function(years = NULL, data_type = NULL) {
+  clear_cache(years = years, data_type = data_type)
 }
 
 
@@ -168,9 +181,9 @@ cache_status <- function() {
   info$file <- basename(files)
   info$year <- as.integer(gsub(".*_(\\d{4})\\.rds$", "\\1", info$file))
 
-  # Extract type (enr_tidy, grad_wide, etc.)
-  info$type <- gsub("^(enr|grad)_(.*)_\\d{4}\\.rds$", "\\2", info$file)
-  info$data_type <- gsub("^(enr|grad)_.*_\\d{4}\\.rds$", "\\1", info$file)
+  # Extract type (enr_tidy, grad_wide, assess_assessment_tidy_all, etc.)
+  info$type <- gsub("^(enr|grad|assess)_(.*)_\\d{4}\\.rds$", "\\2", info$file)
+  info$data_type <- gsub("^(enr|grad|assess)_.*_\\d{4}\\.rds$", "\\1", info$file)
 
   info$size_mb <- round(info$size / 1024 / 1024, 2)
   info$age_days <- round(as.numeric(difftime(Sys.time(), info$mtime, units = "days")), 1)
